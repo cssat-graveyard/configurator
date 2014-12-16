@@ -73,24 +73,35 @@ namespace Framework
 		{
 			foreach (var property in json.Properties())
 			{
-				if (property.Name == "decimalSymbol")
-					DecimalSymbol = Json.Parse(DecimalSymbol, property);
-				else if (property.Name == "fractionDigits")
-					FractionDigits = Json.Parse(FractionDigits, property);
-				else if (property.Name == "groupingSymbol")
-					GroupingSymbol = Json.Parse(GroupingSymbol, property);
-				else if (property.Name == "negativeColor")
-					NegativeColor = Json.Parse(NegativeColor, property);
-				else if (property.Name == "negativeParens")
-					NegativeParens = Json.Parse(NegativeParens, property);
-				else if (property.Name == "pattern")
-					Pattern = Json.Parse(Pattern, property);
-				else if (property.Name == "prefix")
-					Prefix = Json.Parse(Prefix, property);
-				else if (property.Name == "suffix")
-					Suffix = Json.Parse(Suffix, property);
-				else
-					throw new UnknownJsonPropertyException(String.Format("The {0} property is not defined for a Number Format.", property.Name));
+				switch (property.Name)
+				{
+					case "decimalSymbol":
+						DecimalSymbol = Json.Parse(DecimalSymbol, property);
+						break;
+					case "fractionDigits":
+						FractionDigits = Json.Parse(FractionDigits, property);
+						break;
+					case "groupingSymbol":
+						GroupingSymbol = Json.Parse(GroupingSymbol, property);
+						break;
+					case "negativeColor":
+						NegativeColor = Json.Parse(NegativeColor, property);
+						break;
+					case "negativeParens":
+						NegativeParens = Json.Parse(NegativeParens, property);
+						break;
+					case "pattern":
+						Pattern = Json.Parse(Pattern, property);
+						break;
+					case "prefix":
+						Prefix = Json.Parse(Prefix, property);
+						break;
+					case "suffix":
+						Suffix = Json.Parse(Suffix, property);
+						break;
+					default:
+						throw new UnknownJsonPropertyException(String.Format("The {0} property is not defined for a Number Format.", property.Name));
+				}
 			}
 		}
 

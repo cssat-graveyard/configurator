@@ -8,18 +8,10 @@ namespace Framework
 {
     public class MeasurementFile : JsonFile, IConfigurationBase
     {
-		private Dictionary<string, FilterParameterGridRow> _filterParameterGridRows;
-		private Dictionary<int, HeaderGridRow> _headerGridRows;
-		private Dictionary<int, string> _tableColumns;
-		private bool _filterParameterGridRowsAreUpdated;
-		private bool _headerGridRowsAreUpdated;
-		private bool _tableDataAreLoaded;
-		private string _table;
-
 		public string BaseMeasure { get; set; }
 		public string Title { get; set; }
+		public string Dropdown { get; set; }
 		public int? Order { get; set; }
-		public string FullTitle { get; set; }
 		public string Summary { get; set; }
 		public string Filter { get; set; }
 		public Transform Transform { get; set; }
@@ -43,13 +35,19 @@ namespace Framework
 		public List<ChartInfo> Charts { get; set; }
 		public Multicharts Multicharts { get; set; }
 		public bool IsEmpty { get { return CheckForEmpty(); } }
+		public List<string> TableColumns { get; private set; }
+		public int DatabaseParameterCount { get; private set; }
 
+		private string _table;
 		public string Table
 		{
 			get
 			{
 				if (_table != Transform.Table)
+				{
 					Transform.Table = _table;
+					Transform.SynchedWithMeasure = true;
+				}
 
 				return _table;
 			}
@@ -57,90 +55,47 @@ namespace Framework
 			{
 				_table = value;
 				Transform.Table = value;
+				Transform.SynchedWithMeasure = true;
+				_measureGridRowsAreUpdated = false;
+
+				if (String.IsNullOrEmpty(_table))
+				{
+					TableColumns.Clear();
+					Transform.TableColumns = TableColumns;
+					DatabaseParameterCount = 0;
+				}
+				else
+					ResetTableColumnOrdinals();
 			}
 		}
-		public Dictionary<string, FilterParameterGridRow> FilterParameterGridRows
+
+		private List<MeasureGridRow> _measureGridRows;
+		public List<MeasureGridRow> MeasureGridRows
 		{
 			get
 			{
-				if (!_filterParameterGridRowsAreUpdated)
-					RefreshFilterParameterGridRows();
+				if (!_measureGridRowsAreUpdated)
+					RefreshMeasureGridRows();
 
-				return _filterParameterGridRows;
+				return _measureGridRows;
 			}
 			set
 			{
-				_filterParameterGridRows = value;
-				UpdatePropertiesFromFilterParameterGridRows();
+				_measureGridRows = value;
+				UpdatePropertiesFromMeasureGridRows();
 			}
 		}
 
-		public Dictionary<int, HeaderGridRow> HeaderGridRows
+		private bool _measureGridRowsAreUpdated;
+		public bool MeasureGridRowsAreUpdated
 		{
-			get
-			{
-				if (!_headerGridRowsAreUpdated)
-					RefreshHeaderGridRows();
-				
-				return _headerGridRows;
-			}
+			get { return _measureGridRowsAreUpdated; }
 			set
 			{
-				_headerGridRows = value;
-				UpdatePropertiesFromHeaderGridRows();
-			}
-		}
-
-		public bool FilterParameterGridRowsAreUpdated
-		{
-			get { return _filterParameterGridRowsAreUpdated; }
-			set
-			{
-				_filterParameterGridRowsAreUpdated = value;
+				_measureGridRowsAreUpdated = value;
 
 				if (!value)
-					_filterParameterGridRows.Clear();
-			}
-		}
-
-		public bool HeaderGridRowsAreUpdated
-		{
-			get { return _headerGridRowsAreUpdated; }
-			set
-			{
-				_headerGridRowsAreUpdated = value;
-
-				if (!value)
-					_headerGridRows.Clear();
-			}
-		}
-
-		public Dictionary<int, string> TableColumns
-		{
-			get
-			{
-				if (_tableColumns.Count == 0)
-					LoadTableFromDatabase();
-
-				return _tableColumns;
-			}
-			set
-			{
-				_tableColumns = value;
-				Transform.TableColumns = value;
-			}
-		}
-
-		public bool TableDataAreLoaded
-		{
-			get { return _tableDataAreLoaded; }
-			set
-			{
-				_tableDataAreLoaded = value;
-				Transform.TableDataAreLoaded = value;
-
-				if (!value)
-					_tableColumns.Clear();
+					_measureGridRows.Clear();
 			}
 		}
 
@@ -149,25 +104,28 @@ namespace Framework
 		{ }
 
 		public MeasurementFile(string filePath)
-			: this(filePath, String.Empty, String.Empty, String.Empty, (int?)null, String.Empty, String.Empty, String.Empty, new Transform(), new List<string>(),
+			: this(filePath, String.Empty, String.Empty, String.Empty, String.Empty, (int?)null, String.Empty, String.Empty, new Transform(), new List<string>(),
 			new List<string>(), new List<string>(), new List<string>(), (bool?)null, (int?)null, (bool?)null, new List<int>(), new List<int>(), new List<int>(),
 			new List<string>(), (int?)null, HideRow.NoHideRow, (int?)null, ChartType.NoChartType, new Label(), new List<NumberFormat>(), new List<ChartInfo>(),
 			new Multicharts())
 		{ }
 
-		public MeasurementFile(string filePath, string table, string baseMeasure, string title, int? order, string fullTitle, string summary, string filter,
+		public MeasurementFile(string filePath, string table, string baseMeasure, string title, string dropdown, int? order, string summary, string filter,
 			Transform transform, List<string> controls, List<string> parameters, List<string> dateParameters, List<string> requiredParameters, bool? showAllOthers,
 			int? maxChecked, bool? mutexAllOthers, List<int> returnRowHeaders, List<int> returnRowDateHeaders, List<int> returnRowControlHeaders,
 			List<string> headerNames, int? returnRowStart, HideRow hideRow, int? columnClusterSize, ChartType chartType, Label label,
 			List<NumberFormat> numberFormats, List<ChartInfo> charts, Multicharts multicharts)
 			: base(filePath)
 		{
+			this._measureGridRows = new List<MeasureGridRow>();
+			this.TableColumns = new List<string>();
+			this._measureGridRowsAreUpdated = false;
 			this.Transform = transform;
 			this.Table = table;
 			this.BaseMeasure = baseMeasure;
 			this.Title = title;
+			this.Dropdown = dropdown;
 			this.Order = order;
-			this.FullTitle = fullTitle;
 			this.Summary = summary;
 			this.Filter = filter;
 			this.Controls = controls;
@@ -189,18 +147,12 @@ namespace Framework
 			this.NumberFormats = numberFormats;
 			this.Charts = charts;
 			this.Multicharts = multicharts;
-			this._filterParameterGridRows = new Dictionary<string, FilterParameterGridRow>();
-			this._headerGridRows = new Dictionary<int, HeaderGridRow>();
-			this._tableColumns = new Dictionary<int, string>();
-			this._filterParameterGridRowsAreUpdated = false;
-			this._headerGridRowsAreUpdated = false;
-			this._tableDataAreLoaded = false;
 		}
 
 		private bool CheckForEmpty()
 		{
 			return (String.IsNullOrEmpty(Table) && String.IsNullOrEmpty(BaseMeasure) && String.IsNullOrEmpty(Title) && Order == null &&
-				String.IsNullOrEmpty(FullTitle) && Order == null && String.IsNullOrEmpty(Summary) && String.IsNullOrEmpty(Filter) && Transform.IsEmpty &&
+				String.IsNullOrEmpty(Dropdown) && Order == null && String.IsNullOrEmpty(Summary) && String.IsNullOrEmpty(Filter) && Transform.IsEmpty &&
 				Controls.Count == 0 && Parameters.Count == 0 && DateParameters.Count == 0 && RequiredParameters.Count == 0 && ShowAllOthers == null &&
 				MaxChecked == null && MutexAllOthers == null && ReturnRowHeaders.Count == 0 && ReturnRowDateHeaders.Count == 0 &&
 				ReturnRowControlHeaders.Count == 0 && HeaderNames.Count == 0 && ReturnRowStart == null && HideRow == HideRow.NoHideRow &&
@@ -208,195 +160,237 @@ namespace Framework
 				Charts.Count(p => !p.IsEmpty) == 0 && Multicharts.IsEmpty);
 		}
 
-		private void LoadTableFromDatabase()
+		private void RefreshMeasureGridRows()
 		{
-			bool tableDataWasUpdated = false;
+			foreach (var item in Transform.ValueFields)
+			{
+				MeasureGridRow row = new MeasureGridRow(Transform.DateField);
+				row.IsValueField = true;
+				row.ColumnName = item;
+				row.TableOrdinal = TableColumns.FindIndex(p => p == item);
+				_measureGridRows.Add(row);
+			}
 
-			try
+			foreach (var item in Transform.RemoveFields)
 			{
-				if (!String.IsNullOrEmpty(Table))
-					_tableColumns = Database.PopulateMeasure(Table);
+				int gridRowOrdinal = _measureGridRows.FindIndex(p => p.ColumnName == item);
 
-				Transform.TableColumns = _tableColumns;
-				tableDataWasUpdated = true;
+				if (gridRowOrdinal == -1)
+				{
+					MeasureGridRow row = new MeasureGridRow(Transform.DateField);
+					row.IsRemoveField = true;
+					row.ColumnName = item;
+					row.TableOrdinal = TableColumns.FindIndex(p => p == item);
+					_measureGridRows.Add(row);
+				}
+				else
+					_measureGridRows.ElementAt(gridRowOrdinal).IsRemoveField = true;
 			}
-			catch (Exception)
-			{
-				_tableColumns = new Dictionary<int, string>();
-				Transform.TableColumns = _tableColumns;
-				throw;
-			}
-			finally
-			{
-				_tableDataAreLoaded = true;
-				Transform.TableDataAreLoaded = true;
-				_headerGridRowsAreUpdated = !tableDataWasUpdated;
-				Transform._transformFieldGridRowsAreUpdated = !tableDataWasUpdated;
-			}
-		}
 
-		private void RefreshFilterParameterGridRows()
-		{
-			foreach (var item in Controls)
+			if (Transform.HasDateRow)
 			{
-				FilterParameterGridRow row = new FilterParameterGridRow();
-				row.ControlType = ControlType.Filter;
-				_filterParameterGridRows.Add(item, row);
+				MeasureGridRow row = new MeasureGridRow(Transform.DateField);
+				row.HeaderType = HeaderType.DateColumn;
+				row.TableOrdinal = TableColumns.FindIndex(p => p == row.ColumnName);
+				_measureGridRows.Add(row);
 			}
+
+			if (!String.IsNullOrEmpty(Transform.DateField) || Transform.RemoveFields.Count != 0)
+				ResetTableColumnOrdinals();
+
+			if (Transform.HasDateRow)
+			{
+				MeasureGridRow row = _measureGridRows.FirstOrDefault(p => p.HeaderType == HeaderType.DateColumn) ?? new MeasureGridRow(Transform.DateField);
+				row.IsReturnRow = ReturnRowHeaders.Contains(row.TableOrdinal);
+				row.IsReturnRowDate = ReturnRowDateHeaders.Contains(row.TableOrdinal);
+				row.IsReturnRowControl = ReturnRowControlHeaders.Contains(row.TableOrdinal);
+			}
+
+			_measureGridRows = _measureGridRows.OrderBy(s => s.TableOrdinal).ToList<MeasureGridRow>();
 
 			foreach (var item in Parameters)
 			{
-				if (_filterParameterGridRows.ContainsKey(item))
-					_filterParameterGridRows[item].ControlType = ControlType.Both;
-				else
-				{
-					FilterParameterGridRow row = new FilterParameterGridRow();
+				MeasureGridRow row = new MeasureGridRow(Transform.DateField);
+				row.HeaderText = HeaderNames.FirstOrDefault(p => p.EndsWith(item)) ?? String.Empty;
+
+				if (String.IsNullOrEmpty(row.HeaderText))
+					row.FilterParameter = item;
+				
+				if (row.ControlType != ControlType.Parameter)
 					row.ControlType = ControlType.Parameter;
-					_filterParameterGridRows.Add(item, row);
-				}
+				
+				row.IsDate = DateParameters.Contains(item);
+				row.IsRequired = RequiredParameters.Contains(item);
+				row.TableOrdinal = TableColumns.FindIndex(p => p == row.ColumnName);
+				row.IsReturnRow = ReturnRowHeaders.Contains(row.TableOrdinal);
+				row.IsReturnRowDate = ReturnRowDateHeaders.Contains(row.TableOrdinal);
+				row.IsReturnRowControl = ReturnRowControlHeaders.Contains(row.TableOrdinal);
+				_measureGridRows.Add(row);
 			}
 
-			foreach (var item in DateParameters)
+			foreach (var item in Controls)
 			{
-				if (_filterParameterGridRows.ContainsKey(item))
-				{
-					if (_filterParameterGridRows[item].ControlType == ControlType.Filter)
-						_filterParameterGridRows[item].ControlType = ControlType.Both;
+				int existingRow = _measureGridRows.FindIndex(p => p.FilterParameter == item);
 
-					_filterParameterGridRows[item].IsDate = true;
-				}
+				if (existingRow != -1)
+					_measureGridRows.ElementAt(existingRow).ControlType = ControlType.Both;
 				else
 				{
-					FilterParameterGridRow row = new FilterParameterGridRow();
-					row.ControlType = ControlType.Parameter;
-					row.IsDate = true;
-					_filterParameterGridRows.Add(item, row);
+					MeasureGridRow row = new MeasureGridRow(Transform.DateField);
+					row.HeaderText = HeaderNames.FirstOrDefault(p => p.EndsWith(item)) ?? String.Empty;
+
+					if (String.IsNullOrEmpty(row.HeaderText))
+						row.FilterParameter = item;
+					
+					if (row.ControlType != ControlType.Control)
+						row.ControlType = ControlType.Control;
+
+					row.IsDate = DateParameters.Contains(row.FilterParameter);
+					row.IsRequired = DateParameters.Contains(row.FilterParameter);
+					row.TableOrdinal = TableColumns.FindIndex(p => p == row.ColumnName);
+					row.IsReturnRow = ReturnRowHeaders.Contains(row.TableOrdinal);
+					row.IsReturnRowDate = ReturnRowDateHeaders.Contains(row.TableOrdinal);
+					row.IsReturnRowControl = ReturnRowControlHeaders.Contains(row.TableOrdinal);
+					_measureGridRows.Add(row);
 				}
 			}
 
-			foreach (var item in RequiredParameters)
+			foreach (var item in HeaderNames.Where(p => !p.Contains('*') && !p.Contains('=') && p != "&nbsp;"))
 			{
-				if (_filterParameterGridRows.ContainsKey(item))
-				{
-					if (_filterParameterGridRows[item].ControlType == ControlType.Filter)
-						_filterParameterGridRows[item].ControlType = ControlType.Both;
-
-					_filterParameterGridRows[item].IsRequired = true;
-				}
-				else
-				{
-					FilterParameterGridRow row = new FilterParameterGridRow();
-					row.ControlType = ControlType.Parameter;
-					row.IsRequired = true;
-					_filterParameterGridRows.Add(item, row);
-				}
+				MeasureGridRow row = new MeasureGridRow(Transform.DateField);
+				row.HeaderText = item;
+				row.TableOrdinal = TableColumns.FindIndex(p => p == item);
+				row.IsReturnRow = ReturnRowHeaders.Contains(row.TableOrdinal);
+				row.IsReturnRowDate = ReturnRowDateHeaders.Contains(row.TableOrdinal);
+				row.IsReturnRowControl = ReturnRowControlHeaders.Contains(row.TableOrdinal);
+				_measureGridRows.Add(row);
 			}
 
-			_filterParameterGridRowsAreUpdated = true;
+			_measureGridRowsAreUpdated = true;
 		}
 
-		public void UpdatePropertiesFromFilterParameterGridRows()
+		public void RemoveUnfoundColumns()
+		{
+			if (MeasureGridRows.Count(p => !String.IsNullOrEmpty(p.ColumnName) && p.TableOrdinal == -1) != 0)
+			{
+				string message = "The following columns were not found in the stored procedure output\nand have been removed from the measure:\n";
+
+				foreach (var item in MeasureGridRows.Where(p => p.TableOrdinal == -1 && !String.IsNullOrEmpty(p.ColumnName)))
+					message = String.Concat(message, item.ColumnName, "\n");
+
+				MessageBox.Show(message.Trim(), "Database Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+
+				MeasureGridRows.RemoveAll(m => m.TableOrdinal == -1 && !String.IsNullOrEmpty(m.ColumnName));
+				UpdatePropertiesFromMeasureGridRows();
+				ResetTableColumnOrdinals();
+			}
+		}
+
+		public void ResetTableColumnOrdinals()
+		{
+			TableColumns = Database.StoredProcedures[_table].Columns.Values.ToList<string>();
+
+			if ((Transform.HasDateRow && TableColumns.Contains(Transform.DateField)) || Transform.RemoveFields.Count != 0)
+			{
+				List<string> columns = new List<string>();
+
+				if (Transform.HasDateRow && TableColumns.Contains(Transform.DateField))
+					columns.Add(Transform.DateField);
+
+				foreach (var item in TableColumns.Where(p => p != Transform.DateField && !Transform.RemoveFields.Contains(p)))
+					columns.Add(item);
+
+				foreach (var item in TableColumns.Where(p => Transform.RemoveFields.Contains(p)))
+					columns.Add(item);
+
+				TableColumns = columns;
+			}
+
+			if (Transform.HasDateRow && TableColumns.Contains(Transform.DateField) && _measureGridRows.FindIndex(p => p.HeaderType == HeaderType.DateColumn) == -1)
+			{
+				MeasureGridRow dateColumn = new MeasureGridRow(Transform.DateField);
+				dateColumn.HeaderType = HeaderType.DateColumn;
+				_measureGridRows.Add(dateColumn);
+			}
+
+			if (_measureGridRows.Any(r => !String.IsNullOrEmpty(r.ColumnName) && r.TableOrdinal != TableColumns.FindIndex(tc => tc == r.ColumnName)))
+			{
+				foreach (var item in _measureGridRows.Where(p => !String.IsNullOrEmpty(p.ColumnName)))
+				{
+					item.DateColumn = Transform.DateField;
+					int ordinal = TableColumns.FindIndex(p => p == item.ColumnName);
+
+					if (item.TableOrdinal != ordinal)
+						item.TableOrdinal = ordinal;
+
+					if ((item.ColumnName == Transform.DateField && item.HeaderType != HeaderType.DateColumn) || item.TableOrdinal == -1)
+						item.HeaderType = HeaderType.NotAHeader;
+				}
+
+				if (_measureGridRowsAreUpdated)
+					UpdatePropertiesFromMeasureGridRows();
+			}
+
+			Transform.TableColumns = TableColumns;
+			DatabaseParameterCount = Database.StoredProcedures[_table].Parameters.Count;
+		}
+
+		public void UpdatePropertiesFromMeasureGridRows()
 		{
 			Controls.Clear();
 			Parameters.Clear();
 			DateParameters.Clear();
 			RequiredParameters.Clear();
-
-			foreach (var item in _filterParameterGridRows)
-			{
-				if (item.Value.ControlType == ControlType.Filter || item.Value.ControlType == ControlType.Both)
-					Controls.Add(item.Key);
-
-				if (item.Value.ControlType == ControlType.Parameter || item.Value.ControlType == ControlType.Both)
-					Parameters.Add(item.Key);
-
-				if (item.Value.IsDate)
-					DateParameters.Add(item.Key);
-
-				if (item.Value.IsRequired)
-					RequiredParameters.Add(item.Key);
-			}
-		}
-
-		private void RefreshHeaderGridRows()
-		{
-			_headerGridRows.Clear();
-			int adjustedTableOrdinal;
-			int headerNamesIndex;
-			string headerText;
-			bool needsDateField;
-			bool hasDateField;
-			NeedsDateField(out needsDateField, out hasDateField);
-
-			if (needsDateField && hasDateField)
-			{
-				headerText = "&nbsp;";
-				HeaderGridRow nbspHeader = new HeaderGridRow(headerText);
-				nbspHeader.IsReturnRow = ReturnRowHeaders.Contains(0);
-				nbspHeader.IsReturnRowDate = ReturnRowDateHeaders.Contains(0);
-				nbspHeader.IsReturnRowControl = ReturnRowControlHeaders.Contains(0);
-				_headerGridRows.Add(0, nbspHeader);
-			}
-
-			foreach (var item in TableColumns)
-			{
-				adjustedTableOrdinal = GetAdjustedTableOrdinal(_headerGridRows.Count, item.Key);
-				headerNamesIndex = HeaderNames.FindIndex(p => p.StartsWith(item.Value) || p.StartsWith(String.Concat('*', item.Value)));
-				headerText = headerNamesIndex == -1 ? String.Empty : HeaderNames.ElementAt(headerNamesIndex);
-				HeaderGridRow row = new HeaderGridRow(item.Key, item.Value, headerText);
-
-				row.IsReturnRow = ReturnRowHeaders.Contains(adjustedTableOrdinal);
-				row.IsReturnRowDate = ReturnRowDateHeaders.Contains(adjustedTableOrdinal);
-				row.IsReturnRowControl = ReturnRowControlHeaders.Contains(adjustedTableOrdinal);
-				
-				_headerGridRows.Add(adjustedTableOrdinal, row);
-			}
-
-			_headerGridRowsAreUpdated = true;
-		}
-
-		public void UpdatePropertiesFromHeaderGridRows()
-		{
 			HeaderNames.Clear();
 			ReturnRowHeaders.Clear();
 			ReturnRowDateHeaders.Clear();
 			ReturnRowControlHeaders.Clear();
+			Transform.ValueFields.Clear();
+			Transform.RemoveFields.Clear();
 
-			foreach (var item in _headerGridRows)
+			foreach (var item in _measureGridRows)
 			{
-				if (item.Value.HeaderType != HeaderType.NotAHeader)
-					HeaderNames.Add(item.Value.HeaderText);
+				if (item.IsValueField)
+					Transform.ValueFields.Add(item.ColumnName);
 
-				if (item.Value.IsReturnRow)
-					ReturnRowHeaders.Add(item.Key);
+				if (item.IsRemoveField)
+					Transform.RemoveFields.Add(item.ColumnName);
 
-				if (item.Value.IsReturnRowDate)
-					ReturnRowDateHeaders.Add(item.Key);
+				if (item.ControlType == ControlType.Control || item.ControlType == ControlType.Both)
+					Controls.Add(item.FilterParameter);
 
-				if (item.Value.IsReturnRowControl)
-					ReturnRowControlHeaders.Add(item.Key);
+				if (item.ControlType == ControlType.Parameter || item.ControlType == ControlType.Both)
+					Parameters.Add(item.FilterParameter);
+
+				if (item.IsDate)
+					DateParameters.Add(item.FilterParameter);
+
+				if (item.IsRequired)
+					RequiredParameters.Add(item.FilterParameter);
+
+				if (item.HeaderType != HeaderType.NotAHeader)
+					HeaderNames.Add(item.HeaderText);
+
+				if (item.IsReturnRow)
+					ReturnRowHeaders.Add(item.TableOrdinal);
+
+				if (item.IsReturnRowDate)
+					ReturnRowDateHeaders.Add(item.TableOrdinal);
+
+				if (item.IsReturnRowControl)
+					ReturnRowControlHeaders.Add(item.TableOrdinal);
 			}
-		}
 
-		private int GetAdjustedTableOrdinal(int headerGridRowOrdinal, int tableOrdinal)
-		{
-			bool needsDateField;
-			bool hasDateField;
-			NeedsDateField(out needsDateField, out hasDateField);
-			int dateFieldOrdinal = needsDateField && hasDateField ? TableColumns.First(p => p.Value == Transform.DateField).Key : -1;
-
-			if (!needsDateField || !hasDateField || tableOrdinal < dateFieldOrdinal)
-				return headerGridRowOrdinal;
-			else if (needsDateField && hasDateField && tableOrdinal > dateFieldOrdinal)
-				return tableOrdinal;
-			else
-				return -1;
-		}
-
-		private void NeedsDateField(out bool needsDateField, out bool hasDateField)
-		{
-			needsDateField = Transform.Function == TransformFunction.Trim || Transform.Function == TransformFunction.DateRow;
-			hasDateField = !String.IsNullOrEmpty(Transform.DateField) && TableColumns.ContainsValue(Transform.DateField);
+			Transform.DateField = (_measureGridRows.FirstOrDefault(p => p.HeaderType == HeaderType.DateColumn) ?? new MeasureGridRow(String.Empty)).DateColumn;
+			Transform.ValueFields = Transform.ValueFields.OrderBy(s => (_measureGridRows.FirstOrDefault(p => p.ColumnName == s) ??
+				new MeasureGridRow(Transform.DateField)).TableOrdinal).ToList<string>();
+			Transform.RemoveFields = Transform.RemoveFields.OrderBy(s => (_measureGridRows.FirstOrDefault(p => p.ColumnName == s) ??
+				new MeasureGridRow(Transform.DateField)).TableOrdinal).ToList<string>();
+			HeaderNames = HeaderNames.OrderBy(s => (_measureGridRows.FirstOrDefault(p => p.HeaderText == s) ??
+				new MeasureGridRow(Transform.DateField)).TableOrdinal).ToList<string>();
+			ReturnRowHeaders.Sort();
+			ReturnRowDateHeaders.Sort();
+			ReturnRowControlHeaders.Sort();
 		}
 
 		public JObject CompileJson()
@@ -406,9 +400,9 @@ namespace Framework
 			int? columnClusterSize = null;
 			string firstValueColumnName = Transform.ValueFields.FirstOrDefault() ?? String.Empty;
 
-			if (Transform.ValueFields.Count != 0 && TableColumns.ContainsValue(firstValueColumnName))
+			if (Transform.ValueFields.Count != 0 && TableColumns.Contains(firstValueColumnName))
 			{
-				returnRowStart = TableColumns.First(p => p.Value == firstValueColumnName).Key;
+				returnRowStart = TableColumns.FindIndex(p => p == firstValueColumnName);
 				columnClusterSize = Transform.ValueFields.Count;
 			}
 
@@ -424,11 +418,11 @@ namespace Framework
 			if (!String.IsNullOrEmpty(Title))
 				myJson.Add("title", Title);
 
+			if (!String.IsNullOrEmpty(Dropdown))
+				myJson.Add("dropdown", Dropdown);
+
 			if (Order != null)
 				myJson.Add("measurementOrder", Order);
-
-			if (!String.IsNullOrEmpty(FullTitle))
-				myJson.Add("fullTitle", FullTitle);
 
 			if (!String.IsNullOrEmpty(Summary))
 				myJson.Add("summary", Summary);
@@ -468,10 +462,10 @@ namespace Framework
 				myJson.Add("columnClusterSize", ColumnClusterSize);
 
 			if (ChartType != ChartType.NoChartType)
+			{
 				myJson.Add("chartType", Enums.GetString(ChartType));
-
-			if (!Label.IsEmpty)
 				myJson.Add("labels", Label.CompileJson());
+			}
 
 			if (NumberFormats.Count == 1)
 				myJson.Add("numberFormat", NumberFormats.ElementAt(0).CompileJson());
@@ -515,85 +509,111 @@ namespace Framework
 			{
 				foreach (var property in base.MyJson.Properties())
 				{
-					if (property.Name == "table")
-						Table = Json.Parse(Table, property);
-					else if (property.Name == "Base")
-						BaseMeasure = Json.Parse(BaseMeasure, property);
-					else if (property.Name == "title")
-						Title = Json.Parse(Title, property);
-					else if (property.Name == "measurementOrder")
-						Order = Json.Parse(Order, property);
-					else if (property.Name == "fullTitle")
-						FullTitle = Json.Parse(FullTitle, property);
-					else if (property.Name == "summary")
-						Summary = Json.Parse(Summary, property);
-					else if (property.Name == "filter")
-						Filter = Json.Parse(Filter, property);
-					else if (property.Name == "transform")
-						Transform.ParseJson((JObject)property.Value);
-					else if (property.Name == "controls")
-						Controls = Json.Parse(Controls, property);
-					else if (property.Name == "params")
-						Parameters = Json.Parse(Parameters, property);
-					else if (property.Name == "dateParams")
-						DateParameters = Json.Parse(DateParameters, property);
-					else if (property.Name == "requiredParams")
-						RequiredParameters = Json.Parse(RequiredParameters, property);
-					else if (property.Name == "showAllOthers")
-						ShowAllOthers = Json.Parse(ShowAllOthers, property);
-					else if (property.Name == "maxChecked")
-						MaxChecked = Json.Parse(MaxChecked, property);
-					else if (property.Name == "mutexAllOthers")
-						MutexAllOthers = Json.Parse(MutexAllOthers, property);
-					else if (property.Name == "returnRowHeaders")
-						ReturnRowHeaders = Json.Parse(ReturnRowHeaders, property);
-					else if (property.Name == "returnRowDateHeaders")
-						ReturnRowDateHeaders = Json.Parse(ReturnRowDateHeaders, property);
-					else if (property.Name == "returnRowControlHeaders")
-						ReturnRowControlHeaders = Json.Parse(ReturnRowControlHeaders, property);
-					else if (property.Name == "headerNames")
-						HeaderNames = Json.Parse(HeaderNames, property);
-					else if (property.Name == "returnRowStart")
-						ReturnRowStart = Json.Parse(ReturnRowStart, property);
-					else if (property.Name == "hideRow")
-						HideRow = Enums.GetHideRowEnum(Json.Parse(String.Empty, property));
-					else if (property.Name == "columnClusterSize")
-						ColumnClusterSize = Json.Parse(ColumnClusterSize, property);
-					else if (property.Name == "chartType")
-						ChartType = Enums.GetChartTypeEnum(Json.Parse(String.Empty, property));
-					else if (property.Name == "labels")
-						Label.ParseJson((JObject)property.Value);
-					else if (property.Name == "numberFormat")
+					switch (property.Name)
 					{
-						if (property.Value.Type == JTokenType.Object)
-						{
-							NumberFormat numberFormat = new NumberFormat();
-							numberFormat.ParseJson((JObject)property.Value);
-							NumberFormats.Add(numberFormat);
-						}
-						else if (property.Value.Type == JTokenType.Array)
-						{
-							foreach (var token in property.Values())
+						case "table":
+							Table = Json.Parse(Table, property);
+							break;
+						case "Base":
+							BaseMeasure = Json.Parse(BaseMeasure, property);
+							break;
+						case "title":
+							Title = Json.Parse(Title, property);
+							break;
+						case "measurementOrder":
+							Order = Json.Parse(Order, property);
+							break;
+						case "dropdown":
+							Dropdown = Json.Parse(Dropdown, property);
+							break;
+						case "summary":
+							Summary = Json.Parse(Summary, property);
+							break;
+						case "filter":
+							Filter = Json.Parse(Filter, property);
+							break;
+						case "transform":
+							Transform.ParseJson((JObject)property.Value);
+							break;
+						case "controls":
+							Controls = Json.Parse(Controls, property);
+							break;
+						case "params":
+							Parameters = Json.Parse(Parameters, property);
+							break;
+						case "dateParams":
+							DateParameters = Json.Parse(DateParameters, property);
+							break;
+						case "requiredParams":
+							RequiredParameters = Json.Parse(RequiredParameters, property);
+							break;
+						case "showAllOthers":
+							ShowAllOthers = Json.Parse(ShowAllOthers, property);
+							break;
+						case "maxChecked":
+							MaxChecked = Json.Parse(MaxChecked, property);
+							break;
+						case "mutexAllOthers":
+							MutexAllOthers = Json.Parse(MutexAllOthers, property);
+							break;
+						case "returnRowHeaders":
+							ReturnRowHeaders = Json.Parse(ReturnRowHeaders, property);
+							break;
+						case "returnRowDateHeaders":
+							ReturnRowDateHeaders = Json.Parse(ReturnRowDateHeaders, property);
+							break;
+						case "returnRowControlHeaders":
+							ReturnRowControlHeaders = Json.Parse(ReturnRowControlHeaders, property);
+							break;
+						case "headerNames":
+							HeaderNames = Json.Parse(HeaderNames, property);
+							break;
+						case "returnRowStart":
+							ReturnRowStart = Json.Parse(ReturnRowStart, property);
+							break;
+						case "hideRow":
+							HideRow = Enums.GetHideRowEnum(Json.Parse(String.Empty, property));
+							break;
+						case "columnClusterSize":
+							ColumnClusterSize = Json.Parse(ColumnClusterSize, property);
+							break;
+						case "chartType":
+							ChartType = Enums.GetChartTypeEnum(Json.Parse(String.Empty, property));
+							break;
+						case "labels":
+							Label.ParseJson((JObject)property.Value);
+							break;
+						case "numberFormat":
+							if (property.Value.Type == JTokenType.Object)
 							{
 								NumberFormat numberFormat = new NumberFormat();
-								numberFormat.ParseJson((JObject)token);
+								numberFormat.ParseJson((JObject)property.Value);
 								NumberFormats.Add(numberFormat);
 							}
-						}
+							else if (property.Value.Type == JTokenType.Array)
+							{
+								foreach (var token in property.Values())
+								{
+									NumberFormat numberFormat = new NumberFormat();
+									numberFormat.ParseJson((JObject)token);
+									NumberFormats.Add(numberFormat);
+								}
+							}
+							break;
+						case "charts":
+							foreach (var token in property.Values())
+							{
+								ChartInfo chart = new ChartInfo();
+								chart.ParseJson((JObject)token);
+								Charts.Add(chart);
+							}
+							break;
+						case "multicharts":
+							Multicharts.ParseJson((JObject)property.Value);
+							break;
+						default:
+							throw new UnknownJsonPropertyException(String.Format("The {0} property is not defined for a Measurement file.", property.Name));
 					}
-					else if (property.Name == "charts")
-					{
-						foreach (var token in property.Values())
-						{
-							ChartInfo chart = new ChartInfo();
-							chart.ParseJson((JObject)token);
-							Charts.Add(chart);
-						}
-					}
-					else if (property.Name == "multicharts")
-						Multicharts.ParseJson((JObject)property.Value);
-					else
-						throw new UnknownJsonPropertyException(String.Format("The {0} property is not defined for a Measurement file.", property.Name));
 				}
 			}
 			catch (Exception)
@@ -602,7 +622,7 @@ namespace Framework
 				BaseMeasure = String.Empty;
 				Title = String.Empty;
 				Order = null;
-				FullTitle = String.Empty;
+				Dropdown = String.Empty;
 				Summary = String.Empty;
 				Filter = String.Empty;
 				Transform = new Transform();
@@ -655,8 +675,8 @@ namespace Framework
 				bool tableEqual = Table == mf.Table;
 				bool baseMeasureEqual = BaseMeasure == mf.BaseMeasure;
 				bool titleEqual = Title == mf.Title;
+				bool dropdownEqual = Dropdown == mf.Dropdown;
 				bool orderEqual = Order == mf.Order;
-				bool fullTitleEqual = FullTitle == mf.FullTitle;
 				bool summaryEqual = Summary == mf.Summary;
 				bool filterEqual = Filter == mf.Filter;
 				bool transformEqual = Transform.Equals(mf.Transform);
@@ -680,7 +700,7 @@ namespace Framework
 				bool chartsEqual = Charts.SequenceEqual(mf.Charts);
 				bool multichartsEqual = Multicharts.Equals(mf.Multicharts);
 
-				return tableEqual && baseMeasureEqual && titleEqual && orderEqual && fullTitleEqual && summaryEqual && filterEqual && transformEqual &&
+				return tableEqual && baseMeasureEqual && titleEqual && orderEqual && dropdownEqual && summaryEqual && filterEqual && transformEqual &&
 					controlsEqual && parametersEqual && dateParametersEqual && requiredParametersEqual && showAllOthersEqual && maxCheckedEqual &&
 					mutexAllOthersEqual && returnRowHeadersEqual && returnRowDateHeadersEqual && returnRowControlHeadersEqual && headerNamesEqual &&
 					returnRowStartEqual && hideRowEqual && columnClusterSizeEqual && chartTypeEqual && labelEqual && numberFormatsEqual && chartsEqual &&
@@ -690,7 +710,7 @@ namespace Framework
 
 		public override int GetHashCode()
 		{
-			return Table.GetHashCode() ^ BaseMeasure.GetHashCode() ^ Title.GetHashCode() ^ Order.GetHashCode() ^ FullTitle.GetHashCode() ^
+			return Table.GetHashCode() ^ BaseMeasure.GetHashCode() ^ Title.GetHashCode() ^ Dropdown.GetHashCode() ^ Order.GetHashCode() ^
 				Summary.GetHashCode() ^ Filter.GetHashCode() ^ Transform.GetHashCode() ^ Controls.GetHashCode() ^ Parameters.GetHashCode() ^
 				DateParameters.GetHashCode() ^ RequiredParameters.GetHashCode() ^ ShowAllOthers.GetHashCode() ^ MaxChecked.GetHashCode() ^
 				MutexAllOthers.GetHashCode() ^ ReturnRowHeaders.GetHashCode() ^ ReturnRowDateHeaders.GetHashCode() ^ ReturnRowControlHeaders.GetHashCode() ^

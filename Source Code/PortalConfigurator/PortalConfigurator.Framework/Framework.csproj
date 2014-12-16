@@ -56,9 +56,8 @@
     <Compile Include="ConfigurationClasses\Display.cs" />
     <Compile Include="ConfigurationClasses\FilterParameterFile.cs" />
     <Compile Include="ConfigurationClasses\KeysGridRow.cs" />
+    <Compile Include="ConfigurationClasses\MeasureGridRow.cs" />
     <Compile Include="Database.cs" />
-    <Compile Include="ConfigurationClasses\FilterParameterGridRow.cs" />
-    <Compile Include="ConfigurationClasses\HeaderGridRow.cs" />
     <Compile Include="IConfigurationBase.cs" />
     <Compile Include="Enums.cs" />
     <Compile Include="ConfigurationClasses\Label.cs" />
@@ -76,7 +75,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ConfigurationClasses\Transform.cs" />
     <Compile Include="JsonExceptions.cs" />
-    <Compile Include="ConfigurationClasses\TransformFieldGridRow.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="CredentialsPrompt.resx">

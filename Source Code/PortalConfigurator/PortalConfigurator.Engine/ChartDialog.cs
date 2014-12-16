@@ -36,9 +36,7 @@ namespace PortalConfigurator
 		private void ChartDialog_Load(object sender, EventArgs e)
 		{
 			chartIdTextBox.Text = Subject.ChartId;
-			chartTypeComboBox.Items.AddRange(Enum.GetNames(typeof(ChartType)));
-			chartTypeComboBox.Items.RemoveAt(0);
-			chartTypeComboBox.Items.Insert(0, String.Empty);
+			chartTypeComboBox.Items.AddRange(Enums.GetFormattedChartTypeEnumNames());
 			chartTypeComboBox.SelectedIndex = (int)Subject.ChartType;
 			maxSetsNumericUpDown.Value = Subject.MaxSets ?? 0;
 			chartWidthNumericUpDown.Value = Subject.BaseOptionSet.Width ?? 0;
@@ -68,9 +66,7 @@ namespace PortalConfigurator
 			yAxisLabelTextBox.Text = Subject.Label.YAxisLabel;
 			yAxisMinNumericUpDown.Value = (decimal)(Subject.Label.YAxisMin ?? 0.0f);
 			yAxisMaxNumericUpDown.Value = (decimal)(Subject.Label.YAxisMax ?? 0.0f);
-			yAxisFormatComboBox.Items.AddRange(Enum.GetNames(typeof(AxisFormat)));
-			yAxisFormatComboBox.Items.RemoveAt(0);
-			yAxisFormatComboBox.Items.Insert(0, String.Empty);
+			yAxisFormatComboBox.Items.AddRange(Enums.GetFormattedAxisFormatEnumNames());
 			yAxisFormatComboBox.SelectedIndex = (int)Subject.Label.YAxisFormat;
 			leftNumericUpDown.Value = Subject.BaseOptionSet.ChartArea.Left ?? 0;
 			topNumericUpDown.Value = Subject.BaseOptionSet.ChartArea.Top ?? 0;

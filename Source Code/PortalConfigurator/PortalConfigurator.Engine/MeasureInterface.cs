@@ -14,7 +14,7 @@ namespace PortalConfigurator
 		private MeasurementFile OriginalMeasurementFile { get; set; }
 		private string FilterParameterFileName { get; set; }
 		private List<string> FilterParameterList { get; set; }
-		private List<string> HeaderParameterList { get; set; }
+		private List<string> TableColumnList { get; set; }
 		private int FilterParameterComboBoxEvents { get; set; }
 		private int HeaderComboBoxEvents { get; set; }
 
@@ -24,9 +24,8 @@ namespace PortalConfigurator
 			OriginalMeasurementFile = new MeasurementFile();
 			FilterParameterFileName = String.Empty;
 			FilterParameterList = new List<string>();
-			HeaderParameterList = new List<string>();
+			TableColumnList = new List<string>();
 			FilterParameterComboBoxEvents = 0;
-			HeaderComboBoxEvents = 0;
 		}
 
 		public void LoadMeasureInterface(object sender, EventArgs e)
@@ -42,30 +41,28 @@ namespace PortalConfigurator
 				filterParameterFileButton.ForeColor = default(Color);
 			}
 
-			hideRowComboBox.Items.AddRange(Enum.GetNames(typeof(HideRow)));
-			hideRowComboBox.Items.RemoveAt(0);
-			hideRowComboBox.Items.Insert(0, String.Empty);
-			chartTypeComboBox.Items.AddRange(Enum.GetNames(typeof(ChartType)));
-			chartTypeComboBox.Items.RemoveAt(0);
-			chartTypeComboBox.Items.Insert(0, String.Empty);
+			tableComboBox.Items.Add("No Stored Procedure");
+			tableComboBox.Items.AddRange(StoredProcedures.Keys.ToArray<string>());
+			tableComboBox.SelectedIndex = 0;
+			hideRowComboBox.Items.AddRange(Enums.GetFormattedHideRowEnumNames());
+			chartTypeComboBox.Items.AddRange(Enums.GetFormattedChartTypeEnumNames());
 			controlTypeColumn.DataSource = Enum.GetNames(typeof(ControlType));
-			functionComboBox.Items.AddRange(Enum.GetNames(typeof(TransformFunction)));
-			functionComboBox.Items.RemoveAt(0);
-			functionComboBox.Items.Insert(0, String.Empty);
-			yAxisFormatComboBox.Items.AddRange(Enum.GetNames(typeof(AxisFormat)));
-			yAxisFormatComboBox.Items.RemoveAt(0);
-			yAxisFormatComboBox.Items.Insert(0, String.Empty);
+			functionComboBox.Items.AddRange(Enums.GetFormattedFunctionEnumNames());
+			dateColumnErrorProvider.SetIconAlignment(functionLabel, ErrorIconAlignment.MiddleRight);
+			dateColumnErrorProvider.SetIconPadding(functionLabel, 2);
+			yAxisFormatComboBox.Items.AddRange(Enums.GetFormattedAxisFormatEnumNames());
 
 			List<string> headerTypes = new List<string>();
 			
 			foreach (HeaderType item in Enum.GetValues(typeof(HeaderType)))
-				headerTypes.Add(Enums.GetString(item));
+				headerTypes.Add(Enums.GetFormattedString(item));
 
 			headerTypeColumn.DataSource = headerTypes;
 		}
 
 		private void newMeasurementFileToolStripButton_Click(object sender, EventArgs e)
 		{
+			EndGridCellEditMode();
 			bool hasUnsavedChanges = !MyMeasurementFile.Equals(OriginalMeasurementFile);
 			DialogResult proceed = DialogResult.Yes;
 
@@ -77,69 +74,75 @@ namespace PortalConfigurator
 
 			if (!hasUnsavedChanges || proceed == DialogResult.Yes)
 			{
-				MyMeasurementFile = new MeasurementFile();
-				OriginalMeasurementFile = MyMeasurementFile.Clone();
-
-				transformFieldsDataGridView.Rows.Clear();
-				filterParametersDataGridView.Rows.Clear();
-				headersDataGridView.Rows.Clear();
-				numberFormatsDataGridView.Rows.Clear();
-				chartsDataGridView.Rows.Clear();
-				multichartsComboBox.Items.Clear();
-				measureTableButton.Text = "No Stored Procedure";
-				measureTableButton.BackColor = default(Color);
-				titleTextBox.Text = MyMeasurementFile.Title;
-				titleTextBox.BackColor = default(Color);
-				baseButton.Text = "No Base Measure File";
-				baseButton.BackColor = default(Color);
-				orderNumericUpDown.Value = MyMeasurementFile.Order ?? 0;
-				orderNumericUpDown.BackColor = default(Color);
-				hideRowComboBox.SelectedIndex = -1;
-				hideRowComboBox.BackColor = default(Color);
-				fullTitleTextBox.Text = MyMeasurementFile.FullTitle;
-				fullTitleTextBox.BackColor = default(Color);
-				filterTextBox.Text = MyMeasurementFile.Filter;
-				filterTextBox.BackColor = default(Color);
-				maxCheckedNumericUpDown.Value = MyMeasurementFile.MaxChecked ?? 0;
-				maxCheckedNumericUpDown.BackColor = default(Color);
-				chartTypeComboBox.SelectedIndex = (int)MyMeasurementFile.ChartType;
-				chartTypeComboBox.BackColor = default(Color);
-				showAllOthersCheckBox.CheckState = ToCheckState(MyMeasurementFile.ShowAllOthers);
-				showAllOthersCheckBox.BackColor = default(Color);
-				muteAllOthersCheckBox.CheckState = ToCheckState(MyMeasurementFile.MutexAllOthers);
-				muteAllOthersCheckBox.BackColor = default(Color);
-				summaryTextBox.Text = MyMeasurementFile.Summary;
-				summaryTextBox.BackColor = default(Color);
-				functionComboBox.SelectedIndex = (int)MyMeasurementFile.Transform.Function;
-				functionComboBox.BackColor = default(Color);
-				dateFieldComboBox.Items.Clear();
-				dateFieldComboBox.BackColor = default(Color);
-				xAxisLabelTextBox.Text = MyMeasurementFile.Label.XAxisLabel;
-				xAxisLabelTextBox.BackColor = default(Color);
-				yAxisLabelTextBox.Text = MyMeasurementFile.Label.YAxisLabel;
-				yAxisLabelTextBox.BackColor = default(Color);
-				yAxisMinNumericUpDown.Value = (decimal)(MyMeasurementFile.Label.YAxisMin ?? 0.0f);
-				yAxisMinNumericUpDown.BackColor = default(Color);
-				yAxisMaxNumericUpDown.Value = (decimal)(MyMeasurementFile.Label.YAxisMax ?? 0.0f);
-				yAxisMaxNumericUpDown.BackColor = default(Color);
-				yAxisFormatComboBox.SelectedIndex = (int)MyMeasurementFile.Label.YAxisFormat;
-				yAxisFormatComboBox.BackColor = default(Color);
-				chartListRadioButton.Checked = false;
-				chartListRadioButton.BackColor = default(Color);
-				multichartsRadioButton.Checked = false;
-				multichartsRadioButton.BackColor = default(Color);
-				multichartsComboBox.Enabled = false;
-				multichartsComboBox.BackColor = default(Color);
-				addMultichartsButton.Enabled = false;
-				deleteMultichartsButton.Enabled = false;
-				moveUpMultichartsButton.Enabled = false;
-				moveDownMultichartsButton.Enabled = false;
-				changeMultichartNameButton.Enabled = false;
+				ResetMeasureInterface();
 			}
+		}
+
+		private void ResetMeasureInterface()
+		{
+			MyMeasurementFile = new MeasurementFile();
+			OriginalMeasurementFile = MyMeasurementFile.Clone();
+
+			measureDataGridView.Rows.Clear();
+			numberFormatsDataGridView.Rows.Clear();
+			chartsDataGridView.Rows.Clear();
+			multichartsComboBox.SelectedIndex = -1;
+			multichartsComboBox.Items.Clear();
+			tableComboBox.SelectedIndex = 0;
+			tableComboBox.BackColor = default(Color);
+			titleTextBox.Text = MyMeasurementFile.Title;
+			titleTextBox.BackColor = default(Color);
+			baseButton.Text = "No Base Measure File";
+			baseButton.BackColor = default(Color);
+			orderNumericUpDown.Value = MyMeasurementFile.Order ?? 0;
+			orderNumericUpDown.BackColor = default(Color);
+			hideRowComboBox.SelectedIndex = 0;
+			hideRowComboBox.BackColor = default(Color);
+			dropdownTextBox.Text = MyMeasurementFile.Dropdown;
+			dropdownTextBox.BackColor = default(Color);
+			filterTextBox.Text = MyMeasurementFile.Filter;
+			filterTextBox.BackColor = default(Color);
+			maxCheckedNumericUpDown.Value = MyMeasurementFile.MaxChecked ?? 0;
+			maxCheckedNumericUpDown.BackColor = default(Color);
+			chartTypeComboBox.SelectedIndex = (int)MyMeasurementFile.ChartType;
+			chartTypeComboBox.BackColor = default(Color);
+			showAllOthersCheckBox.CheckState = ToCheckState(MyMeasurementFile.ShowAllOthers);
+			showAllOthersCheckBox.BackColor = default(Color);
+			muteAllOthersCheckBox.CheckState = ToCheckState(MyMeasurementFile.MutexAllOthers);
+			muteAllOthersCheckBox.BackColor = default(Color);
+			summaryTextBox.Text = MyMeasurementFile.Summary;
+			summaryTextBox.BackColor = default(Color);
+			xAxisLabelTextBox.Text = MyMeasurementFile.Label.XAxisLabel;
+			xAxisLabelTextBox.BackColor = default(Color);
+			yAxisLabelTextBox.Text = MyMeasurementFile.Label.YAxisLabel;
+			yAxisLabelTextBox.BackColor = default(Color);
+			yAxisMinNumericUpDown.Value = (decimal)(MyMeasurementFile.Label.YAxisMin ?? 0.0f);
+			yAxisMinNumericUpDown.BackColor = default(Color);
+			yAxisMaxNumericUpDown.Value = (decimal)(MyMeasurementFile.Label.YAxisMax ?? 0.0f);
+			yAxisMaxNumericUpDown.BackColor = default(Color);
+			yAxisFormatComboBox.SelectedIndex = (int)MyMeasurementFile.Label.YAxisFormat;
+			yAxisFormatComboBox.BackColor = default(Color);
+			functionComboBox.SelectedIndex = (int)MyMeasurementFile.Transform.Function;
+			functionComboBox.BackColor = default(Color);
+			parametersCountLabel.Text = "0";
+			parametersNeededLabel.Text = "0";
+			parametersCountLabel.ForeColor = default(Color);
+			chartListRadioButton.Checked = false;
+			chartListRadioButton.BackColor = default(Color);
+			multichartsRadioButton.Checked = false;
+			multichartsRadioButton.BackColor = default(Color);
+			multichartsComboBox.Enabled = false;
+			multichartsComboBox.BackColor = default(Color);
+			addMultichartsButton.Enabled = false;
+			deleteMultichartsButton.Enabled = false;
+			moveUpMultichartsButton.Enabled = false;
+			moveDownMultichartsButton.Enabled = false;
+			changeMultichartNameButton.Enabled = false;
 		}
 
 		private void openMeasureFileToolStripButton_Click(object sender, EventArgs e)
 		{
+			EndGridCellEditMode();
 			bool hasUnsavedChanges = !MyMeasurementFile.Equals(OriginalMeasurementFile);
 			DialogResult proceed = DialogResult.Yes;
 
@@ -152,38 +155,58 @@ namespace PortalConfigurator
 			if (!hasUnsavedChanges || proceed == DialogResult.Yes)
 			{
 				openFileDialog.Title = "Open Measurement File";
-#if DEBUG
-				openFileDialog.InitialDirectory = Environment.CurrentDirectory.Replace(@"\bin\Debug", "");
-#endif
+
+				if (!String.IsNullOrEmpty(MyMeasurementFile.FilePath))
+				{
+					FileInfo filePath = new FileInfo(MyMeasurementFile.FilePath);
+					openFileDialog.InitialDirectory = filePath.DirectoryName;
+					openFileDialog.FileName = filePath.Name;
+				}
+				else
+				{
+					openFileDialog.InitialDirectory = MeasureDirectory;
+					openFileDialog.FileName = String.Empty;
+				}
+
 				if (openFileDialog.ShowDialog() == DialogResult.OK)
 				{
+					bool openFileError = false;
+					ResetMeasureInterface();
 					MyMeasurementFile = new MeasurementFile(openFileDialog.FileName);
 
 					try
 					{
 						MyMeasurementFile.ParseJson();
-						Dictionary<int, string> tableColumns = MyMeasurementFile.TableColumns;
+						List<string> tableColumns = MyMeasurementFile.TableColumns;
+						List<MeasureGridRow> measureGridRows = MyMeasurementFile.MeasureGridRows;
 					}
 					catch (JsonParseException parseException)
 					{
 						MyMeasurementFile = new MeasurementFile();
+						openFileError = true;
 						string message = String.Format("The following problem occurred while parsing the file:\n{0}", parseException.Message);
 						MessageBox.Show(message, "Parse Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-					}
-					catch(DatabaseException databaseException)
-					{
-						MyMeasurementFile = new MeasurementFile();
-						string message = String.Format("The following problem occurred while synching with the database:\n{0}", databaseException.Message);
-						MessageBox.Show(message, "Database Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
 					}
 					catch (Exception exception)
 					{
 						MyMeasurementFile = new MeasurementFile();
+						openFileError = true;
 						string message = String.Format("The following problem occurred while opening the file:\n{0}", exception.Message);
 						MessageBox.Show(message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
 					}
 
-					if (String.IsNullOrEmpty(FilterParameterFileName))
+					OriginalMeasurementFile = MyMeasurementFile.Clone();
+
+					if (!String.IsNullOrEmpty(MyMeasurementFile.Table) && !StoredProcedures.ContainsKey(MyMeasurementFile.Table))
+					{
+						string message = String.Format("The \"{0}\" stored procedure was not found in the database.", MyMeasurementFile.Table);
+						MessageBox.Show(message, "Database Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+						ChangeTable(String.Empty);
+					}
+
+					MyMeasurementFile.RemoveUnfoundColumns();
+
+					if (String.IsNullOrEmpty(FilterParameterFileName) && !openFileError)
 					{
 						MessageBox.Show("Please open a parameters file in the next window to continue.", "Information");
 						LoadFilterParametersFile();
@@ -200,44 +223,29 @@ namespace PortalConfigurator
 							filterParameterFileButton.ForeColor = default(Color);
 						}
 					}
-					else
-						RefreshFilterParametersGrid();
 
-					OriginalMeasurementFile = MyMeasurementFile.Clone();
+					SetDateColumnWarning();
 
-					transformFieldsDataGridView.Rows.Clear();
-					filterParametersDataGridView.Rows.Clear();
-					headersDataGridView.Rows.Clear();
-					numberFormatsDataGridView.Rows.Clear();
-					chartsDataGridView.Rows.Clear();
-					multichartsComboBox.SelectedIndex = -1;
-					multichartsComboBox.Items.Clear();
-
-					measureTableButton.Text = MyMeasurementFile.Table;
+					tableComboBox.SelectedIndex = StoredProcedures.Keys.ToList<string>().FindIndex(p => p == MyMeasurementFile.Table) + 1;
 					titleTextBox.Text = MyMeasurementFile.Title;
 					baseButton.Text = String.IsNullOrEmpty(MyMeasurementFile.BaseMeasure) ? "No Base Measure File" : MyMeasurementFile.BaseMeasure;
 					orderNumericUpDown.Value = MyMeasurementFile.Order ?? 0;
 					hideRowComboBox.SelectedIndex = (int)MyMeasurementFile.HideRow;
-					fullTitleTextBox.Text = MyMeasurementFile.FullTitle;
+					dropdownTextBox.Text = MyMeasurementFile.Dropdown;
 					filterTextBox.Text = MyMeasurementFile.Filter;
 					maxCheckedNumericUpDown.Value = MyMeasurementFile.MaxChecked ?? 0;
 					chartTypeComboBox.SelectedIndex = (int)MyMeasurementFile.ChartType;
 					showAllOthersCheckBox.CheckState = ToCheckState(MyMeasurementFile.ShowAllOthers);
 					muteAllOthersCheckBox.CheckState = ToCheckState(MyMeasurementFile.MutexAllOthers);
 					summaryTextBox.Text = MyMeasurementFile.Summary;
-					functionComboBox.SelectedIndex = (int)MyMeasurementFile.Transform.Function;
-
-					RefreshFilterParametersGrid();
-					RefreshDateFieldComboBox();
-					RefreshTransformGrid();
-
 					xAxisLabelTextBox.Text = MyMeasurementFile.Label.XAxisLabel;
 					yAxisLabelTextBox.Text = MyMeasurementFile.Label.YAxisLabel;
 					yAxisMinNumericUpDown.Value = (decimal)(MyMeasurementFile.Label.YAxisMin ?? 0.0f);
 					yAxisMaxNumericUpDown.Value = (decimal)(MyMeasurementFile.Label.YAxisMax ?? 0.0f);
 					yAxisFormatComboBox.SelectedIndex = (int)MyMeasurementFile.Label.YAxisFormat;
+					functionComboBox.SelectedIndex = (int)MyMeasurementFile.Transform.Function;
+					parametersNeededLabel.Text = MyMeasurementFile.DatabaseParameterCount.ToString();
 
-					RefreshHeaderParameterList();
 					RefreshNumberFormatsGrid();
 
 					if (MyMeasurementFile.Charts.Count != 0 && MyMeasurementFile.Multicharts.IsEmpty)
@@ -246,8 +254,6 @@ namespace PortalConfigurator
 						multichartsRadioButton.Checked = true;
 					else
 					{
-						chartListRadioButton.Checked = false;
-						multichartsRadioButton.Checked = false;
 						multichartsComboBox.Enabled = false;
 						multichartsComboBox.Items.Clear();
 						multichartsComboBox.BackColor = default(Color);
@@ -257,12 +263,15 @@ namespace PortalConfigurator
 						moveDownMultichartsButton.Enabled = false;
 						changeMultichartNameButton.Enabled = false;
 					}
+
+					RefreshMeasureGrid();
 				}
 			}
 		}
 
 		private void saveMeasureFileToolStripButton_Click(object sender, EventArgs e)
 		{
+			EndGridCellEditMode();
 			saveFileDialog.Title = "Save Measurement File";
 
 			if (!String.IsNullOrEmpty(MyMeasurementFile.FilePath))
@@ -270,6 +279,11 @@ namespace PortalConfigurator
 				FileInfo filePath = new FileInfo(MyMeasurementFile.FilePath);
 				saveFileDialog.InitialDirectory = filePath.DirectoryName;
 				saveFileDialog.FileName = filePath.Name;
+			}
+			else
+			{
+				saveFileDialog.InitialDirectory = MeasureDirectory;
+				saveFileDialog.FileName = String.Empty;
 			}
 
 			if (saveFileDialog.ShowDialog() == DialogResult.OK)
@@ -309,43 +323,28 @@ namespace PortalConfigurator
 					MyMeasurementFile.WriteFile();
 					OriginalMeasurementFile = MyMeasurementFile.Clone();
 
-					measureTableButton.BackColor = default(Color);
+					tableComboBox.BackColor = default(Color);
 					titleTextBox.BackColor = default(Color);
 					baseButton.BackColor = default(Color);
 					orderNumericUpDown.BackColor = default(Color);
 					hideRowComboBox.BackColor = default(Color);
-					fullTitleTextBox.BackColor = default(Color);
+					dropdownTextBox.BackColor = default(Color);
 					filterTextBox.BackColor = default(Color);
 					maxCheckedNumericUpDown.BackColor = default(Color);
 					chartTypeComboBox.BackColor = default(Color);
 					showAllOthersCheckBox.BackColor = default(Color);
 					muteAllOthersCheckBox.BackColor = default(Color);
 					summaryTextBox.BackColor = default(Color);
-
-					for (int c = 0; c < filterParametersDataGridView.Columns.Count; c++)
-						for (int r = 0; r < filterParametersDataGridView.Rows.Count; r++)
-							filterParametersDataGridView[c, r].Style.BackColor = default(Color);
-
-					functionComboBox.BackColor = default(Color);
-					dateFieldComboBox.BackColor = default(Color);
-
-					for (int c = 1; c < transformFieldsDataGridView.Columns.Count; c++)
-						for (int r = 0; r < transformFieldsDataGridView.Rows.Count; r++)
-							transformFieldsDataGridView[c, r].Style.BackColor = default(Color);
-
 					xAxisLabelTextBox.BackColor = default(Color);
 					yAxisLabelTextBox.BackColor = default(Color);
 					yAxisMinNumericUpDown.BackColor = default(Color);
 					yAxisMaxNumericUpDown.BackColor = default(Color);
 					yAxisFormatComboBox.BackColor = default(Color);
+					functionComboBox.BackColor = default(Color);
 
 					for (int c = 0; c < numberFormatsDataGridView.Columns.Count - 1; c++)
 						for (int r = 0; r < numberFormatsDataGridView.Rows.Count; r++)
 							numberFormatsDataGridView[c, r].Style.BackColor = default(Color);
-
-					for (int c = 1; c < headersDataGridView.Columns.Count; c++)
-						for (int r = 0; r < headersDataGridView.Rows.Count; r++)
-							headersDataGridView[c, r].Style.BackColor = default(Color);
 
 					chartListRadioButton.BackColor = default(Color);
 					multichartsRadioButton.BackColor = default(Color);
@@ -354,6 +353,10 @@ namespace PortalConfigurator
 					for (int c = 0; c < chartsDataGridView.Columns.Count - 1; c++)
 						for (int r = 0; r < chartsDataGridView.Rows.Count; r++)
 							chartsDataGridView[c, r].Style.BackColor = default(Color);
+
+					for (int c = 0; c < measureDataGridView.Columns.Count; c++)
+						for (int r = 0; r < measureDataGridView.Rows.Count; r++)
+							measureDataGridView[c, r].Style.BackColor = default(Color);
 				}
 				catch (Exception exception)
 				{
@@ -368,7 +371,18 @@ namespace PortalConfigurator
 			string[] filterParameterArray = FilterParameterList.ToArray();
 			string fileName = FilterParameterFileName.ToString();
 			openFileDialog.Title = "Open Filter/Parameter File";
-			openFileDialog.FileName = String.Empty;
+
+			if (!String.IsNullOrEmpty(FilterParameterFileName))
+			{
+				FileInfo currentFile = new FileInfo(FilterParameterFileName);
+				openFileDialog.InitialDirectory = currentFile.DirectoryName;
+				openFileDialog.FileName = currentFile.Name;
+			}
+			else
+			{
+				openFileDialog.InitialDirectory = FilterParameterDirectory;
+				openFileDialog.FileName = String.Empty;
+			}
 
 			if (openFileDialog.ShowDialog() == DialogResult.OK)
 			{
@@ -383,88 +397,13 @@ namespace PortalConfigurator
 						FilterParameterList.Add(item.FilterParameterName);
 
 					FilterParameterList.Sort();
-					filterParameterNameColumn.DataSource = FilterParameterList;
+					controlParameterColumn.DataSource = FilterParameterList;
 					List<RemovedParameter> removalEntries = new List<RemovedParameter>();
 
-					for (int i = 0; i < MyMeasurementFile.Parameters.Count; i++)
+					foreach (var item in MyMeasurementFile.MeasureGridRows)
 					{
-						string item = MyMeasurementFile.Parameters.ElementAt(i);
-
-						if (!FilterParameterList.Contains(item))
-						{
-							removalEntries.Add(new RemovedParameter(item, ControlType.Parameter));
-							MyMeasurementFile.Parameters.Remove(item);
-							i--;
-						}
-					}
-
-					for (int i = 0; i < MyMeasurementFile.Controls.Count; i++)
-					{
-						string item = MyMeasurementFile.Controls.ElementAt(i);
-
-						if (!FilterParameterList.Contains(item))
-						{
-							int removedIndex = removalEntries.FindIndex(p => p.Name == item);
-
-							if (removedIndex == -1)
-								removalEntries.Add(new RemovedParameter(item, ControlType.Filter));
-							else
-								removalEntries.ElementAt(i).ControlType = ControlType.Both;
-
-							MyMeasurementFile.Controls.Remove(item);
-							i--;
-						}
-					}
-
-					for (int i = 0; i < MyMeasurementFile.DateParameters.Count; i++)
-					{
-						string item = MyMeasurementFile.DateParameters.ElementAt(i);
-
-						if (!FilterParameterList.Contains(item))
-						{
-							int removedIndex = removalEntries.FindIndex(p => p.Name == item);
-
-							if (removedIndex == -1)
-								removalEntries.Add(new RemovedParameter(item, ControlType.Parameter, true));
-							else
-								removalEntries.ElementAt(removedIndex).IsDate = true;
-
-							MyMeasurementFile.DateParameters.Remove(item);
-							i--;
-						}
-					}
-
-					for (int i = 0; i < MyMeasurementFile.RequiredParameters.Count; i++)
-					{
-						string item = MyMeasurementFile.RequiredParameters.ElementAt(i);
-
-						if (!FilterParameterList.Contains(item))
-						{
-							int removalIndex = removalEntries.FindIndex(p => p.Name == item);
-
-							if (removalIndex == -1)
-								removalEntries.Add(new RemovedParameter(item, ControlType.Parameter, false, true));
-							else
-								removalEntries.ElementAt(removalIndex).IsRequired = true;
-
-							MyMeasurementFile.RequiredParameters.Remove(item);
-							i--;
-						}
-					}
-
-					foreach (var item in MyMeasurementFile.HeaderGridRows)
-					{
-						if (String.IsNullOrEmpty(item.Value.FilterParameter) ? false : !FilterParameterList.Contains(item.Value.FilterParameter))
-						{
-							int removalIndex = removalEntries.FindIndex(p => p.Name == item.Value.FilterParameter);
-
-							if (removalIndex == -1)
-								removalEntries.Add(new RemovedParameter(item.Value.FilterParameter, ControlType.Parameter, false, false, item.Value.ColumnName));
-							else
-								removalEntries.ElementAt(removalIndex).HeaderName = item.Value.ColumnName;
-
-							item.Value.FilterParameter = String.Empty;
-						}
+						if (String.IsNullOrEmpty(item.FilterParameter) ? false : !FilterParameterList.Contains(item.FilterParameter))
+							removalEntries.Add(new RemovedParameter(item.FilterParameter, ControlType.Parameter, item.IsDate, item.IsRequired, item.HeaderText));
 					}
 
 					if (removalEntries.Count != 0)
@@ -474,10 +413,13 @@ namespace PortalConfigurator
 
 						foreach (var item in removalEntries)
 						{
+							MyMeasurementFile.MeasureGridRows.RemoveAll(p => p.FilterParameter == item.Name);
 							string line = String.Format("{0}\t{1}\t{2}\t{3}\t{4}\n", item.Name, item.ControlType, item.IsDate, item.IsRequired, item.HeaderName);
 							message = String.Concat(message, line);
 						}
 
+						MyMeasurementFile.MeasureGridRowsAreUpdated = false;
+						RefreshMeasureGrid();
 						message = String.Concat(message, "\nSave the measure file to make these changes permanent.");
 						MessageBox.Show(message, "Measure Settings Updated", MessageBoxButtons.OK, MessageBoxIcon.Information);
 					}
@@ -491,148 +433,88 @@ namespace PortalConfigurator
 			}
 		}
 
-		private void RefreshFilterParametersGrid()
+		private void RefreshMeasureGrid()
 		{
-			string subjectKey;
-			int originalIndex;
-			string originalKey;
-			FilterParameterGridRow subjectValue;
-			FilterParameterGridRow originalValue;
-			filterParametersDataGridView.Rows.Clear();
+			measureDataGridView.Rows.Clear();
+			columnNameColumn.DataSource = MyMeasurementFile.TableColumns;
 
-			if (MyMeasurementFile.FilterParameterGridRows.Count != 0)
+			if (MyMeasurementFile.MeasureGridRows.Count != 0)
 			{
-				filterParametersDataGridView.Rows.Add(MyMeasurementFile.FilterParameterGridRows.Count);
-				DataGridViewCell filterParameterNameCell;
-				DataGridViewCell controlTypeCell;
-				DataGridViewCell isDateCell;
-				DataGridViewCell isRequiredCell;
+				measureDataGridView.Rows.Add(MyMeasurementFile.MeasureGridRows.Count);
+				int i = 0;
 
-				for (int i = 0; i < MyMeasurementFile.FilterParameterGridRows.Count; i++)
+				foreach (var subject in MyMeasurementFile.MeasureGridRows)
 				{
-					subjectKey = MyMeasurementFile.FilterParameterGridRows.ElementAt(i).Key;
-					subjectValue = MyMeasurementFile.FilterParameterGridRows.ElementAt(i).Value;
-					originalIndex = OriginalMeasurementFile.FilterParameterGridRows.Keys.ToList<string>().FindIndex(p => p == subjectKey);
-					originalKey = originalIndex == -1 ? String.Empty : OriginalMeasurementFile.FilterParameterGridRows.ElementAt(originalIndex).Key;
-					originalValue = originalIndex == -1 ? new FilterParameterGridRow() : OriginalMeasurementFile.FilterParameterGridRows.ElementAt(originalIndex).Value;
-					filterParameterNameCell = filterParametersDataGridView[filterParameterNameColumn.Index, i];
-					controlTypeCell = filterParametersDataGridView[controlTypeColumn.Index, i];
-					isDateCell = filterParametersDataGridView[isDateColumn.Index, i];
-					isRequiredCell = filterParametersDataGridView[isRequiredColumn.Index, i];
-
-					filterParameterNameCell.Value = subjectKey;
-					filterParameterNameCell.Style.BackColor = subjectKey == originalKey ? default(Color) : ChangedValueColor;
-					controlTypeCell.Value = Enum.GetName(typeof(ControlType), subjectValue.ControlType);
-					controlTypeCell.Style.BackColor = subjectValue.ControlType == originalValue.ControlType ? default(Color) : ChangedValueColor;
-					isDateCell.Value = subjectValue.IsDate;
-					isDateCell.Style.BackColor = subjectValue.IsDate == originalValue.IsDate ? default(Color) : ChangedValueColor;
-					isRequiredCell.Value = subjectValue.IsRequired;
-					isRequiredCell.Style.BackColor = subjectValue.IsRequired == originalValue.IsRequired ? default(Color) : ChangedValueColor;
+					RefreshMeasureGridRow(i, subject);
+					i++;
 				}
 			}
 		}
 
-		private void RefreshDateFieldComboBox()
+		private void RefreshMeasureGridRow(int row, MeasureGridRow subject)
 		{
-			dateFieldComboBox.Items.Clear();
-			dateFieldComboBox.Items.Add(String.Empty);
-			dateFieldComboBox.Items.AddRange(MyMeasurementFile.Transform.TableColumns.Values.ToArray<string>());
-			string dateField = MyMeasurementFile.Transform.DateField;
-
-			if (MyMeasurementFile.Transform.TableColumns.ContainsValue(dateField))
-				dateFieldComboBox.SelectedIndex = MyMeasurementFile.Transform.TableColumns.First(p => p.Value == dateField).Key + 1;
-			else
-				dateFieldComboBox.SelectedIndex = -1;
-
-			dateFieldComboBox.BackColor = MyMeasurementFile.Transform.DateField == OriginalMeasurementFile.Transform.DateField ? default(Color) : ChangedValueColor;
-		}
-
-		private void RefreshTransformGrid()
-		{
-			transformFieldsDataGridView.Rows.Clear();
-
-			if (MyMeasurementFile.Transform.TransformFieldGridRows.Count != 0)
+			if (MyMeasurementFile.MeasureGridRows.Count != 0)
 			{
-				transformFieldsDataGridView.Rows.Add(MyMeasurementFile.Transform.TransformFieldGridRows.Count);
-				DataGridViewCell fieldNameCell;
-				DataGridViewCell isValueFieldCell;
-				DataGridViewCell removeFieldCell;
+				MeasureGridRow original = OriginalMeasurementFile.MeasureGridRows.FirstOrDefault(p => p.FilterParameter == subject.FilterParameter &&
+					p.HeaderType == subject.HeaderType && p.ColumnName == subject.ColumnName) ?? new MeasureGridRow(MyMeasurementFile.Transform.DateField); ;
+				DataGridViewCell controlParameterCell = measureDataGridView[controlParameterColumn.Index, row];
+				DataGridViewCell controlTypeCell = measureDataGridView[controlTypeColumn.Index, row];
+				DataGridViewCell isDateCell = measureDataGridView[isDateColumn.Index, row];
+				DataGridViewCell isRequiredCell = measureDataGridView[isRequiredColumn.Index, row];
+				DataGridViewCell columnNameCell = measureDataGridView[columnNameColumn.Index, row];
+				DataGridViewCell headerTypeCell = measureDataGridView[headerTypeColumn.Index, row];
+				DataGridViewCell headerTextCell = measureDataGridView[headerTextColumn.Index, row];
+				DataGridViewCell isReturnRowCell = measureDataGridView[isReturnRowColumn.Index, row];
+				DataGridViewCell isReturnRowDateCell = measureDataGridView[isReturnRowDateColumn.Index, row];
+				DataGridViewCell isReturnRowControlCell = measureDataGridView[isReturnRowControlColumn.Index, row];
+				DataGridViewCell isValueFieldCell = measureDataGridView[isValueFieldColumn.Index, row];
+				DataGridViewCell isRemoveFieldCell = measureDataGridView[isRemoveFieldColumn.Index, row];
+				bool lockParamColumns = false;
+				bool lockHeaderColumns = false;
+				bool lockTransformColumns = false;
 
-				foreach (var item in MyMeasurementFile.Transform.TransformFieldGridRows)
-				{
-					bool isOriginalValueField = OriginalMeasurementFile.Transform.ValueFields.Contains(item.Value.FieldName);
-					bool isOriginalRemoveField = OriginalMeasurementFile.Transform.RemoveFields.Contains(item.Value.FieldName);
-					fieldNameCell = transformFieldsDataGridView[fieldNameColumn.Index, item.Key];
-					isValueFieldCell = transformFieldsDataGridView[isValueFieldColumn.Index, item.Key];
-					removeFieldCell = transformFieldsDataGridView[removeFieldColumn.Index, item.Key];
+				lockParamColumns = subject.HeaderType == HeaderType.DateColumn || subject.IsValueField || subject.IsRemoveField;
+				lockHeaderColumns = subject.IsValueField || subject.IsRemoveField;
+				lockTransformColumns = subject.ControlType != ControlType.Neither || subject.HeaderType != HeaderType.NotAHeader;
 
-					fieldNameCell.Value = item.Value.FieldName;
-					isValueFieldCell.Value = item.Value.IsValueField;
-					isValueFieldCell.Style.BackColor = item.Value.IsValueField == isOriginalValueField ? default(Color) : ChangedValueColor;
-					removeFieldCell.Value = item.Value.IsRemovedField;
-					removeFieldCell.Style.BackColor = item.Value.IsRemovedField == isOriginalRemoveField ? default(Color) : ChangedValueColor;
-				}
+				controlParameterCell.Value = subject.FilterParameter;
+				controlParameterCell.Style.BackColor = subject.FilterParameter == original.FilterParameter ? default(Color) : ChangedValueColor;
+				controlParameterCell.ReadOnly = lockParamColumns;
+				controlTypeCell.Value = Enum.GetName(typeof(ControlType), subject.ControlType);
+				controlTypeCell.Style.BackColor = subject.ControlType == original.ControlType ? default(Color) : ChangedValueColor;
+				controlTypeCell.ReadOnly = lockParamColumns;
+				isDateCell.Value = subject.IsDate;
+				isDateCell.Style.BackColor = subject.IsDate == original.IsDate ? default(Color) : ChangedValueColor;
+				isDateCell.ReadOnly = lockParamColumns;
+				isRequiredCell.Value = subject.IsRequired;
+				isRequiredCell.Style.BackColor = subject.IsRequired == original.IsRequired ? default(Color) : ChangedValueColor;
+				isRequiredCell.ReadOnly = lockParamColumns;
+				columnNameCell.Value = subject.ColumnName;
+				columnNameCell.Style.BackColor = subject.ColumnName == original.ColumnName ? default(Color) : ChangedValueColor;
+				headerTypeCell.Value = Enums.GetFormattedString(subject.HeaderType);
+				headerTypeCell.Style.BackColor = subject.HeaderType == original.HeaderType ? default(Color) : ChangedValueColor;
+				headerTypeCell.ReadOnly = lockHeaderColumns;
+				headerTextCell.Value = subject.HeaderText;
+				headerTextCell.Style.BackColor = subject.HeaderText == original.HeaderText ? default(Color) : ChangedValueColor;
+				isReturnRowCell.Value = subject.IsReturnRow;
+				isReturnRowCell.Style.BackColor = subject.IsReturnRow == original.IsReturnRow ? default(Color) : ChangedValueColor;
+				isReturnRowCell.ReadOnly = lockHeaderColumns;
+				isReturnRowDateCell.Value = subject.IsReturnRowDate;
+				isReturnRowDateCell.Style.BackColor = subject.IsReturnRowDate == original.IsReturnRowDate ? default(Color) : ChangedValueColor;
+				isReturnRowDateCell.ReadOnly = lockHeaderColumns;
+				isReturnRowControlCell.Value = subject.IsReturnRowControl;
+				isReturnRowControlCell.Style.BackColor = subject.IsReturnRowControl == original.IsReturnRowControl ? default(Color) : ChangedValueColor;
+				isReturnRowControlCell.ReadOnly = lockHeaderColumns;
+				isValueFieldCell.Value = subject.IsValueField;
+				isValueFieldCell.Style.BackColor = subject.IsValueField == original.IsValueField ? default(Color) : ChangedValueColor;
+				isValueFieldCell.ReadOnly = lockTransformColumns;
+				isRemoveFieldCell.Value = subject.IsRemoveField;
+				isRemoveFieldCell.Style.BackColor = subject.IsRemoveField == original.IsRemoveField ? default(Color) : ChangedValueColor;
+				isRemoveFieldCell.ReadOnly = lockTransformColumns;
 			}
-		}
 
-		private void RefreshHeaderParameterList()
-		{
-			HeaderParameterList.Clear();
-
-			foreach (var item in MyMeasurementFile.FilterParameterGridRows)
-				HeaderParameterList.Add(item.Key);
-
-			foreach (var item in MyMeasurementFile.HeaderGridRows)
-				if (!HeaderParameterList.Contains(item.Value.FilterParameter))
-					item.Value.FilterParameter = String.Empty;
-
-			headerFilterParameterColumn.DataSource = HeaderParameterList;
-			RefreshHeadersGrid();
-		}
-
-		private void RefreshHeadersGrid()
-		{
-			headersDataGridView.Rows.Clear();
-
-			if (MyMeasurementFile.HeaderGridRows.Count != 0)
-			{
-				headersDataGridView.Rows.Add(MyMeasurementFile.HeaderGridRows.Count);
-
-				for (int i = 0; i < MyMeasurementFile.HeaderGridRows.Count; i++)
-					RefreshHeadersGridRow(i);
-			}
-		}
-
-		private void RefreshHeadersGridRow(int row)
-		{
-			int headerKey = MyMeasurementFile.HeaderGridRows.ElementAt(row).Key;
-			HeaderGridRow header = MyMeasurementFile.HeaderGridRows.ElementAt(row).Value;
-			string name = header.TableOrdinal == -1 ? header.HeaderText : header.ColumnName;
-			int originalIndex = OriginalMeasurementFile.HeaderGridRows.Values.ToList<HeaderGridRow>().FindIndex(p => p.ColumnName == header.ColumnName);
-			HeaderGridRow original = originalIndex == -1 ? new HeaderGridRow() : OriginalMeasurementFile.HeaderGridRows.ElementAt(originalIndex).Value;
-			string originalName = original.TableOrdinal == -1 ? original.HeaderText : original.ColumnName;
-			DataGridViewCell headerKeyCell = headersDataGridView[headerKeyColumn.Index, row];
-			DataGridViewCell headerColumnNameCell = headersDataGridView[columnNameColumn.Index, row];
-			DataGridViewCell headerTypeCell = headersDataGridView[headerTypeColumn.Index, row];
-			DataGridViewCell headerFilterParameterCell = headersDataGridView[headerFilterParameterColumn.Index, row];
-			DataGridViewCell isReturnRowCell = headersDataGridView[isReturnRowColumn.Index, row];
-			DataGridViewCell isReturnRowDateCell = headersDataGridView[isReturnRowDateColumn.Index, row];
-			DataGridViewCell isReturnRowControlCell = headersDataGridView[isReturnRowControlColumn.Index, row];
-
-			headerKeyCell.Value = headerKey;
-			headerColumnNameCell.Value = name;
-			headerColumnNameCell.Style.BackColor = name == originalName ? default(Color) : ChangedValueColor;
-			headerTypeCell.Value = Enums.GetString(header.HeaderType);
-			headerTypeCell.Style.BackColor = header.HeaderType == original.HeaderType ? default(Color) : ChangedValueColor;
-			headerFilterParameterCell.Value = header.FilterParameter;
-			headerFilterParameterCell.Style.BackColor = header.FilterParameter == original.FilterParameter ? default(Color) : ChangedValueColor;
-			isReturnRowCell.Value = header.IsReturnRow;
-			isReturnRowCell.Style.BackColor = header.IsReturnRow == original.IsReturnRow ? default(Color) : ChangedValueColor;
-			isReturnRowDateCell.Value = header.IsReturnRowDate;
-			isReturnRowDateCell.Style.BackColor = header.IsReturnRowDate == original.IsReturnRowDate ? default(Color) : ChangedValueColor;
-			isReturnRowControlCell.Value = header.IsReturnRowControl;
-			isReturnRowControlCell.Style.BackColor = header.IsReturnRowControl == original.IsReturnRowControl ? default(Color) : ChangedValueColor;
-			headersDataGridView.Rows[row].ReadOnly = header.ColumnName == MyMeasurementFile.Transform.DateField;
+			parametersCountLabel.Text = MyMeasurementFile.Parameters.Count.ToString();
+			parametersCountLabel.ForeColor = MyMeasurementFile.Parameters.Count == MyMeasurementFile.DatabaseParameterCount ? default(Color) : Color.Red;
 		}
 
 		private void RefreshNumberFormatsGrid()
@@ -735,6 +617,7 @@ namespace PortalConfigurator
 
 		private void filterParameterFileButton_Click(object sender, EventArgs e)
 		{
+			EndGridCellEditMode();
 			if (!String.IsNullOrEmpty(FilterParameterFileName))
 			{
 				string message = "By changing the Filter/Parameter file,\nsettings related to items not in the new file\nwill be lost.";
@@ -746,47 +629,47 @@ namespace PortalConfigurator
 			filterParameterFileButton.ForeColor = String.IsNullOrEmpty(FilterParameterFileName) ? UnknownValueColor : default(Color);
 
 			if (!String.IsNullOrEmpty(MyMeasurementFile.Table))
-			{
-				RefreshFilterParametersGrid();
-				RefreshHeaderParameterList();
-			}
+				RefreshMeasureGrid();
 		}
 
-		private void measureTableButton_Click(object sender, EventArgs e)
+		private void tableComboBox_SelectedIndexChanged(object sender, EventArgs e)
 		{
-			if (!String.IsNullOrEmpty(MyMeasurementFile.Table))
-			{
-				string message = "By changing the refrenced stored procedure,\ntransform and column header settings will be lost.";
-				MessageBox.Show(message, "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-			}
-			
-			StoredProcedurePrompt prompt = new StoredProcedurePrompt();
-			prompt.StoredProcedure = MyMeasurementFile.Table;
-			prompt.ShowDialog();
+			string selection = (tableComboBox.SelectedIndex == -1 || tableComboBox.SelectedIndex == 0) ? String.Empty : tableComboBox.SelectedItem.ToString();
 
-			if (prompt.DialogResult == DialogResult.OK)
+			if (selection != MyMeasurementFile.Table)
 			{
-				if (prompt.StoredProcedure != MyMeasurementFile.Table)
+				DialogResult prompt = DialogResult.OK;
+
+				if (!String.IsNullOrEmpty(MyMeasurementFile.Table))
+				{
+					string message = "By changing the refrenced stored procedure,\ntransform and column header settings will be lost.";
+					prompt = MessageBox.Show(message, "Warning", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning);
+				}
+
+				if (prompt == DialogResult.OK)
 				{
 					try
 					{
-						MyMeasurementFile.Table = prompt.StoredProcedure;
-						MyMeasurementFile.TableDataAreLoaded = false;
-						MyMeasurementFile.Transform.DateField = String.Empty;
-						MyMeasurementFile.Transform.ValueFields.Clear();
-						MyMeasurementFile.Transform.RemoveFields.Clear();
-						MyMeasurementFile.HeaderNames.Clear();
-						MyMeasurementFile.ReturnRowHeaders.Clear();
-						MyMeasurementFile.ReturnRowDateHeaders.Clear();
-						MyMeasurementFile.ReturnRowControlHeaders.Clear();
-						Dictionary<int, string> tableColumns = MyMeasurementFile.TableColumns;
+						ChangeTable(selection);
 
-						RefreshDateFieldComboBox();
-						RefreshTransformGrid();
-						RefreshHeadersGrid();
+						parametersNeededLabel.Text = MyMeasurementFile.DatabaseParameterCount.ToString();
+						RefreshMeasureGrid();
 
-						measureTableButton.Text = MyMeasurementFile.Table;
-						measureTableButton.BackColor = MyMeasurementFile.Table == OriginalMeasurementFile.Table ? default(Color) : ChangedValueColor;
+						tableComboBox.BackColor = MyMeasurementFile.Table == OriginalMeasurementFile.Table ? default(Color) : ChangedValueColor;
+						SetDateColumnWarning();
+
+						if (chartListRadioButton.Checked)
+						{
+							for (int i = 0; i < MyMeasurementFile.Charts.Count; i++)
+								UpdateChartsGridRow(-1, i, MyMeasurementFile.Charts.ElementAt(i));
+						}
+						else if (multichartsRadioButton.Checked && multichartsComboBox.SelectedIndex != -1)
+						{
+							string subject = multichartsComboBox.SelectedItem.ToString();
+
+							for (int i = 0; i < MyMeasurementFile.Multicharts.Charts[subject].Count; i++)
+								UpdateChartsGridRow(multichartsComboBox.SelectedIndex, i, MyMeasurementFile.Multicharts.Charts[subject].ElementAt(i));
+						}
 					}
 					catch (Exception error)
 					{
@@ -794,6 +677,23 @@ namespace PortalConfigurator
 					}
 				}
 			}
+		}
+
+		private void ChangeTable(string selection)
+		{
+			MyMeasurementFile.Table = selection;
+			MyMeasurementFile.Transform.DateField = String.Empty;
+			MyMeasurementFile.Transform.ValueFields.Clear();
+			MyMeasurementFile.Transform.RemoveFields.Clear();
+			MyMeasurementFile.MeasureGridRows.Clear();
+			MyMeasurementFile.UpdatePropertiesFromMeasureGridRows();
+
+			foreach (var item in MyMeasurementFile.Charts.Where(p => p.HideColumns.Count != 0))
+				item.HideColumns.Clear();
+
+			foreach (var group in MyMeasurementFile.Multicharts.Charts)
+				foreach (var item in group.Value.Where(p => p.HideColumns.Count != 0))
+					item.HideColumns.Clear();
 		}
 
 		private void titleTextBox_TextChanged(object sender, EventArgs e)
@@ -807,6 +707,7 @@ namespace PortalConfigurator
 
 		private void baseButton_Click(object sender, EventArgs e)
 		{
+			EndGridCellEditMode();
 			openFileDialog.Title = "Choose Base Measure File";
 			openFileDialog.FileName = String.Empty;
 
@@ -856,12 +757,12 @@ namespace PortalConfigurator
 			}
 		}
 
-		private void fullTitleTextBox_TextChanged(object sender, EventArgs e)
+		private void dropdownTextBox_TextChanged(object sender, EventArgs e)
 		{
-			if (MyMeasurementFile.FullTitle != fullTitleTextBox.Text)
+			if (MyMeasurementFile.Dropdown != dropdownTextBox.Text)
 			{
-				MyMeasurementFile.FullTitle = fullTitleTextBox.Text;
-				fullTitleTextBox.BackColor = MyMeasurementFile.FullTitle == OriginalMeasurementFile.FullTitle ? default(Color) : ChangedValueColor;
+				MyMeasurementFile.Dropdown = dropdownTextBox.Text;
+				dropdownTextBox.BackColor = MyMeasurementFile.Dropdown == OriginalMeasurementFile.Dropdown ? default(Color) : ChangedValueColor;
 			}
 		}
 
@@ -896,7 +797,7 @@ namespace PortalConfigurator
 			}
 		}
 
-		private void showAllOthersCheckBox_CheckedChanged(object sender, EventArgs e)
+		private void showAllOthersCheckBox_CheckStateChanged(object sender, EventArgs e)
 		{
 			bool? value = ToNullableBool(showAllOthersCheckBox.CheckState);
 
@@ -907,7 +808,7 @@ namespace PortalConfigurator
 			}
 		}
 
-		private void muteAllOthersCheckBox_CheckedChanged(object sender, EventArgs e)
+		private void muteAllOthersCheckBox_CheckStateChanged(object sender, EventArgs e)
 		{
 			bool? value = ToNullableBool(muteAllOthersCheckBox.CheckState);
 
@@ -924,253 +825,6 @@ namespace PortalConfigurator
 			{
 				MyMeasurementFile.Summary = summaryTextBox.Text;
 				summaryTextBox.BackColor = MyMeasurementFile.Summary == OriginalMeasurementFile.Summary ? default(Color) : ChangedValueColor;
-			}
-		}
-
-		private void filterParametersDataGridView_CurrentCellDirtyStateChanged(object sender, EventArgs e)
-		{
-			int columnIndex = filterParametersDataGridView.CurrentCell.ColumnIndex;
-
-			if (columnIndex == filterParameterNameColumn.Index || columnIndex == controlTypeColumn.Index || columnIndex == isDateColumn.Index ||
-				columnIndex == isRequiredColumn.Index)
-				filterParametersDataGridView.CommitEdit(DataGridViewDataErrorContexts.Commit);
-		}
-
-		private void filterParametersDataGridView_CellValueChanged(object sender, DataGridViewCellEventArgs e)
-		{
-			if (e.RowIndex != -1)
-			{
-				bool changeOccurred = false;
-				string key = MyMeasurementFile.FilterParameterGridRows.ElementAt(e.RowIndex).Key;
-
-				if (e.ColumnIndex == filterParameterNameColumn.Index)
-				{
-					string selection = filterParametersDataGridView[e.ColumnIndex, e.RowIndex].Value.ToString();
-
-					if (key != selection)
-					{
-						if (!MyMeasurementFile.FilterParameterGridRows.ContainsKey(selection))
-						{
-							Dictionary<string, FilterParameterGridRow> newRows = new Dictionary<string, FilterParameterGridRow>();
-
-							foreach (var item in MyMeasurementFile.FilterParameterGridRows)
-								newRows.Add(item.Key == key ? selection : item.Key, item.Value);
-
-							MyMeasurementFile.FilterParameterGridRows = newRows;
-							key = selection;
-
-							foreach (var item in MyMeasurementFile.HeaderGridRows)
-								if (item.Value.FilterParameter == selection)
-									item.Value.FilterParameter = String.Empty;
-
-							RefreshHeaderParameterList();
-							changeOccurred = true;
-						}
-						else
-						{
-							string message = String.Format("Parameter {0} is already in this file and cannot be added again.", selection);
-							MessageBox.Show(message, "Dulplicate Situation", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-							filterParametersDataGridView[e.ColumnIndex, e.RowIndex].Value = key;
-						}
-					}
-				}
-				else if (e.ColumnIndex == controlTypeColumn.Index)
-				{
-					ControlType selection = Enums.GetControlTypeEnum(filterParametersDataGridView[e.ColumnIndex, e.RowIndex].Value.ToString());
-
-					if (MyMeasurementFile.FilterParameterGridRows[key].ControlType != selection)
-					{
-						MyMeasurementFile.FilterParameterGridRows[key].ControlType = selection;
-						MyMeasurementFile.UpdatePropertiesFromFilterParameterGridRows();
-						changeOccurred = true;
-					}
-				}
-				else if (e.ColumnIndex == isDateColumn.Index)
-				{
-					bool selection = (bool)filterParametersDataGridView[e.ColumnIndex, e.RowIndex].Value;
-
-					if (MyMeasurementFile.FilterParameterGridRows[key].IsDate != selection)
-					{
-						MyMeasurementFile.FilterParameterGridRows[key].IsDate = selection;
-						MyMeasurementFile.UpdatePropertiesFromFilterParameterGridRows();
-						changeOccurred = true;
-					}
-				}
-				else if (e.ColumnIndex == isRequiredColumn.Index)
-				{
-					bool selection = (bool)filterParametersDataGridView[e.ColumnIndex, e.RowIndex].Value;
-
-					if (MyMeasurementFile.FilterParameterGridRows[key].IsRequired != selection)
-					{
-						MyMeasurementFile.FilterParameterGridRows[key].IsRequired = selection;
-						MyMeasurementFile.UpdatePropertiesFromFilterParameterGridRows();
-						changeOccurred = true;
-					}
-				}
-
-				if (changeOccurred)
-				{
-					FilterParameterGridRow subjectValue = MyMeasurementFile.FilterParameterGridRows[key];
-					int originalIndex = OriginalMeasurementFile.FilterParameterGridRows.Keys.ToList<string>().FindIndex(p => p == key);
-					string originalKey = originalIndex == -1 ? String.Empty : OriginalMeasurementFile.FilterParameterGridRows.ElementAt(originalIndex).Key;
-					FilterParameterGridRow originalValue = originalIndex == -1 ? new FilterParameterGridRow() : OriginalMeasurementFile.FilterParameterGridRows[originalKey];
-					DataGridViewCell filterParameterNameCell = filterParametersDataGridView[filterParameterNameColumn.Index, e.RowIndex]; ;
-					DataGridViewCell controlTypeCell = filterParametersDataGridView[controlTypeColumn.Index, e.RowIndex];
-					DataGridViewCell isDateCell = filterParametersDataGridView[isDateColumn.Index, e.RowIndex];
-					DataGridViewCell isRequiredCell = filterParametersDataGridView[isRequiredColumn.Index, e.RowIndex];
-
-					filterParameterNameCell.Style.BackColor = key == originalKey ? default(Color) : ChangedValueColor;
-					controlTypeCell.Style.BackColor = subjectValue.ControlType == originalValue.ControlType ? default(Color) : ChangedValueColor;
-					isDateCell.Style.BackColor = subjectValue.IsDate == originalValue.IsDate ? default(Color) : ChangedValueColor;
-					isRequiredCell.Style.BackColor = subjectValue.IsRequired == originalValue.IsRequired ? default(Color) : ChangedValueColor;
-				}
-			}
-		}
-
-		private void addFilterParameterButton_Click(object sender, EventArgs e)
-		{
-			foreach (var item in FilterParameterList)
-			{
-				if (!MyMeasurementFile.FilterParameterGridRows.ContainsKey(item))
-				{
-					MyMeasurementFile.FilterParameterGridRows.Add(item, new FilterParameterGridRow());
-					RefreshFilterParametersGrid();
-					RefreshHeaderParameterList();
-					filterParametersDataGridView.CurrentCell = filterParametersDataGridView[0, filterParametersDataGridView.Rows.Count - 1];
-					return;
-				}
-			}
-		}
-
-		private void deleteFilterParameterButton_Click(object sender, EventArgs e)
-		{
-			if (filterParametersDataGridView.RowCount != 0)
-			{
-				int row = filterParametersDataGridView.CurrentCellAddress.Y;
-				Dictionary<string, FilterParameterGridRow> newList = new Dictionary<string, FilterParameterGridRow>();
-
-				for (int i = 0; i < MyMeasurementFile.FilterParameterGridRows.Count; i++)
-					if (i != row)
-						newList.Add(MyMeasurementFile.FilterParameterGridRows.ElementAt(i).Key, MyMeasurementFile.FilterParameterGridRows.ElementAt(i).Value);
-
-				foreach (var item in MyMeasurementFile.HeaderGridRows)
-				{
-					if (item.Value.FilterParameter == MyMeasurementFile.FilterParameterGridRows.ElementAt(row).Key)
-						item.Value.FilterParameter = String.Empty;
-				}
-
-				MyMeasurementFile.FilterParameterGridRows.Clear();
-				MyMeasurementFile.FilterParameterGridRows = newList;
-				RefreshFilterParametersGrid();
-				RefreshHeaderParameterList();
-
-				if (row - 1 >= 0)
-					filterParametersDataGridView.CurrentCell = filterParametersDataGridView[0, row - 1];
-			}
-		}
-
-		private void moveUpFilterParameterButton_Click(object sender, EventArgs e)
-		{
-			int row = filterParametersDataGridView.CurrentCellAddress.Y;
-
-			if (row > 0)
-			{
-				int destination = row - 1;
-				Dictionary<string, FilterParameterGridRow> newList = new Dictionary<string, FilterParameterGridRow>();
-
-				for (int i = 0; i < MyMeasurementFile.FilterParameterGridRows.Count; i++)
-				{
-					if (i == destination)
-						newList.Add(MyMeasurementFile.FilterParameterGridRows.ElementAt(row).Key, MyMeasurementFile.FilterParameterGridRows.ElementAt(row).Value);
-
-					if (i != row)
-						newList.Add(MyMeasurementFile.FilterParameterGridRows.ElementAt(i).Key, MyMeasurementFile.FilterParameterGridRows.ElementAt(i).Value);
-				}
-
-				MyMeasurementFile.FilterParameterGridRows.Clear();
-				MyMeasurementFile.FilterParameterGridRows = newList;
-				RefreshFilterParametersGrid();
-				filterParametersDataGridView.CurrentCell = filterParametersDataGridView[0, destination];
-			}
-		}
-
-		private void moveDownFilterParameterButton_Click(object sender, EventArgs e)
-		{
-			int row = filterParametersDataGridView.CurrentCellAddress.Y;
-
-			if (row < filterParametersDataGridView.RowCount - 1 && row != -1)
-			{
-				int destination = row + 1;
-				Dictionary<string, FilterParameterGridRow> newList = new Dictionary<string, FilterParameterGridRow>();
-
-				for (int i = 0; i < MyMeasurementFile.FilterParameterGridRows.Count; i++)
-				{
-					if (i != row)
-						newList.Add(MyMeasurementFile.FilterParameterGridRows.ElementAt(i).Key, MyMeasurementFile.FilterParameterGridRows.ElementAt(i).Value);
-
-					if (i == destination)
-						newList.Add(MyMeasurementFile.FilterParameterGridRows.ElementAt(row).Key, MyMeasurementFile.FilterParameterGridRows.ElementAt(row).Value);
-				}
-
-				MyMeasurementFile.FilterParameterGridRows.Clear();
-				MyMeasurementFile.FilterParameterGridRows = newList;
-				RefreshFilterParametersGrid();
-				filterParametersDataGridView.CurrentCell = filterParametersDataGridView[0, destination];
-			}
-		}
-
-		private void functionComboBox_SelectedIndexChanged(object sender, EventArgs e)
-		{
-			if ((int)MyMeasurementFile.Transform.Function != functionComboBox.SelectedIndex)
-			{
-				MyMeasurementFile.Transform.Function = (TransformFunction)functionComboBox.SelectedIndex;
-				functionComboBox.BackColor = MyMeasurementFile.Transform.Function == OriginalMeasurementFile.Transform.Function ? default(Color) : ChangedValueColor;
-			}
-		}
-
-		private void dateFieldComboBox_SelectedIndexChanged(object sender, EventArgs e)
-		{
-			if (dateFieldComboBox.SelectedItem.ToString() != MyMeasurementFile.Transform.DateField)
-			{
-				MyMeasurementFile.Transform.DateField = dateFieldComboBox.SelectedItem.ToString();
-				dateFieldComboBox.BackColor = MyMeasurementFile.Transform.DateField == OriginalMeasurementFile.Transform.DateField ? default(Color) : ChangedValueColor;
-
-				if (dateFieldComboBox.SelectedIndex != -1)
-				{
-					MyMeasurementFile.HeaderGridRowsAreUpdated = false;
-					RefreshHeadersGrid();
-				}
-			}
-		}
-
-		private void transformFieldsDataGridView_CurrentCellDirtyStateChanged(object sender, EventArgs e)
-		{
-			int columnIndex = transformFieldsDataGridView.CurrentCell.ColumnIndex;
-
-			if (columnIndex == isValueFieldColumn.Index || columnIndex == removeFieldColumn.Index)
-				transformFieldsDataGridView.CommitEdit(DataGridViewDataErrorContexts.Commit);
-		}
-
-		public void transformFieldsDataGridView_CellValueChanged(object sender, DataGridViewCellEventArgs e)
-		{
-			if (e.RowIndex != -1)
-			{
-				DataGridViewCell checkBoxCell = transformFieldsDataGridView[e.ColumnIndex, e.RowIndex];
-				TransformFieldGridRow selection = MyMeasurementFile.Transform.TransformFieldGridRows[e.RowIndex];
-				TransformFieldGridRow original = OriginalMeasurementFile.Transform.TransformFieldGridRows.FirstOrDefault(p => p.Value.FieldName == selection.FieldName).Value ?? new TransformFieldGridRow();
-
-				if (e.ColumnIndex == isValueFieldColumn.Index && selection.IsValueField != (bool)checkBoxCell.Value)
-				{
-					MyMeasurementFile.Transform.TransformFieldGridRows[e.RowIndex].IsValueField = (bool)checkBoxCell.Value;
-					MyMeasurementFile.Transform.UpdatePropertiesFromTransformFieldGridRows();
-					checkBoxCell.Style.BackColor = (bool)checkBoxCell.Value == original.IsValueField ? default(Color) : ChangedValueColor;
-				}
-				else if (e.ColumnIndex == removeFieldColumn.Index && selection.IsRemovedField != (bool)checkBoxCell.Value)
-				{
-					MyMeasurementFile.Transform.TransformFieldGridRows[e.RowIndex].IsRemovedField = (bool)checkBoxCell.Value;
-					MyMeasurementFile.Transform.UpdatePropertiesFromTransformFieldGridRows();
-					checkBoxCell.Style.BackColor = (bool)checkBoxCell.Value == original.IsRemovedField ? default(Color) : ChangedValueColor;
-				}
 			}
 		}
 
@@ -1227,84 +881,43 @@ namespace PortalConfigurator
 			}
 		}
 
-		private void numberFormatsDataGridView_CellEndEdit(object sender, DataGridViewCellEventArgs e)
+		private void functionComboBox_SelectedIndexChanged(object sender, EventArgs e)
 		{
-			NumberFormat format = MyMeasurementFile.NumberFormats.ElementAt(e.RowIndex);
-			NumberFormat original = OriginalMeasurementFile.NumberFormats.Count > e.RowIndex ? OriginalMeasurementFile.NumberFormats.ElementAt(e.RowIndex) : new NumberFormat();
+			bool requiresDateColumn = TransformRule.RequiresDateRow((Function)functionComboBox.SelectedIndex);
 
-			if (e.ColumnIndex == prefixColumn.Index)
+			if ((int)MyMeasurementFile.Transform.Function != functionComboBox.SelectedIndex)
 			{
-				DataGridViewCell prefixCell = numberFormatsDataGridView[prefixColumn.Index, e.RowIndex];
-				string cellValue = (prefixCell.Value ?? (object)String.Empty).ToString();
+				MyMeasurementFile.Transform.Function = (Function)functionComboBox.SelectedIndex;
+				functionComboBox.BackColor = MyMeasurementFile.Transform.Function == OriginalMeasurementFile.Transform.Function ? default(Color) : ChangedValueColor;
 
-				if (format.Prefix != cellValue)
+				if (!requiresDateColumn)
 				{
-					format.Prefix = cellValue;
-					prefixCell.Style.BackColor = format.Prefix == original.Prefix ? default(Color) : ChangedValueColor;
-				}
-			}
-			else if (e.ColumnIndex == groupingColumn.Index)
-			{
-				DataGridViewCell groupingCell = numberFormatsDataGridView[groupingColumn.Index, e.RowIndex];
-				string cellValue = (groupingCell.Value ?? (object)String.Empty).ToString();
+					MeasureGridRow dateColumn = MyMeasurementFile.MeasureGridRows.FirstOrDefault(p => p.HeaderType == HeaderType.DateColumn);
 
-				if (format.GroupingSymbol != cellValue)
-				{
-					format.GroupingSymbol = cellValue;
-					groupingCell.Style.BackColor = format.GroupingSymbol == original.GroupingSymbol ? default(Color) : ChangedValueColor;
-				}
-			}
-			else if (e.ColumnIndex == patternColumn.Index)
-			{
-				DataGridViewCell patternCell = numberFormatsDataGridView[patternColumn.Index, e.RowIndex];
-				string cellValue = (patternCell.Value ?? (object)String.Empty).ToString();
+					if (dateColumn != null)
+					{
+						if (dateColumn.ControlType == ControlType.Neither && !dateColumn.IsReturnRow && !dateColumn.IsReturnRowDate && !dateColumn.IsReturnRowControl)
+							MyMeasurementFile.MeasureGridRows.Remove(dateColumn);
+						else if (dateColumn.ControlType == ControlType.Neither)
+							dateColumn.HeaderType = HeaderType.ColumnName;
+						else
+							dateColumn.HeaderType = HeaderType.FilterParameterName;
 
-				if (format.Pattern != cellValue)
-				{
-					format.Pattern = cellValue;
-					patternCell.Style.BackColor = format.Pattern == original.Pattern ? default(Color) : ChangedValueColor;
+						MyMeasurementFile.UpdatePropertiesFromMeasureGridRows();
+						RefreshMeasureGrid();
+					}
 				}
-			}
-			else if (e.ColumnIndex == decimalColumn.Index)
-			{
-				DataGridViewCell decimalCell = numberFormatsDataGridView[decimalColumn.Index, e.RowIndex];
-				string cellValue = (decimalCell.Value ?? (object)String.Empty).ToString();
 
-				if (format.DecimalSymbol != cellValue)
-				{
-					format.DecimalSymbol = cellValue;
-					decimalCell.Style.BackColor = format.DecimalSymbol == original.DecimalSymbol ? default(Color) : ChangedValueColor;
-				}
+				SetDateColumnWarning();
 			}
-			else if (e.ColumnIndex == fractionDigitsColumn.Index)
-			{
-				DataGridViewCell fractionDigitsCell = numberFormatsDataGridView[fractionDigitsColumn.Index, e.RowIndex];
-				string cellValue = (fractionDigitsCell.Value ?? (object)String.Empty).ToString();
-				int intValue;
+		}
 
-				if (int.TryParse(cellValue, out intValue) || String.IsNullOrEmpty(cellValue))
-				{
-					if (format.FractionDigits.HasValue && String.IsNullOrEmpty(cellValue))
-						format.FractionDigits = null;
-					else if ((format.FractionDigits ?? 0) != intValue)
-						format.FractionDigits = intValue;
-				}
-				else
-					fractionDigitsCell.Value = format.FractionDigits;
-
-				fractionDigitsCell.Style.BackColor = format.FractionDigits == original.FractionDigits ? default(Color) : ChangedValueColor;
-			}
-			else if (e.ColumnIndex == suffixColumn.Index)
-			{
-				DataGridViewCell suffixCell = numberFormatsDataGridView[suffixColumn.Index, e.RowIndex];
-				string cellValue = (suffixCell.Value ?? (object)String.Empty).ToString();
-
-				if (format.Suffix != cellValue)
-				{
-					format.Suffix = cellValue;
-					suffixCell.Style.BackColor = format.Suffix == original.Suffix ? default(Color) : ChangedValueColor;
-				}
-			}
+		private void SetDateColumnWarning()
+		{
+			bool requiresDateColumn = MyMeasurementFile.Transform.RequiresDateRow;
+			bool isMissingDateColumn = MyMeasurementFile.MeasureGridRows.FindIndex(p => p.HeaderType == HeaderType.DateColumn) == -1;
+			string warningMessage = requiresDateColumn && isMissingDateColumn ? "A column must be supplied as the date header." : String.Empty;
+			dateColumnErrorProvider.SetError(functionLabel, warningMessage);
 		}
 
 		private void numberFormatsDataGridView_CurrentCellDirtyStateChanged(object sender, EventArgs e)
@@ -1317,18 +930,94 @@ namespace PortalConfigurator
 
 		private void numberFormatsDataGridView_CellValueChanged(object sender, DataGridViewCellEventArgs e)
 		{
-			if (e.RowIndex != -1 && e.ColumnIndex == negativeParensColumn.Index)
+			if (e.RowIndex != -1 ? numberFormatsDataGridView.CurrentCell.IsInEditMode && numberFormatsDataGridView.CurrentCell.ColumnIndex == e.ColumnIndex : false)
 			{
 				NumberFormat format = MyMeasurementFile.NumberFormats.ElementAt(e.RowIndex);
-				NumberFormat original = OriginalMeasurementFile.NumberFormats.Count > e.RowIndex ? OriginalMeasurementFile.NumberFormats.ElementAt(e.RowIndex) : new NumberFormat();
-				DataGridViewCell negativeParensCell = numberFormatsDataGridView[negativeParensColumn.Index, e.RowIndex];
-				bool? cellValue = ToNullableBool((CheckState)negativeParensCell.Value);
+				bool originalExists = OriginalMeasurementFile.NumberFormats.Count > e.RowIndex;
+				bool changeDetected = false;
+				NumberFormat original = originalExists ? OriginalMeasurementFile.NumberFormats.ElementAt(e.RowIndex) : new NumberFormat();
+				DataGridViewCell currentCell = numberFormatsDataGridView[e.ColumnIndex, e.RowIndex];
 
-				if (format.NegativeParens != cellValue)
+				if (e.ColumnIndex == prefixColumn.Index)
 				{
-					format.NegativeParens = cellValue;
-					negativeParensCell.Style.BackColor = format.NegativeParens == original.NegativeParens ? default(Color) : ChangedValueColor;
+					string cellValue = (currentCell.Value ?? (object)String.Empty).ToString();
+
+					if (format.Prefix != cellValue)
+					{
+						format.Prefix = cellValue;
+						changeDetected = !originalExists || format.Prefix != original.Prefix;
+					}
 				}
+				else if (e.ColumnIndex == groupingColumn.Index)
+				{
+					string cellValue = (currentCell.Value ?? (object)String.Empty).ToString();
+
+					if (format.GroupingSymbol != cellValue)
+					{
+						format.GroupingSymbol = cellValue;
+						changeDetected = !originalExists || format.GroupingSymbol != original.GroupingSymbol;
+					}
+				}
+				else if (e.ColumnIndex == patternColumn.Index)
+				{
+					string cellValue = (currentCell.Value ?? (object)String.Empty).ToString();
+
+					if (format.Pattern != cellValue)
+					{
+						format.Pattern = cellValue;
+						changeDetected = !originalExists || format.Pattern != original.Pattern;
+					}
+				}
+				else if (e.ColumnIndex == decimalColumn.Index)
+				{
+					string cellValue = (currentCell.Value ?? (object)String.Empty).ToString();
+
+					if (format.DecimalSymbol != cellValue)
+					{
+						format.DecimalSymbol = cellValue;
+						changeDetected = !originalExists || format.DecimalSymbol != original.DecimalSymbol;
+					}
+				}
+				else if (e.ColumnIndex == fractionDigitsColumn.Index)
+				{
+					string cellValue = (currentCell.Value ?? (object)String.Empty).ToString();
+					int intValue;
+
+					if (int.TryParse(cellValue, out intValue) || String.IsNullOrEmpty(cellValue))
+					{
+						if (format.FractionDigits.HasValue && String.IsNullOrEmpty(cellValue))
+							format.FractionDigits = null;
+						else if (format.FractionDigits != (int?)intValue)
+							format.FractionDigits = intValue;
+					}
+					else
+						currentCell.Value = format.FractionDigits;
+
+					changeDetected = !originalExists || format.FractionDigits != original.FractionDigits;
+				}
+				else if (e.ColumnIndex == suffixColumn.Index)
+				{
+					string cellValue = (currentCell.Value ?? (object)String.Empty).ToString();
+
+					if (format.Suffix != cellValue)
+					{
+						format.Suffix = cellValue;
+						changeDetected = !originalExists || format.Suffix != original.Suffix;
+					}
+				}
+				else if (e.ColumnIndex == negativeParensColumn.Index)
+				{
+					bool? cellValue = ToNullableBool((CheckState)currentCell.Value);
+
+					if (format.NegativeParens != cellValue)
+					{
+						format.NegativeParens = cellValue;
+						changeDetected = !originalExists || format.NegativeParens != original.NegativeParens;
+					}
+				}
+
+				currentCell.Style.BackColor = changeDetected ? ChangedValueColor : default(Color);
+				numberFormatsDataGridView.EndEdit();
 			}
 		}
 
@@ -1355,6 +1044,7 @@ namespace PortalConfigurator
 
 		private void addNumberFormatButton_Click(object sender, EventArgs e)
 		{
+			EndGridCellEditMode();
 			MyMeasurementFile.NumberFormats.Add(new NumberFormat());
 			RefreshNumberFormatsGrid();
 			numberFormatsDataGridView.CurrentCell = numberFormatsDataGridView[0, numberFormatsDataGridView.Rows.Count - 1];
@@ -1362,7 +1052,8 @@ namespace PortalConfigurator
 
 		private void deleteNumberFormatButton_Click(object sender, EventArgs e)
 		{
-			int row = numberFormatsDataGridView.CurrentCellAddress.Y;
+			EndGridCellEditMode();
+			int row = numberFormatsDataGridView.CurrentCell.RowIndex;
 
 			if (MyMeasurementFile.NumberFormats.Count != 0 && row != -1)
 			{
@@ -1376,11 +1067,12 @@ namespace PortalConfigurator
 
 		private void moveUpNumberFormatButton_Click(object sender, EventArgs e)
 		{
-			int row = numberFormatsDataGridView.CurrentCellAddress.Y;
+			EndGridCellEditMode();
+			int row = numberFormatsDataGridView.CurrentCell.RowIndex;
 
 			if (row > 0)
 			{
-				int column = numberFormatsDataGridView.CurrentCellAddress.X;
+				int column = numberFormatsDataGridView.CurrentCell.ColumnIndex;
 				NumberFormat subject = MyMeasurementFile.NumberFormats.ElementAt(row);
 				MyMeasurementFile.NumberFormats.RemoveAt(row);
 				MyMeasurementFile.NumberFormats.Insert(row - 1, subject);
@@ -1391,88 +1083,17 @@ namespace PortalConfigurator
 
 		private void moveDownNumberFormatButton_Click(object sender, EventArgs e)
 		{
-			int row = numberFormatsDataGridView.CurrentCellAddress.Y;
+			EndGridCellEditMode();
+			int row = numberFormatsDataGridView.CurrentCell.RowIndex;
 
 			if (row < numberFormatsDataGridView.Rows.Count - 1 && row != -1)
 			{
-				int column = numberFormatsDataGridView.CurrentCellAddress.X;
+				int column = numberFormatsDataGridView.CurrentCell.ColumnIndex;
 				NumberFormat subject = MyMeasurementFile.NumberFormats.ElementAt(row);
 				MyMeasurementFile.NumberFormats.RemoveAt(row);
 				MyMeasurementFile.NumberFormats.Insert(row + 1, subject);
 				RefreshNumberFormatsGrid();
 				numberFormatsDataGridView.CurrentCell = numberFormatsDataGridView[column, row + 1];
-			}
-		}
-
-		private void headersDataGridView_CurrentCellDirtyStateChanged(object sender, EventArgs e)
-		{
-			int columnIndex = headersDataGridView.CurrentCell.ColumnIndex;
-
-			if (columnIndex == headerTypeColumn.Index || columnIndex == headerFilterParameterColumn.Index || columnIndex == isReturnRowColumn.Index ||
-				columnIndex == isDateColumn.Index || columnIndex == isReturnRowColumn.Index)
-				headersDataGridView.CommitEdit(DataGridViewDataErrorContexts.Commit);
-		}
-
-		private void headersDataGridView_CellValueChanged(object sender, DataGridViewCellEventArgs e)
-		{
-			if (e.RowIndex != -1)
-			{
-				int headerKey = (int)headersDataGridView[headerKeyColumn.Index, e.RowIndex].Value;
-				DataGridViewCell subject = headersDataGridView[e.ColumnIndex, e.RowIndex];
-				bool changeOccurred = false;
-
-				if (e.ColumnIndex == headerTypeColumn.Index)
-				{
-					HeaderType selection = Enums.GetHeaderTypeEnum(subject.Value.ToString()); ;
-
-					if (MyMeasurementFile.HeaderGridRows[headerKey].HeaderType != selection)
-					{
-						MyMeasurementFile.HeaderGridRows[headerKey].HeaderType = selection;
-						MyMeasurementFile.UpdatePropertiesFromHeaderGridRows();
-						changeOccurred = true;
-					}
-				}
-				else if (e.ColumnIndex == headerFilterParameterColumn.Index)
-				{
-					string selection = subject.Value.ToString();
-
-					if (MyMeasurementFile.HeaderGridRows[headerKey].FilterParameter != selection)
-					{
-						MyMeasurementFile.HeaderGridRows[headerKey].FilterParameter = selection;
-						MyMeasurementFile.UpdatePropertiesFromHeaderGridRows();
-						changeOccurred = true;
-					}
-				}
-				else if (e.ColumnIndex == isReturnRowColumn.Index)
-				{
-					if (MyMeasurementFile.HeaderGridRows[headerKey].IsReturnRow != (bool)subject.Value)
-					{
-						MyMeasurementFile.HeaderGridRows[headerKey].IsReturnRow = (bool)subject.Value;
-						MyMeasurementFile.UpdatePropertiesFromHeaderGridRows();
-						changeOccurred = true;
-					}
-				}
-				else if (e.ColumnIndex == isReturnRowDateColumn.Index)
-				{
-					if (MyMeasurementFile.HeaderGridRows[headerKey].IsReturnRowDate != (bool)subject.Value)
-					{
-						MyMeasurementFile.HeaderGridRows[headerKey].IsReturnRowDate = (bool)subject.Value;
-						MyMeasurementFile.UpdatePropertiesFromHeaderGridRows();
-						changeOccurred = true;
-					}
-				}
-				else if (e.ColumnIndex == isReturnRowControlColumn.Index)
-				{
-					if (MyMeasurementFile.HeaderGridRows[headerKey].IsReturnRowControl != (bool)subject.Value)
-					{
-						MyMeasurementFile.HeaderGridRows[headerKey].IsReturnRowControl = (bool)subject.Value;
-						MyMeasurementFile.UpdatePropertiesFromHeaderGridRows();
-						changeOccurred = true;
-					}
-				}
-
-				if (changeOccurred)
-					RefreshHeadersGridRow(e.RowIndex);
 			}
 		}
 
@@ -1540,9 +1161,9 @@ namespace PortalConfigurator
 						UpdateChartsGridRow(-1, i, MyMeasurementFile.Charts.ElementAt(i));
 				}
 
-				if (OriginalMeasurementFile.Multicharts.Charts.Count != 0)
+				if (OriginalMeasurementFile.Charts.Count != 0 || OriginalMeasurementFile.Multicharts.Charts.Count != 0)
 				{
-					chartListRadioButton.BackColor = ChangedValueColor;
+					chartListRadioButton.BackColor = MyMeasurementFile.Charts.SequenceEqual(OriginalMeasurementFile.Charts) ? default(Color) : ChangedValueColor;
 					multichartsRadioButton.BackColor = default(Color);
 				}
 			}
@@ -1561,10 +1182,10 @@ namespace PortalConfigurator
 					multichartsComboBox.SelectedIndex = 0;
 				}
 
-				if (OriginalMeasurementFile.Charts.Count != 0)
+				if (OriginalMeasurementFile.Charts.Count != 0 || OriginalMeasurementFile.Multicharts.Charts.Count != 0)
 				{
 					chartListRadioButton.BackColor = default(Color);
-					multichartsRadioButton.BackColor = ChangedValueColor;
+					multichartsRadioButton.BackColor = MyMeasurementFile.Multicharts.Equals(OriginalMeasurementFile.Multicharts) ? default(Color) : ChangedValueColor;
 				}
 			}
 		}
@@ -1588,16 +1209,20 @@ namespace PortalConfigurator
 
 		private void addMultichartsButton_Click(object sender, EventArgs e)
 		{
-			string key = "New Multichart";
-			int genericMultichartsCount = MyMeasurementFile.Multicharts.Charts.Keys.Count(p => p.StartsWith(key));
-			key = String.Concat(key, genericMultichartsCount == 0 ? String.Empty : String.Format(" {0}", genericMultichartsCount));
-			MyMeasurementFile.Multicharts.Charts.Add(key, new List<ChartInfo>());
-			multichartsComboBox.Items.Add(key);
-			multichartsComboBox.SelectedIndex = multichartsComboBox.Items.Count - 1;
+			EndGridCellEditMode();
+			MultichartNameDialogue dialogue = new MultichartNameDialogue(String.Empty, MyMeasurementFile.Multicharts.Charts.Keys.ToList<string>(), ChangedValueColor);
+			
+			if (dialogue.ShowDialog() == DialogResult.OK)
+			{
+				MyMeasurementFile.Multicharts.Charts.Add(dialogue.MultichartName, new List<ChartInfo>());
+				multichartsComboBox.Items.Add(dialogue.MultichartName);
+				multichartsComboBox.SelectedIndex = multichartsComboBox.Items.Count - 1;
+			}
 		}
 
 		private void deleteMultichartsButton_Click(object sender, EventArgs e)
 		{
+			EndGridCellEditMode();
 			int selectedIndex = multichartsComboBox.SelectedIndex;
 
 			if (selectedIndex != -1)
@@ -1627,6 +1252,7 @@ namespace PortalConfigurator
 
 		private void moveUpMultichartsButton_Click(object sender, EventArgs e)
 		{
+			EndGridCellEditMode();
 			int selectedIndex = multichartsComboBox.SelectedIndex;
 
 			if (selectedIndex > 0)
@@ -1649,6 +1275,7 @@ namespace PortalConfigurator
 
 		private void moveDownMultichartsButton_Click(object sender, EventArgs e)
 		{
+			EndGridCellEditMode();
 			int selectedIndex = multichartsComboBox.SelectedIndex;
 
 			if (selectedIndex < multichartsComboBox.Items.Count - 1 && selectedIndex != -1)
@@ -1671,12 +1298,14 @@ namespace PortalConfigurator
 
 		private void changeMultichartNameButton_Click(object sender, EventArgs e)
 		{
+			EndGridCellEditMode();
 			int selectedIndex = multichartsComboBox.SelectedIndex;
 
 			if (selectedIndex != -1)
 			{
 				string subject = MyMeasurementFile.Multicharts.Charts.ElementAt(selectedIndex).Key;
-				MultichartNameDialogue dialogue = new MultichartNameDialogue(subject, ChangedValueColor);
+				List<string> otherNames = MyMeasurementFile.Multicharts.Charts.Keys.Where(p => p != subject).ToList<string>();
+				MultichartNameDialogue dialogue = new MultichartNameDialogue(subject, otherNames, ChangedValueColor);
 
 				if (dialogue.ShowDialog() == DialogResult.OK && dialogue.MultichartName != subject)
 				{
@@ -1723,6 +1352,9 @@ namespace PortalConfigurator
 
 				ChartDialog dialog = new ChartDialog(subjectChart.Clone(), originalChart, ChangedValueColor, MyMeasurementFile.Transform.ValueFields, chartIds);
 
+				if (multichartsRadioButton.Checked)
+					dialog.Text = String.Format("{0} - {1}", dialog.Text, subjectMultichart);
+
 				if (dialog.ShowDialog() == DialogResult.OK && !subjectChart.Equals(dialog.Subject))
 				{
 					subjectChart = dialog.Subject;
@@ -1739,6 +1371,8 @@ namespace PortalConfigurator
 
 		private void addChartButton_Click(object sender, EventArgs e)
 		{
+			EndGridCellEditMode();
+
 			if (chartListRadioButton.Checked || (multichartsRadioButton.Checked && multichartsComboBox.SelectedIndex != -1))
 			{
 				int multichartsIndex = -1;
@@ -1768,14 +1402,16 @@ namespace PortalConfigurator
 				originalChart = GetOriginalChartInfo(subjectMultichart, subjectChart);
 				chartsDataGridView.Rows.Add();
 				UpdateChartsGridRow(multichartsIndex, chartList.Count - 1, subjectChart);
+				chartsDataGridView_CellClick(sender, new DataGridViewCellEventArgs(additionalOptionsColumn.Index, chartList.Count - 1));
 			}
 		}
 
 		private void deleteChartButton_Click(object sender, EventArgs e)
 		{
+			EndGridCellEditMode();
 			if (chartsDataGridView.SelectedCells.Count != 0 && chartsDataGridView.Rows.Count != 0)
 			{
-				int selectedIndex = chartsDataGridView.CurrentCellAddress.Y;
+				int selectedIndex = chartsDataGridView.CurrentCell.RowIndex;
 				int multichartsIndex = -1;
 				string subjectMultichart = String.Empty;
 				List<ChartInfo> chartList = new List<ChartInfo>();
@@ -1798,7 +1434,8 @@ namespace PortalConfigurator
 
 		private void moveUpChartButton_Click(object sender, EventArgs e)
 		{
-			int selectedIndex = chartsDataGridView.CurrentCellAddress.Y;
+			EndGridCellEditMode();
+			int selectedIndex = chartsDataGridView.CurrentCell.RowIndex;
 
 			if (selectedIndex > 0)
 			{
@@ -1836,7 +1473,8 @@ namespace PortalConfigurator
 
 		private void moveDownChartButton_Click(object sender, EventArgs e)
 		{
-			int selectedIndex = chartsDataGridView.CurrentCellAddress.Y;
+			EndGridCellEditMode();
+			int selectedIndex = chartsDataGridView.CurrentCell.RowIndex;
 
 			if (selectedIndex < chartsDataGridView.Rows.Count - 1 && selectedIndex != -1)
 			{
@@ -1869,6 +1507,275 @@ namespace PortalConfigurator
 
 				UpdateChartsGridRow(multichartsIndex, selectedIndex, chartList.ElementAt(selectedIndex));
 				UpdateChartsGridRow(multichartsIndex, selectedIndex + 1, chartList.ElementAt(selectedIndex + 1));
+			}
+		}
+
+		private void measureDataGridView_CurrentCellDirtyStateChanged(object sender, EventArgs e)
+		{
+			int columnIndex = measureDataGridView.CurrentCell.ColumnIndex;
+
+			if (columnIndex == controlParameterColumn.Index || columnIndex == controlTypeColumn.Index || columnIndex == isDateColumn.Index ||
+				columnIndex == isRequiredColumn.Index || columnIndex == columnNameColumn.Index || columnIndex == headerTypeColumn.Index ||
+				columnIndex == isReturnRowColumn.Index || columnIndex == isReturnRowDateColumn.Index || columnIndex == isReturnRowControlColumn.Index ||
+				columnIndex == isValueFieldColumn.Index || columnIndex == isRemoveFieldColumn.Index)
+				measureDataGridView.CommitEdit(DataGridViewDataErrorContexts.Commit);
+		}
+
+		private void measureDataGridView_CellValueChanged(object sender, DataGridViewCellEventArgs e)
+		{
+			if (e.RowIndex != -1 ? measureDataGridView.CurrentCell.IsInEditMode && measureDataGridView.CurrentCell.ColumnIndex == e.ColumnIndex : false)
+			{
+				bool changeOccurred = false;
+				MeasureGridRow subject = MyMeasurementFile.MeasureGridRows.ElementAt(e.RowIndex);
+
+				if (e.ColumnIndex == controlParameterColumn.Index)
+				{
+					string selection = measureDataGridView[e.ColumnIndex, e.RowIndex].Value.ToString();
+					bool paramAlreadyUsed = MyMeasurementFile.MeasureGridRows.FindIndex(p => p.FilterParameter == selection) != -1 && !String.IsNullOrEmpty(selection);
+
+					if (subject.FilterParameter != selection && !paramAlreadyUsed)
+					{
+						subject.FilterParameter = selection;
+
+						if (subject.ControlType == ControlType.Neither)
+							subject.ControlType = ControlType.Parameter;
+
+						changeOccurred = true;
+					}
+					else if (subject.FilterParameter != selection && paramAlreadyUsed)
+						measureDataGridView[e.ColumnIndex, e.RowIndex].Value = subject.FilterParameter;
+				}
+				else if (e.ColumnIndex == controlTypeColumn.Index)
+				{
+					ControlType selection = Enums.GetControlTypeEnum(measureDataGridView[e.ColumnIndex, e.RowIndex].Value.ToString());
+
+					if (subject.ControlType != selection)
+					{
+						subject.ControlType = selection;
+						changeOccurred = true;
+					}
+				}
+				else if (e.ColumnIndex == isDateColumn.Index)
+				{
+					bool selection = (bool)measureDataGridView[e.ColumnIndex, e.RowIndex].Value;
+
+					if (subject.IsDate != selection)
+					{
+						subject.IsDate = selection;
+						changeOccurred = true;
+					}
+				}
+				else if (e.ColumnIndex == isRequiredColumn.Index)
+				{
+					bool selection = (bool)measureDataGridView[e.ColumnIndex, e.RowIndex].Value;
+
+					if (subject.IsRequired != selection)
+					{
+						subject.IsRequired = selection;
+						changeOccurred = true;
+					}
+				}
+				else if (e.ColumnIndex == columnNameColumn.Index)
+				{
+					string selection = measureDataGridView[e.ColumnIndex, e.RowIndex].Value.ToString();
+					bool columnAlreadyUsed = MyMeasurementFile.MeasureGridRows.FindIndex(p => p.ColumnName == selection) != -1 && !String.IsNullOrEmpty(selection);
+
+					if (subject.ColumnName != selection && !columnAlreadyUsed)
+					{
+						subject.ColumnName = selection;
+						subject.TableOrdinal = MyMeasurementFile.TableColumns.FindIndex(p => p == selection);
+
+						if (subject.HeaderType == HeaderType.DateColumn)
+						{
+							subject.DateColumn = selection;
+							MyMeasurementFile.ResetTableColumnOrdinals();
+						}
+
+						changeOccurred = true;
+					}
+					else if (subject.ColumnName != selection && columnAlreadyUsed)
+						measureDataGridView[e.ColumnIndex, e.RowIndex].Value = MyMeasurementFile.MeasureGridRows.ElementAt(e.RowIndex).ColumnName;
+				}
+				else if (e.ColumnIndex == headerTypeColumn.Index)
+				{
+					HeaderType selection = Enums.GetHeaderTypeEnum(measureDataGridView[e.ColumnIndex, e.RowIndex].Value.ToString());
+					int dateColumnIndex = MyMeasurementFile.MeasureGridRows.FindIndex(p => p.HeaderType == HeaderType.DateColumn);
+					bool missingRequiredDateColumn = MyMeasurementFile.Transform.RequiresDateRow && !MyMeasurementFile.Transform.HasDateRow;
+
+					if (subject.HeaderType != selection && selection != HeaderType.DateColumn)
+					{
+						subject.HeaderType = selection;
+						changeOccurred = true;
+					}
+					else if (subject.HeaderType != selection && selection == HeaderType.DateColumn && missingRequiredDateColumn)
+					{
+						MyMeasurementFile.Transform.DateField = subject.ColumnName;
+						subject.HeaderType = selection;
+						MyMeasurementFile.ResetTableColumnOrdinals();
+						columnNameColumn.DataSource = MyMeasurementFile.TableColumns;
+						changeOccurred = true;
+					}
+					else if (subject.HeaderType != selection && selection == HeaderType.DateColumn && !missingRequiredDateColumn)
+						measureDataGridView[e.ColumnIndex, e.RowIndex].Value = Enums.GetFormattedString(MyMeasurementFile.MeasureGridRows.ElementAt(e.RowIndex).HeaderType);
+
+					SetDateColumnWarning();
+				}
+				else if (e.ColumnIndex == isReturnRowColumn.Index)
+				{
+					bool selection = (bool)measureDataGridView[e.ColumnIndex, e.RowIndex].Value;
+
+					if (subject.IsReturnRow != selection)
+					{
+						subject.IsReturnRow = selection;
+						changeOccurred = true;
+					}
+				}
+				else if (e.ColumnIndex == isReturnRowDateColumn.Index)
+				{
+					bool selection = (bool)measureDataGridView[e.ColumnIndex, e.RowIndex].Value;
+
+					if (subject.IsReturnRowDate != selection)
+					{
+						subject.IsReturnRowDate = selection;
+						changeOccurred = true;
+					}
+				}
+				else if (e.ColumnIndex == isReturnRowControlColumn.Index)
+				{
+					bool selection = (bool)measureDataGridView[e.ColumnIndex, e.RowIndex].Value;
+
+					if (subject.IsReturnRowControl != selection)
+					{
+						subject.IsReturnRowControl = selection;
+						changeOccurred = true;
+					}
+				}
+				else if (e.ColumnIndex == isValueFieldColumn.Index)
+				{
+					bool selection = (bool)measureDataGridView[e.ColumnIndex, e.RowIndex].Value;
+
+					if (subject.IsValueField != selection)
+					{
+						subject.IsValueField = selection;
+						changeOccurred = true;
+					}
+				}
+				else if (e.ColumnIndex == isRemoveFieldColumn.Index)
+				{
+					bool selection = (bool)measureDataGridView[e.ColumnIndex, e.RowIndex].Value;
+
+					if (subject.IsRemoveField != selection)
+					{
+						subject.IsRemoveField = selection;
+						MyMeasurementFile.Transform.RemoveFields.Add(subject.ColumnName);
+						MyMeasurementFile.ResetTableColumnOrdinals();
+						changeOccurred = true;
+					}
+				}
+
+				if (changeOccurred)
+				{
+					MyMeasurementFile.UpdatePropertiesFromMeasureGridRows();
+					RefreshMeasureGridRow(e.RowIndex, subject);
+				}
+
+				measureDataGridView.EndEdit();
+			}
+		}
+
+		private void addMeasureGridRowButton_Click(object sender, EventArgs e)
+		{
+			EndGridCellEditMode();
+			MeasureGridRow newRow = new MeasureGridRow(MyMeasurementFile.Transform.DateField);
+
+			if (MyMeasurementFile.Parameters.Count >= MyMeasurementFile.DatabaseParameterCount)
+				newRow.ControlType = ControlType.Control;
+
+			MyMeasurementFile.MeasureGridRows.Add(newRow);
+			int row = measureDataGridView.Rows.Count;
+			measureDataGridView.Rows.Add();
+			RefreshMeasureGridRow(row, newRow);
+			measureDataGridView.CurrentCell = measureDataGridView[controlParameterColumn.Index, row];
+		}
+
+		private void deleteMeasureGridRowButton_Click(object sender, EventArgs e)
+		{
+			EndGridCellEditMode();
+			if (measureDataGridView.RowCount != 0)
+			{
+				int row = measureDataGridView.CurrentCell.RowIndex;
+				bool resetColumnOrdinals = MyMeasurementFile.MeasureGridRows.ElementAt(row).HeaderType == HeaderType.DateColumn ||
+					MyMeasurementFile.MeasureGridRows.ElementAt(row).IsRemoveField;
+				List<MeasureGridRow> newList = new List<MeasureGridRow>();
+
+				if (MyMeasurementFile.MeasureGridRows.ElementAt(row).HeaderType == HeaderType.DateColumn)
+					MyMeasurementFile.Transform.DateField = String.Empty;
+
+				for (int i = 0; i < MyMeasurementFile.MeasureGridRows.Count; i++)
+					if (i != row)
+						newList.Add(MyMeasurementFile.MeasureGridRows.ElementAt(i));
+
+				MyMeasurementFile.MeasureGridRows = newList;
+
+				if (resetColumnOrdinals)
+					MyMeasurementFile.ResetTableColumnOrdinals();
+
+				RefreshMeasureGrid();
+
+				if (row - 1 >= 0)
+					measureDataGridView.CurrentCell = measureDataGridView[0, row - 1];
+			}
+
+			SetDateColumnWarning();
+		}
+
+		private void moveUpMeasureGridRowButton_Click(object sender, EventArgs e)
+		{
+			EndGridCellEditMode();
+			int row = measureDataGridView.CurrentCell.RowIndex;
+
+			if (row > 0)
+			{
+				int destination = row - 1;
+				List<MeasureGridRow> newList = new List<MeasureGridRow>();
+
+				for (int i = 0; i < MyMeasurementFile.MeasureGridRows.Count; i++)
+				{
+					if (i == destination)
+						newList.Add(MyMeasurementFile.MeasureGridRows.ElementAt(row));
+
+					if (i != row)
+						newList.Add(MyMeasurementFile.MeasureGridRows.ElementAt(i));
+				}
+
+				MyMeasurementFile.MeasureGridRows = newList;
+				RefreshMeasureGrid();
+				measureDataGridView.CurrentCell = measureDataGridView[0, destination];
+			}
+		}
+
+		private void moveDownMeasureGridRowButton_Click(object sender, EventArgs e)
+		{
+			EndGridCellEditMode();
+			int row = measureDataGridView.CurrentCell.RowIndex;
+
+			if (row < measureDataGridView.RowCount - 1 && row != -1)
+			{
+				int destination = row + 1;
+				List<MeasureGridRow> newList = new List<MeasureGridRow>();
+
+				for (int i = 0; i < MyMeasurementFile.MeasureGridRows.Count; i++)
+				{
+					if (i != row)
+						newList.Add(MyMeasurementFile.MeasureGridRows.ElementAt(i));
+
+					if (i == destination)
+						newList.Add(MyMeasurementFile.MeasureGridRows.ElementAt(row));
+				}
+
+				MyMeasurementFile.MeasureGridRows = newList;
+				RefreshMeasureGrid();
+				measureDataGridView.CurrentCell = measureDataGridView[0, destination];
 			}
 		}
 	}

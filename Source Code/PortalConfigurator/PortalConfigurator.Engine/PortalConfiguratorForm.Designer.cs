@@ -28,17 +28,29 @@
 		/// </summary>
 		private void InitializeComponent()
 		{
+			this.components = new System.ComponentModel.Container();
 			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(PortalConfiguratorForm));
 			this.menuStrip = new System.Windows.Forms.MenuStrip();
 			this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.reloadFromDatabaseToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.configTabControl = new System.Windows.Forms.TabControl();
 			this.measureTabPage = new System.Windows.Forms.TabPage();
+			this.yAxisFormatLabel = new System.Windows.Forms.Label();
+			this.functionLabel = new System.Windows.Forms.Label();
+			this.xAxisLabelLabel = new System.Windows.Forms.Label();
+			this.yAxisFormatComboBox = new System.Windows.Forms.ComboBox();
+			this.yAxisLabelTextBox = new System.Windows.Forms.TextBox();
+			this.yAxisMaxLabel = new System.Windows.Forms.Label();
+			this.tableComboBox = new System.Windows.Forms.ComboBox();
+			this.yAxisLabelLabel = new System.Windows.Forms.Label();
 			this.hideRowLabel = new System.Windows.Forms.Label();
+			this.yAxisMaxNumericUpDown = new System.Windows.Forms.NumericUpDown();
 			this.hideRowComboBox = new System.Windows.Forms.ComboBox();
-			this.measureTableButton = new System.Windows.Forms.Button();
+			this.yAxisMinNumericUpDown = new System.Windows.Forms.NumericUpDown();
 			this.baseButton = new System.Windows.Forms.Button();
+			this.yAxisMinLabel = new System.Windows.Forms.Label();
 			this.chartsGroupBox = new System.Windows.Forms.GroupBox();
 			this.changeMultichartNameButton = new System.Windows.Forms.Button();
 			this.chartsDataGridView = new System.Windows.Forms.DataGridView();
@@ -59,6 +71,7 @@
 			this.multichartsComboBox = new System.Windows.Forms.ComboBox();
 			this.multichartsRadioButton = new System.Windows.Forms.RadioButton();
 			this.chartListRadioButton = new System.Windows.Forms.RadioButton();
+			this.xAxisLabelTextBox = new System.Windows.Forms.TextBox();
 			this.numberFormatGroupBox = new System.Windows.Forms.GroupBox();
 			this.deleteNumberFormatButton = new System.Windows.Forms.Button();
 			this.moveDownNumberFormatButton = new System.Windows.Forms.Button();
@@ -73,45 +86,24 @@
 			this.negativeColorButtonColumn = new System.Windows.Forms.DataGridViewButtonColumn();
 			this.addNumberFormatButton = new System.Windows.Forms.Button();
 			this.moveUpNumberFormatButton = new System.Windows.Forms.Button();
-			this.headersGroupBox = new System.Windows.Forms.GroupBox();
-			this.headersDataGridView = new System.Windows.Forms.DataGridView();
-			this.headerKeyColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-			this.columnNameColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-			this.headerTypeColumn = new System.Windows.Forms.DataGridViewComboBoxColumn();
-			this.headerFilterParameterColumn = new System.Windows.Forms.DataGridViewComboBoxColumn();
-			this.isReturnRowColumn = new System.Windows.Forms.DataGridViewCheckBoxColumn();
-			this.isReturnRowDateColumn = new System.Windows.Forms.DataGridViewCheckBoxColumn();
-			this.isReturnRowControlColumn = new System.Windows.Forms.DataGridViewCheckBoxColumn();
-			this.labelGroupBox = new System.Windows.Forms.GroupBox();
-			this.yAxisFormatLabel = new System.Windows.Forms.Label();
-			this.yAxisFormatComboBox = new System.Windows.Forms.ComboBox();
-			this.yAxisMaxLabel = new System.Windows.Forms.Label();
-			this.yAxisMaxNumericUpDown = new System.Windows.Forms.NumericUpDown();
-			this.yAxisMinLabel = new System.Windows.Forms.Label();
-			this.yAxisMinNumericUpDown = new System.Windows.Forms.NumericUpDown();
-			this.yAxisLabelLabel = new System.Windows.Forms.Label();
-			this.yAxisLabelTextBox = new System.Windows.Forms.TextBox();
-			this.xAxisLabelLabel = new System.Windows.Forms.Label();
-			this.xAxisLabelTextBox = new System.Windows.Forms.TextBox();
-			this.filtersParametersGroupBox = new System.Windows.Forms.GroupBox();
-			this.deleteFilterParameterButton = new System.Windows.Forms.Button();
-			this.moveDownFilterParameterButton = new System.Windows.Forms.Button();
-			this.addFilterParameterButton = new System.Windows.Forms.Button();
-			this.moveUpFilterParameterButton = new System.Windows.Forms.Button();
-			this.filterParametersDataGridView = new System.Windows.Forms.DataGridView();
-			this.filterParameterNameColumn = new System.Windows.Forms.DataGridViewComboBoxColumn();
+			this.measureGroupBox = new System.Windows.Forms.GroupBox();
+			this.deleteMeasureGridRowButton = new System.Windows.Forms.Button();
+			this.moveDownMeasureGridRowButton = new System.Windows.Forms.Button();
+			this.addMeasureGridRowButton = new System.Windows.Forms.Button();
+			this.moveUpMeasureGridRowButton = new System.Windows.Forms.Button();
+			this.measureDataGridView = new System.Windows.Forms.DataGridView();
+			this.controlParameterColumn = new System.Windows.Forms.DataGridViewComboBoxColumn();
 			this.controlTypeColumn = new System.Windows.Forms.DataGridViewComboBoxColumn();
 			this.isDateColumn = new System.Windows.Forms.DataGridViewCheckBoxColumn();
 			this.isRequiredColumn = new System.Windows.Forms.DataGridViewCheckBoxColumn();
-			this.transformGroupBox = new System.Windows.Forms.GroupBox();
-			this.transformFieldsDataGridView = new System.Windows.Forms.DataGridView();
-			this.fieldNameColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+			this.columnNameColumn = new System.Windows.Forms.DataGridViewComboBoxColumn();
+			this.headerTypeColumn = new System.Windows.Forms.DataGridViewComboBoxColumn();
+			this.headerTextColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+			this.isReturnRowColumn = new System.Windows.Forms.DataGridViewCheckBoxColumn();
+			this.isReturnRowDateColumn = new System.Windows.Forms.DataGridViewCheckBoxColumn();
+			this.isReturnRowControlColumn = new System.Windows.Forms.DataGridViewCheckBoxColumn();
 			this.isValueFieldColumn = new System.Windows.Forms.DataGridViewCheckBoxColumn();
-			this.removeFieldColumn = new System.Windows.Forms.DataGridViewCheckBoxColumn();
-			this.dateFieldLabel = new System.Windows.Forms.Label();
-			this.dateFieldComboBox = new System.Windows.Forms.ComboBox();
-			this.functionLabel = new System.Windows.Forms.Label();
-			this.functionComboBox = new System.Windows.Forms.ComboBox();
+			this.isRemoveFieldColumn = new System.Windows.Forms.DataGridViewCheckBoxColumn();
 			this.chartTypeLabel = new System.Windows.Forms.Label();
 			this.chartTypeComboBox = new System.Windows.Forms.ComboBox();
 			this.muteAllOthersCheckBox = new System.Windows.Forms.CheckBox();
@@ -123,8 +115,8 @@
 			this.baseLabel = new System.Windows.Forms.Label();
 			this.summaryLabel = new System.Windows.Forms.Label();
 			this.summaryTextBox = new System.Windows.Forms.TextBox();
-			this.fullTitleLabel = new System.Windows.Forms.Label();
-			this.fullTitleTextBox = new System.Windows.Forms.TextBox();
+			this.dropdownLabel = new System.Windows.Forms.Label();
+			this.dropdownTextBox = new System.Windows.Forms.TextBox();
 			this.orderLabel = new System.Windows.Forms.Label();
 			this.orderNumericUpDown = new System.Windows.Forms.NumericUpDown();
 			this.measureTableLabel = new System.Windows.Forms.Label();
@@ -136,6 +128,11 @@
 			this.newMeasureFileToolStripButton = new System.Windows.Forms.ToolStripButton();
 			this.openMeasureFileToolStripButton = new System.Windows.Forms.ToolStripButton();
 			this.saveMeasureFileToolStripButton = new System.Windows.Forms.ToolStripButton();
+			this.functionComboBox = new System.Windows.Forms.ComboBox();
+			this.parametersCoveredGroupBox = new System.Windows.Forms.GroupBox();
+			this.parametersNeededLabel = new System.Windows.Forms.Label();
+			this.parametersCoveredOfLabel = new System.Windows.Forms.Label();
+			this.parametersCountLabel = new System.Windows.Forms.Label();
 			this.filterParameterTabPage = new System.Windows.Forms.TabPage();
 			this.filterParametersListView = new System.Windows.Forms.ListView();
 			this.names = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
@@ -151,7 +148,7 @@
 			this.moveUpFilterParameterToolStripButton = new System.Windows.Forms.ToolStripButton();
 			this.moveDownFilterParameterToolStripButton = new System.Windows.Forms.ToolStripButton();
 			this.displayGroupBox = new System.Windows.Forms.GroupBox();
-			this.allMonthsCheckBox = new System.Windows.Forms.CheckBox();
+			this.monthLimitCheckBox = new System.Windows.Forms.CheckBox();
 			this.valuesTypeLabel = new System.Windows.Forms.Label();
 			this.valuesTypeButton = new System.Windows.Forms.Button();
 			this.helpGroupBox = new System.Windows.Forms.GroupBox();
@@ -162,8 +159,6 @@
 			this.addHelpButton = new System.Windows.Forms.Button();
 			this.moveDownHelpButton = new System.Windows.Forms.Button();
 			this.moveUpHelpButton = new System.Windows.Forms.Button();
-			this.sortFunctionComboBox = new System.Windows.Forms.ComboBox();
-			this.sortFunctionLabel = new System.Windows.Forms.Label();
 			this.deleteKeyButton = new System.Windows.Forms.Button();
 			this.moveDownKeyButton = new System.Windows.Forms.Button();
 			this.addKeyButton = new System.Windows.Forms.Button();
@@ -179,7 +174,6 @@
 			this.formatKeyColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.isTableSourceColumn = new System.Windows.Forms.DataGridViewCheckBoxColumn();
 			this.sourceLabelColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-			this.monthLimitLabel = new System.Windows.Forms.Label();
 			this.monthLimitNumericUpDown = new System.Windows.Forms.NumericUpDown();
 			this.monthStepLabel = new System.Windows.Forms.Label();
 			this.monthStepNumericUpDown = new System.Windows.Forms.NumericUpDown();
@@ -188,8 +182,8 @@
 			this.quarterDateComboBox = new System.Windows.Forms.ComboBox();
 			this.aliasLabel = new System.Windows.Forms.Label();
 			this.aliasTextBox = new System.Windows.Forms.TextBox();
-			this.sortLabel = new System.Windows.Forms.Label();
-			this.sortComboBox = new System.Windows.Forms.ComboBox();
+			this.sortTypeLabel = new System.Windows.Forms.Label();
+			this.sortTypeComboBox = new System.Windows.Forms.ComboBox();
 			this.zeroLastCheckBox = new System.Windows.Forms.CheckBox();
 			this.multiCheckBox = new System.Windows.Forms.CheckBox();
 			this.displayTypeLabel = new System.Windows.Forms.Label();
@@ -207,6 +201,7 @@
 			this.moveDownCommentButton = new System.Windows.Forms.Button();
 			this.moveUpCommentButton = new System.Windows.Forms.Button();
 			this.tableSettingsGroupBox = new System.Windows.Forms.GroupBox();
+			this.filterParameterTableNameComboBox = new System.Windows.Forms.ComboBox();
 			this.orderByTextBox = new System.Windows.Forms.TextBox();
 			this.orderByLabel = new System.Windows.Forms.Label();
 			this.lagColumnLabel = new System.Windows.Forms.Label();
@@ -214,8 +209,6 @@
 			this.valueColumnLabel = new System.Windows.Forms.Label();
 			this.valueColumnComboBox = new System.Windows.Forms.ComboBox();
 			this.filterPrarameterTableNameLabel = new System.Windows.Forms.Label();
-			this.filterParameterTableNameTextBox = new System.Windows.Forms.TextBox();
-			this.loadFilterParameterTableButton = new System.Windows.Forms.Button();
 			this.filterParameterNameTextBox = new System.Windows.Forms.TextBox();
 			this.filterParameterNameLabel = new System.Windows.Forms.Label();
 			this.typeGroupBox = new System.Windows.Forms.GroupBox();
@@ -226,25 +219,23 @@
 			this.openFileDialog = new System.Windows.Forms.OpenFileDialog();
 			this.saveFileDialog = new System.Windows.Forms.SaveFileDialog();
 			this.colorDialog = new System.Windows.Forms.ColorDialog();
+			this.dateColumnErrorProvider = new System.Windows.Forms.ErrorProvider(this.components);
+			this.valuesTypeErrorProvider = new System.Windows.Forms.ErrorProvider(this.components);
 			this.menuStrip.SuspendLayout();
 			this.configTabControl.SuspendLayout();
 			this.measureTabPage.SuspendLayout();
+			((System.ComponentModel.ISupportInitialize)(this.yAxisMaxNumericUpDown)).BeginInit();
+			((System.ComponentModel.ISupportInitialize)(this.yAxisMinNumericUpDown)).BeginInit();
 			this.chartsGroupBox.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.chartsDataGridView)).BeginInit();
 			this.numberFormatGroupBox.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.numberFormatsDataGridView)).BeginInit();
-			this.headersGroupBox.SuspendLayout();
-			((System.ComponentModel.ISupportInitialize)(this.headersDataGridView)).BeginInit();
-			this.labelGroupBox.SuspendLayout();
-			((System.ComponentModel.ISupportInitialize)(this.yAxisMaxNumericUpDown)).BeginInit();
-			((System.ComponentModel.ISupportInitialize)(this.yAxisMinNumericUpDown)).BeginInit();
-			this.filtersParametersGroupBox.SuspendLayout();
-			((System.ComponentModel.ISupportInitialize)(this.filterParametersDataGridView)).BeginInit();
-			this.transformGroupBox.SuspendLayout();
-			((System.ComponentModel.ISupportInitialize)(this.transformFieldsDataGridView)).BeginInit();
+			this.measureGroupBox.SuspendLayout();
+			((System.ComponentModel.ISupportInitialize)(this.measureDataGridView)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.maxCheckedNumericUpDown)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.orderNumericUpDown)).BeginInit();
 			this.measureToolStrip.SuspendLayout();
+			this.parametersCoveredGroupBox.SuspendLayout();
 			this.filterParameterTabPage.SuspendLayout();
 			this.filterParameterToolStrip.SuspendLayout();
 			this.displayGroupBox.SuspendLayout();
@@ -257,6 +248,8 @@
 			((System.ComponentModel.ISupportInitialize)(this.commentsDataGridView)).BeginInit();
 			this.tableSettingsGroupBox.SuspendLayout();
 			this.typeGroupBox.SuspendLayout();
+			((System.ComponentModel.ISupportInitialize)(this.dateColumnErrorProvider)).BeginInit();
+			((System.ComponentModel.ISupportInitialize)(this.valuesTypeErrorProvider)).BeginInit();
 			this.SuspendLayout();
 			// 
 			// menuStrip
@@ -273,15 +266,23 @@
 			// fileToolStripMenuItem
 			// 
 			this.fileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.reloadFromDatabaseToolStripMenuItem,
             this.exitToolStripMenuItem});
 			this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
 			this.fileToolStripMenuItem.Size = new System.Drawing.Size(37, 20);
 			this.fileToolStripMenuItem.Text = "File";
 			// 
+			// reloadFromDatabaseToolStripMenuItem
+			// 
+			this.reloadFromDatabaseToolStripMenuItem.Name = "reloadFromDatabaseToolStripMenuItem";
+			this.reloadFromDatabaseToolStripMenuItem.Size = new System.Drawing.Size(190, 22);
+			this.reloadFromDatabaseToolStripMenuItem.Text = "Reload from Database";
+			this.reloadFromDatabaseToolStripMenuItem.Click += new System.EventHandler(this.reloadFromDatabaseToolStripMenuItem_Click);
+			// 
 			// exitToolStripMenuItem
 			// 
 			this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
-			this.exitToolStripMenuItem.Size = new System.Drawing.Size(92, 22);
+			this.exitToolStripMenuItem.Size = new System.Drawing.Size(190, 22);
 			this.exitToolStripMenuItem.Text = "Exit";
 			this.exitToolStripMenuItem.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
 			// 
@@ -301,19 +302,28 @@
 			this.configTabControl.SelectedIndex = 0;
 			this.configTabControl.Size = new System.Drawing.Size(1216, 703);
 			this.configTabControl.TabIndex = 3;
+			this.configTabControl.Click += new System.EventHandler(this.configTabControl_Click);
 			// 
 			// measureTabPage
 			// 
+			this.measureTabPage.Controls.Add(this.yAxisFormatLabel);
+			this.measureTabPage.Controls.Add(this.functionLabel);
+			this.measureTabPage.Controls.Add(this.xAxisLabelLabel);
+			this.measureTabPage.Controls.Add(this.yAxisFormatComboBox);
+			this.measureTabPage.Controls.Add(this.yAxisLabelTextBox);
+			this.measureTabPage.Controls.Add(this.yAxisMaxLabel);
+			this.measureTabPage.Controls.Add(this.tableComboBox);
+			this.measureTabPage.Controls.Add(this.yAxisLabelLabel);
 			this.measureTabPage.Controls.Add(this.hideRowLabel);
+			this.measureTabPage.Controls.Add(this.yAxisMaxNumericUpDown);
 			this.measureTabPage.Controls.Add(this.hideRowComboBox);
-			this.measureTabPage.Controls.Add(this.measureTableButton);
+			this.measureTabPage.Controls.Add(this.yAxisMinNumericUpDown);
 			this.measureTabPage.Controls.Add(this.baseButton);
+			this.measureTabPage.Controls.Add(this.yAxisMinLabel);
 			this.measureTabPage.Controls.Add(this.chartsGroupBox);
+			this.measureTabPage.Controls.Add(this.xAxisLabelTextBox);
 			this.measureTabPage.Controls.Add(this.numberFormatGroupBox);
-			this.measureTabPage.Controls.Add(this.headersGroupBox);
-			this.measureTabPage.Controls.Add(this.labelGroupBox);
-			this.measureTabPage.Controls.Add(this.filtersParametersGroupBox);
-			this.measureTabPage.Controls.Add(this.transformGroupBox);
+			this.measureTabPage.Controls.Add(this.measureGroupBox);
 			this.measureTabPage.Controls.Add(this.chartTypeLabel);
 			this.measureTabPage.Controls.Add(this.chartTypeComboBox);
 			this.measureTabPage.Controls.Add(this.muteAllOthersCheckBox);
@@ -325,8 +335,8 @@
 			this.measureTabPage.Controls.Add(this.baseLabel);
 			this.measureTabPage.Controls.Add(this.summaryLabel);
 			this.measureTabPage.Controls.Add(this.summaryTextBox);
-			this.measureTabPage.Controls.Add(this.fullTitleLabel);
-			this.measureTabPage.Controls.Add(this.fullTitleTextBox);
+			this.measureTabPage.Controls.Add(this.dropdownLabel);
+			this.measureTabPage.Controls.Add(this.dropdownTextBox);
 			this.measureTabPage.Controls.Add(this.orderLabel);
 			this.measureTabPage.Controls.Add(this.orderNumericUpDown);
 			this.measureTabPage.Controls.Add(this.measureTableLabel);
@@ -335,6 +345,8 @@
 			this.measureTabPage.Controls.Add(this.filterParameterFileButtonLabel);
 			this.measureTabPage.Controls.Add(this.filterParameterFileButton);
 			this.measureTabPage.Controls.Add(this.measureToolStrip);
+			this.measureTabPage.Controls.Add(this.functionComboBox);
+			this.measureTabPage.Controls.Add(this.parametersCoveredGroupBox);
 			this.measureTabPage.Location = new System.Drawing.Point(4, 22);
 			this.measureTabPage.Name = "measureTabPage";
 			this.measureTabPage.Padding = new System.Windows.Forms.Padding(3);
@@ -343,50 +355,163 @@
 			this.measureTabPage.Text = "Measure";
 			this.measureTabPage.UseVisualStyleBackColor = true;
 			// 
+			// yAxisFormatLabel
+			// 
+			this.yAxisFormatLabel.AutoSize = true;
+			this.yAxisFormatLabel.Location = new System.Drawing.Point(0, 376);
+			this.yAxisFormatLabel.Name = "yAxisFormatLabel";
+			this.yAxisFormatLabel.Size = new System.Drawing.Size(71, 13);
+			this.yAxisFormatLabel.TabIndex = 9;
+			this.yAxisFormatLabel.Text = "Y Axis Format";
+			// 
+			// functionLabel
+			// 
+			this.functionLabel.AutoSize = true;
+			this.functionLabel.Location = new System.Drawing.Point(243, 304);
+			this.functionLabel.Name = "functionLabel";
+			this.functionLabel.Size = new System.Drawing.Size(98, 13);
+			this.functionLabel.TabIndex = 1;
+			this.functionLabel.Text = "Transform Function";
+			// 
+			// xAxisLabelLabel
+			// 
+			this.xAxisLabelLabel.AutoSize = true;
+			this.xAxisLabelLabel.Location = new System.Drawing.Point(0, 224);
+			this.xAxisLabelLabel.Name = "xAxisLabelLabel";
+			this.xAxisLabelLabel.Size = new System.Drawing.Size(65, 13);
+			this.xAxisLabelLabel.TabIndex = 1;
+			this.xAxisLabelLabel.Text = "X Axis Label";
+			// 
+			// yAxisFormatComboBox
+			// 
+			this.yAxisFormatComboBox.FormattingEnabled = true;
+			this.yAxisFormatComboBox.Location = new System.Drawing.Point(89, 373);
+			this.yAxisFormatComboBox.Name = "yAxisFormatComboBox";
+			this.yAxisFormatComboBox.Size = new System.Drawing.Size(151, 21);
+			this.yAxisFormatComboBox.TabIndex = 18;
+			this.yAxisFormatComboBox.SelectedIndexChanged += new System.EventHandler(this.yAxisFormatComboBox_SelectedIndexChanged);
+			// 
+			// yAxisLabelTextBox
+			// 
+			this.yAxisLabelTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+			this.yAxisLabelTextBox.Location = new System.Drawing.Point(3, 279);
+			this.yAxisLabelTextBox.Name = "yAxisLabelTextBox";
+			this.yAxisLabelTextBox.Size = new System.Drawing.Size(423, 20);
+			this.yAxisLabelTextBox.TabIndex = 15;
+			this.yAxisLabelTextBox.TextChanged += new System.EventHandler(this.yAxisLabelTextBox_TextChanged);
+			// 
+			// yAxisMaxLabel
+			// 
+			this.yAxisMaxLabel.AutoSize = true;
+			this.yAxisMaxLabel.Location = new System.Drawing.Point(0, 349);
+			this.yAxisMaxLabel.Name = "yAxisMaxLabel";
+			this.yAxisMaxLabel.Size = new System.Drawing.Size(83, 13);
+			this.yAxisMaxLabel.TabIndex = 7;
+			this.yAxisMaxLabel.Text = "Y Axis Maximum";
+			// 
+			// tableComboBox
+			// 
+			this.tableComboBox.FormattingEnabled = true;
+			this.tableComboBox.Location = new System.Drawing.Point(172, 47);
+			this.tableComboBox.Name = "tableComboBox";
+			this.tableComboBox.Size = new System.Drawing.Size(254, 21);
+			this.tableComboBox.TabIndex = 1;
+			this.tableComboBox.SelectedIndexChanged += new System.EventHandler(this.tableComboBox_SelectedIndexChanged);
+			// 
+			// yAxisLabelLabel
+			// 
+			this.yAxisLabelLabel.AutoSize = true;
+			this.yAxisLabelLabel.Location = new System.Drawing.Point(0, 263);
+			this.yAxisLabelLabel.Name = "yAxisLabelLabel";
+			this.yAxisLabelLabel.Size = new System.Drawing.Size(65, 13);
+			this.yAxisLabelLabel.TabIndex = 3;
+			this.yAxisLabelLabel.Text = "Y Axis Label";
+			// 
 			// hideRowLabel
 			// 
 			this.hideRowLabel.AutoSize = true;
-			this.hideRowLabel.Location = new System.Drawing.Point(1059, 31);
+			this.hideRowLabel.Location = new System.Drawing.Point(791, 31);
 			this.hideRowLabel.Name = "hideRowLabel";
 			this.hideRowLabel.Size = new System.Drawing.Size(54, 13);
 			this.hideRowLabel.TabIndex = 35;
 			this.hideRowLabel.Text = "Hide Row";
 			// 
+			// yAxisMaxNumericUpDown
+			// 
+			this.yAxisMaxNumericUpDown.DecimalPlaces = 1;
+			this.yAxisMaxNumericUpDown.Increment = new decimal(new int[] {
+            1000,
+            0,
+            0,
+            0});
+			this.yAxisMaxNumericUpDown.Location = new System.Drawing.Point(89, 347);
+			this.yAxisMaxNumericUpDown.Maximum = new decimal(new int[] {
+            10000000,
+            0,
+            0,
+            0});
+			this.yAxisMaxNumericUpDown.Name = "yAxisMaxNumericUpDown";
+			this.yAxisMaxNumericUpDown.Size = new System.Drawing.Size(151, 20);
+			this.yAxisMaxNumericUpDown.TabIndex = 17;
+			this.yAxisMaxNumericUpDown.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+			this.yAxisMaxNumericUpDown.ThousandsSeparator = true;
+			this.yAxisMaxNumericUpDown.ValueChanged += new System.EventHandler(this.yAxisMaxNumericUpDown_ValueChanged);
+			// 
 			// hideRowComboBox
 			// 
 			this.hideRowComboBox.FormattingEnabled = true;
-			this.hideRowComboBox.Location = new System.Drawing.Point(1062, 47);
+			this.hideRowComboBox.Location = new System.Drawing.Point(794, 47);
 			this.hideRowComboBox.Name = "hideRowComboBox";
-			this.hideRowComboBox.Size = new System.Drawing.Size(121, 21);
-			this.hideRowComboBox.TabIndex = 5;
+			this.hideRowComboBox.Size = new System.Drawing.Size(136, 21);
+			this.hideRowComboBox.TabIndex = 6;
 			this.hideRowComboBox.SelectedIndexChanged += new System.EventHandler(this.hideRowComboBox_SelectedIndexChanged);
 			// 
-			// measureTableButton
+			// yAxisMinNumericUpDown
 			// 
-			this.measureTableButton.Location = new System.Drawing.Point(172, 45);
-			this.measureTableButton.Name = "measureTableButton";
-			this.measureTableButton.Size = new System.Drawing.Size(254, 23);
-			this.measureTableButton.TabIndex = 1;
-			this.measureTableButton.Text = "No Stored Procedure";
-			this.measureTableButton.UseVisualStyleBackColor = true;
-			this.measureTableButton.Click += new System.EventHandler(this.measureTableButton_Click);
+			this.yAxisMinNumericUpDown.DecimalPlaces = 1;
+			this.yAxisMinNumericUpDown.Increment = new decimal(new int[] {
+            1000,
+            0,
+            0,
+            0});
+			this.yAxisMinNumericUpDown.Location = new System.Drawing.Point(89, 321);
+			this.yAxisMinNumericUpDown.Maximum = new decimal(new int[] {
+            10000000,
+            0,
+            0,
+            0});
+			this.yAxisMinNumericUpDown.Name = "yAxisMinNumericUpDown";
+			this.yAxisMinNumericUpDown.Size = new System.Drawing.Size(151, 20);
+			this.yAxisMinNumericUpDown.TabIndex = 16;
+			this.yAxisMinNumericUpDown.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+			this.yAxisMinNumericUpDown.ThousandsSeparator = true;
+			this.yAxisMinNumericUpDown.ValueChanged += new System.EventHandler(this.yAxisMinNumericUpDown_ValueChanged);
 			// 
 			// baseButton
 			// 
 			this.baseButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-			this.baseButton.Location = new System.Drawing.Point(656, 45);
+			this.baseButton.Location = new System.Drawing.Point(432, 45);
 			this.baseButton.Name = "baseButton";
-			this.baseButton.Size = new System.Drawing.Size(274, 23);
-			this.baseButton.TabIndex = 3;
+			this.baseButton.Size = new System.Drawing.Size(218, 23);
+			this.baseButton.TabIndex = 4;
 			this.baseButton.Text = "No Base Measure File";
 			this.baseButton.UseVisualStyleBackColor = true;
 			this.baseButton.Click += new System.EventHandler(this.baseButton_Click);
 			this.baseButton.MouseUp += new System.Windows.Forms.MouseEventHandler(this.baseButton_MouseUp);
 			// 
+			// yAxisMinLabel
+			// 
+			this.yAxisMinLabel.AutoSize = true;
+			this.yAxisMinLabel.Location = new System.Drawing.Point(0, 324);
+			this.yAxisMinLabel.Name = "yAxisMinLabel";
+			this.yAxisMinLabel.Size = new System.Drawing.Size(80, 13);
+			this.yAxisMinLabel.TabIndex = 5;
+			this.yAxisMinLabel.Text = "Y Axis Minimum";
+			// 
 			// chartsGroupBox
 			// 
-			this.chartsGroupBox.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
+			this.chartsGroupBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
 			this.chartsGroupBox.Controls.Add(this.changeMultichartNameButton);
 			this.chartsGroupBox.Controls.Add(this.chartsDataGridView);
@@ -401,18 +526,18 @@
 			this.chartsGroupBox.Controls.Add(this.multichartsComboBox);
 			this.chartsGroupBox.Controls.Add(this.multichartsRadioButton);
 			this.chartsGroupBox.Controls.Add(this.chartListRadioButton);
-			this.chartsGroupBox.Location = new System.Drawing.Point(523, 491);
+			this.chartsGroupBox.Location = new System.Drawing.Point(432, 224);
 			this.chartsGroupBox.Name = "chartsGroupBox";
-			this.chartsGroupBox.Size = new System.Drawing.Size(682, 183);
-			this.chartsGroupBox.TabIndex = 18;
+			this.chartsGroupBox.Size = new System.Drawing.Size(773, 176);
+			this.chartsGroupBox.TabIndex = 20;
 			this.chartsGroupBox.TabStop = false;
 			this.chartsGroupBox.Text = "Charts";
 			// 
 			// changeMultichartNameButton
 			// 
-			this.changeMultichartNameButton.Location = new System.Drawing.Point(540, 20);
+			this.changeMultichartNameButton.Location = new System.Drawing.Point(599, 18);
 			this.changeMultichartNameButton.Name = "changeMultichartNameButton";
-			this.changeMultichartNameButton.Size = new System.Drawing.Size(134, 20);
+			this.changeMultichartNameButton.Size = new System.Drawing.Size(134, 22);
 			this.changeMultichartNameButton.TabIndex = 43;
 			this.changeMultichartNameButton.Text = "Change Multichart Name";
 			this.changeMultichartNameButton.UseVisualStyleBackColor = true;
@@ -433,11 +558,12 @@
             this.widthColumn,
             this.heightColumn,
             this.additionalOptionsColumn});
+			this.chartsDataGridView.EditMode = System.Windows.Forms.DataGridViewEditMode.EditOnEnter;
 			this.chartsDataGridView.Location = new System.Drawing.Point(7, 44);
 			this.chartsDataGridView.MultiSelect = false;
 			this.chartsDataGridView.Name = "chartsDataGridView";
 			this.chartsDataGridView.RowHeadersVisible = false;
-			this.chartsDataGridView.Size = new System.Drawing.Size(635, 133);
+			this.chartsDataGridView.Size = new System.Drawing.Size(726, 126);
 			this.chartsDataGridView.TabIndex = 42;
 			this.chartsDataGridView.TabStop = false;
 			this.chartsDataGridView.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.chartsDataGridView_CellClick);
@@ -489,7 +615,7 @@
 			// 
 			this.deleteMultichartsButton.Enabled = false;
 			this.deleteMultichartsButton.Image = global::PortalConfigurator.Properties.Resources._14_Delete_16x16;
-			this.deleteMultichartsButton.Location = new System.Drawing.Point(462, 20);
+			this.deleteMultichartsButton.Location = new System.Drawing.Point(521, 20);
 			this.deleteMultichartsButton.Name = "deleteMultichartsButton";
 			this.deleteMultichartsButton.Size = new System.Drawing.Size(20, 20);
 			this.deleteMultichartsButton.TabIndex = 41;
@@ -501,7 +627,7 @@
 			// 
 			this.moveDownMultichartsButton.Enabled = false;
 			this.moveDownMultichartsButton.Image = global::PortalConfigurator.Properties.Resources.arrow_Down_16xLG;
-			this.moveDownMultichartsButton.Location = new System.Drawing.Point(514, 20);
+			this.moveDownMultichartsButton.Location = new System.Drawing.Point(573, 20);
 			this.moveDownMultichartsButton.Name = "moveDownMultichartsButton";
 			this.moveDownMultichartsButton.Size = new System.Drawing.Size(20, 20);
 			this.moveDownMultichartsButton.TabIndex = 39;
@@ -513,7 +639,7 @@
 			// 
 			this.addMultichartsButton.Enabled = false;
 			this.addMultichartsButton.Image = global::PortalConfigurator.Properties.Resources.action_add_16xLG;
-			this.addMultichartsButton.Location = new System.Drawing.Point(436, 20);
+			this.addMultichartsButton.Location = new System.Drawing.Point(495, 20);
 			this.addMultichartsButton.Name = "addMultichartsButton";
 			this.addMultichartsButton.Size = new System.Drawing.Size(20, 20);
 			this.addMultichartsButton.TabIndex = 40;
@@ -525,7 +651,7 @@
 			// 
 			this.moveUpMultichartsButton.Enabled = false;
 			this.moveUpMultichartsButton.Image = global::PortalConfigurator.Properties.Resources.arrow_Up_16xLG;
-			this.moveUpMultichartsButton.Location = new System.Drawing.Point(488, 20);
+			this.moveUpMultichartsButton.Location = new System.Drawing.Point(547, 20);
 			this.moveUpMultichartsButton.Name = "moveUpMultichartsButton";
 			this.moveUpMultichartsButton.Size = new System.Drawing.Size(20, 20);
 			this.moveUpMultichartsButton.TabIndex = 38;
@@ -537,7 +663,7 @@
 			// 
 			this.deleteChartButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
 			this.deleteChartButton.Image = global::PortalConfigurator.Properties.Resources._14_Delete_16x16;
-			this.deleteChartButton.Location = new System.Drawing.Point(648, 87);
+			this.deleteChartButton.Location = new System.Drawing.Point(739, 78);
 			this.deleteChartButton.Name = "deleteChartButton";
 			this.deleteChartButton.Size = new System.Drawing.Size(28, 25);
 			this.deleteChartButton.TabIndex = 37;
@@ -549,7 +675,7 @@
 			// 
 			this.moveDownChartButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
 			this.moveDownChartButton.Image = global::PortalConfigurator.Properties.Resources.arrow_Down_16xLG;
-			this.moveDownChartButton.Location = new System.Drawing.Point(648, 149);
+			this.moveDownChartButton.Location = new System.Drawing.Point(739, 140);
 			this.moveDownChartButton.Name = "moveDownChartButton";
 			this.moveDownChartButton.Size = new System.Drawing.Size(28, 25);
 			this.moveDownChartButton.TabIndex = 35;
@@ -561,7 +687,7 @@
 			// 
 			this.addChartButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
 			this.addChartButton.Image = global::PortalConfigurator.Properties.Resources.action_add_16xLG;
-			this.addChartButton.Location = new System.Drawing.Point(648, 56);
+			this.addChartButton.Location = new System.Drawing.Point(739, 47);
 			this.addChartButton.Name = "addChartButton";
 			this.addChartButton.Size = new System.Drawing.Size(28, 25);
 			this.addChartButton.TabIndex = 36;
@@ -573,7 +699,7 @@
 			// 
 			this.moveUpChartButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
 			this.moveUpChartButton.Image = global::PortalConfigurator.Properties.Resources.arrow_Up_16xLG;
-			this.moveUpChartButton.Location = new System.Drawing.Point(648, 118);
+			this.moveUpChartButton.Location = new System.Drawing.Point(739, 109);
 			this.moveUpChartButton.Name = "moveUpChartButton";
 			this.moveUpChartButton.Size = new System.Drawing.Size(28, 25);
 			this.moveUpChartButton.TabIndex = 34;
@@ -587,7 +713,7 @@
 			this.multichartsComboBox.FormattingEnabled = true;
 			this.multichartsComboBox.Location = new System.Drawing.Point(165, 19);
 			this.multichartsComboBox.Name = "multichartsComboBox";
-			this.multichartsComboBox.Size = new System.Drawing.Size(265, 21);
+			this.multichartsComboBox.Size = new System.Drawing.Size(324, 21);
 			this.multichartsComboBox.TabIndex = 2;
 			this.multichartsComboBox.SelectedIndexChanged += new System.EventHandler(this.multichartsComboBox_SelectedIndexChanged);
 			// 
@@ -615,6 +741,16 @@
 			this.chartListRadioButton.UseVisualStyleBackColor = true;
 			this.chartListRadioButton.CheckedChanged += new System.EventHandler(this.chartListRadioButton_CheckedChanged);
 			// 
+			// xAxisLabelTextBox
+			// 
+			this.xAxisLabelTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+			this.xAxisLabelTextBox.Location = new System.Drawing.Point(3, 240);
+			this.xAxisLabelTextBox.Name = "xAxisLabelTextBox";
+			this.xAxisLabelTextBox.Size = new System.Drawing.Size(423, 20);
+			this.xAxisLabelTextBox.TabIndex = 14;
+			this.xAxisLabelTextBox.TextChanged += new System.EventHandler(this.xAxisLabelTextBox_TextChanged);
+			// 
 			// numberFormatGroupBox
 			// 
 			this.numberFormatGroupBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
@@ -624,10 +760,10 @@
 			this.numberFormatGroupBox.Controls.Add(this.numberFormatsDataGridView);
 			this.numberFormatGroupBox.Controls.Add(this.addNumberFormatButton);
 			this.numberFormatGroupBox.Controls.Add(this.moveUpNumberFormatButton);
-			this.numberFormatGroupBox.Location = new System.Drawing.Point(523, 356);
+			this.numberFormatGroupBox.Location = new System.Drawing.Point(432, 110);
 			this.numberFormatGroupBox.Name = "numberFormatGroupBox";
-			this.numberFormatGroupBox.Size = new System.Drawing.Size(682, 129);
-			this.numberFormatGroupBox.TabIndex = 16;
+			this.numberFormatGroupBox.Size = new System.Drawing.Size(773, 108);
+			this.numberFormatGroupBox.TabIndex = 13;
 			this.numberFormatGroupBox.TabStop = false;
 			this.numberFormatGroupBox.Text = "Number Format";
 			// 
@@ -635,7 +771,7 @@
 			// 
 			this.deleteNumberFormatButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
 			this.deleteNumberFormatButton.Image = global::PortalConfigurator.Properties.Resources._14_Delete_16x16;
-			this.deleteNumberFormatButton.Location = new System.Drawing.Point(651, 51);
+			this.deleteNumberFormatButton.Location = new System.Drawing.Point(739, 33);
 			this.deleteNumberFormatButton.Name = "deleteNumberFormatButton";
 			this.deleteNumberFormatButton.Size = new System.Drawing.Size(28, 25);
 			this.deleteNumberFormatButton.TabIndex = 37;
@@ -647,7 +783,7 @@
 			// 
 			this.moveDownNumberFormatButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
 			this.moveDownNumberFormatButton.Image = global::PortalConfigurator.Properties.Resources.arrow_Down_16xLG;
-			this.moveDownNumberFormatButton.Location = new System.Drawing.Point(651, 82);
+			this.moveDownNumberFormatButton.Location = new System.Drawing.Point(739, 64);
 			this.moveDownNumberFormatButton.Name = "moveDownNumberFormatButton";
 			this.moveDownNumberFormatButton.Size = new System.Drawing.Size(28, 25);
 			this.moveDownNumberFormatButton.TabIndex = 35;
@@ -659,7 +795,8 @@
 			// 
 			this.numberFormatsDataGridView.AllowUserToAddRows = false;
 			this.numberFormatsDataGridView.AllowUserToDeleteRows = false;
-			this.numberFormatsDataGridView.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+			this.numberFormatsDataGridView.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
 			this.numberFormatsDataGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
 			this.numberFormatsDataGridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
@@ -671,15 +808,15 @@
             this.suffixColumn,
             this.negativeParensColumn,
             this.negativeColorButtonColumn});
+			this.numberFormatsDataGridView.EditMode = System.Windows.Forms.DataGridViewEditMode.EditOnEnter;
 			this.numberFormatsDataGridView.Location = new System.Drawing.Point(7, 20);
 			this.numberFormatsDataGridView.MultiSelect = false;
 			this.numberFormatsDataGridView.Name = "numberFormatsDataGridView";
 			this.numberFormatsDataGridView.RowHeadersVisible = false;
-			this.numberFormatsDataGridView.Size = new System.Drawing.Size(604, 103);
+			this.numberFormatsDataGridView.Size = new System.Drawing.Size(692, 82);
 			this.numberFormatsDataGridView.TabIndex = 0;
 			this.numberFormatsDataGridView.TabStop = false;
 			this.numberFormatsDataGridView.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.numberFormatsDataGridView_CellClick);
-			this.numberFormatsDataGridView.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.numberFormatsDataGridView_CellEndEdit);
 			this.numberFormatsDataGridView.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.numberFormatsDataGridView_CellValueChanged);
 			this.numberFormatsDataGridView.CurrentCellDirtyStateChanged += new System.EventHandler(this.numberFormatsDataGridView_CurrentCellDirtyStateChanged);
 			// 
@@ -737,7 +874,7 @@
 			// 
 			this.addNumberFormatButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
 			this.addNumberFormatButton.Image = global::PortalConfigurator.Properties.Resources.action_add_16xLG;
-			this.addNumberFormatButton.Location = new System.Drawing.Point(617, 51);
+			this.addNumberFormatButton.Location = new System.Drawing.Point(705, 33);
 			this.addNumberFormatButton.Name = "addNumberFormatButton";
 			this.addNumberFormatButton.Size = new System.Drawing.Size(28, 25);
 			this.addNumberFormatButton.TabIndex = 36;
@@ -749,7 +886,7 @@
 			// 
 			this.moveUpNumberFormatButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
 			this.moveUpNumberFormatButton.Image = global::PortalConfigurator.Properties.Resources.arrow_Up_16xLG;
-			this.moveUpNumberFormatButton.Location = new System.Drawing.Point(617, 82);
+			this.moveUpNumberFormatButton.Location = new System.Drawing.Point(705, 64);
 			this.moveUpNumberFormatButton.Name = "moveUpNumberFormatButton";
 			this.moveUpNumberFormatButton.Size = new System.Drawing.Size(28, 25);
 			this.moveUpNumberFormatButton.TabIndex = 34;
@@ -757,423 +894,174 @@
 			this.moveUpNumberFormatButton.UseVisualStyleBackColor = true;
 			this.moveUpNumberFormatButton.Click += new System.EventHandler(this.moveUpNumberFormatButton_Click);
 			// 
-			// headersGroupBox
+			// measureGroupBox
 			// 
-			this.headersGroupBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left)));
-			this.headersGroupBox.Controls.Add(this.headersDataGridView);
-			this.headersGroupBox.Location = new System.Drawing.Point(3, 407);
-			this.headersGroupBox.Name = "headersGroupBox";
-			this.headersGroupBox.Size = new System.Drawing.Size(514, 267);
-			this.headersGroupBox.TabIndex = 17;
-			this.headersGroupBox.TabStop = false;
-			this.headersGroupBox.Text = "Headers";
-			// 
-			// headersDataGridView
-			// 
-			this.headersDataGridView.AllowUserToAddRows = false;
-			this.headersDataGridView.AllowUserToDeleteRows = false;
-			this.headersDataGridView.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+			this.measureGroupBox.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-			this.headersDataGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-			this.headersDataGridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.headerKeyColumn,
-            this.columnNameColumn,
-            this.headerTypeColumn,
-            this.headerFilterParameterColumn,
-            this.isReturnRowColumn,
-            this.isReturnRowDateColumn,
-            this.isReturnRowControlColumn});
-			this.headersDataGridView.Location = new System.Drawing.Point(6, 19);
-			this.headersDataGridView.MultiSelect = false;
-			this.headersDataGridView.Name = "headersDataGridView";
-			this.headersDataGridView.RowHeadersVisible = false;
-			this.headersDataGridView.Size = new System.Drawing.Size(502, 242);
-			this.headersDataGridView.TabIndex = 0;
-			this.headersDataGridView.TabStop = false;
-			this.headersDataGridView.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.headersDataGridView_CellValueChanged);
-			this.headersDataGridView.CurrentCellDirtyStateChanged += new System.EventHandler(this.headersDataGridView_CurrentCellDirtyStateChanged);
+			this.measureGroupBox.Controls.Add(this.deleteMeasureGridRowButton);
+			this.measureGroupBox.Controls.Add(this.moveDownMeasureGridRowButton);
+			this.measureGroupBox.Controls.Add(this.addMeasureGridRowButton);
+			this.measureGroupBox.Controls.Add(this.moveUpMeasureGridRowButton);
+			this.measureGroupBox.Controls.Add(this.measureDataGridView);
+			this.measureGroupBox.Location = new System.Drawing.Point(3, 406);
+			this.measureGroupBox.Name = "measureGroupBox";
+			this.measureGroupBox.Size = new System.Drawing.Size(1202, 265);
+			this.measureGroupBox.TabIndex = 21;
+			this.measureGroupBox.TabStop = false;
+			this.measureGroupBox.Text = "Controls, Parameters and Headers";
 			// 
-			// headerKeyColumn
+			// deleteMeasureGridRowButton
 			// 
-			this.headerKeyColumn.HeaderText = "Header Key";
-			this.headerKeyColumn.Name = "headerKeyColumn";
-			this.headerKeyColumn.ReadOnly = true;
-			this.headerKeyColumn.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-			this.headerKeyColumn.Visible = false;
+			this.deleteMeasureGridRowButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+			this.deleteMeasureGridRowButton.Image = global::PortalConfigurator.Properties.Resources._14_Delete_16x16;
+			this.deleteMeasureGridRowButton.Location = new System.Drawing.Point(1168, 102);
+			this.deleteMeasureGridRowButton.Name = "deleteMeasureGridRowButton";
+			this.deleteMeasureGridRowButton.Size = new System.Drawing.Size(28, 25);
+			this.deleteMeasureGridRowButton.TabIndex = 33;
+			this.deleteMeasureGridRowButton.TabStop = false;
+			this.deleteMeasureGridRowButton.UseVisualStyleBackColor = true;
+			this.deleteMeasureGridRowButton.Click += new System.EventHandler(this.deleteMeasureGridRowButton_Click);
 			// 
-			// columnNameColumn
+			// moveDownMeasureGridRowButton
 			// 
-			this.columnNameColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-			this.columnNameColumn.HeaderText = "Column/Name";
-			this.columnNameColumn.Name = "columnNameColumn";
-			this.columnNameColumn.ReadOnly = true;
-			this.columnNameColumn.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+			this.moveDownMeasureGridRowButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+			this.moveDownMeasureGridRowButton.Image = global::PortalConfigurator.Properties.Resources.arrow_Down_16xLG;
+			this.moveDownMeasureGridRowButton.Location = new System.Drawing.Point(1168, 164);
+			this.moveDownMeasureGridRowButton.Name = "moveDownMeasureGridRowButton";
+			this.moveDownMeasureGridRowButton.Size = new System.Drawing.Size(28, 25);
+			this.moveDownMeasureGridRowButton.TabIndex = 31;
+			this.moveDownMeasureGridRowButton.TabStop = false;
+			this.moveDownMeasureGridRowButton.UseVisualStyleBackColor = true;
+			this.moveDownMeasureGridRowButton.Click += new System.EventHandler(this.moveDownMeasureGridRowButton_Click);
 			// 
-			// headerTypeColumn
+			// addMeasureGridRowButton
 			// 
-			this.headerTypeColumn.HeaderText = "Header Type";
-			this.headerTypeColumn.Name = "headerTypeColumn";
-			this.headerTypeColumn.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+			this.addMeasureGridRowButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+			this.addMeasureGridRowButton.Image = global::PortalConfigurator.Properties.Resources.action_add_16xLG;
+			this.addMeasureGridRowButton.Location = new System.Drawing.Point(1168, 71);
+			this.addMeasureGridRowButton.Name = "addMeasureGridRowButton";
+			this.addMeasureGridRowButton.Size = new System.Drawing.Size(28, 25);
+			this.addMeasureGridRowButton.TabIndex = 32;
+			this.addMeasureGridRowButton.TabStop = false;
+			this.addMeasureGridRowButton.UseVisualStyleBackColor = true;
+			this.addMeasureGridRowButton.Click += new System.EventHandler(this.addMeasureGridRowButton_Click);
 			// 
-			// headerFilterParameterColumn
+			// moveUpMeasureGridRowButton
 			// 
-			this.headerFilterParameterColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-			this.headerFilterParameterColumn.HeaderText = "Filter/Parameter";
-			this.headerFilterParameterColumn.Name = "headerFilterParameterColumn";
-			this.headerFilterParameterColumn.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+			this.moveUpMeasureGridRowButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+			this.moveUpMeasureGridRowButton.Image = global::PortalConfigurator.Properties.Resources.arrow_Up_16xLG;
+			this.moveUpMeasureGridRowButton.Location = new System.Drawing.Point(1168, 133);
+			this.moveUpMeasureGridRowButton.Name = "moveUpMeasureGridRowButton";
+			this.moveUpMeasureGridRowButton.Size = new System.Drawing.Size(28, 25);
+			this.moveUpMeasureGridRowButton.TabIndex = 30;
+			this.moveUpMeasureGridRowButton.TabStop = false;
+			this.moveUpMeasureGridRowButton.UseVisualStyleBackColor = true;
+			this.moveUpMeasureGridRowButton.Click += new System.EventHandler(this.moveUpMeasureGridRowButton_Click);
 			// 
-			// isReturnRowColumn
+			// measureDataGridView
 			// 
-			this.isReturnRowColumn.HeaderText = "Return";
-			this.isReturnRowColumn.Name = "isReturnRowColumn";
-			this.isReturnRowColumn.Width = 50;
-			// 
-			// isReturnRowDateColumn
-			// 
-			this.isReturnRowDateColumn.HeaderText = "Date";
-			this.isReturnRowDateColumn.Name = "isReturnRowDateColumn";
-			this.isReturnRowDateColumn.Width = 50;
-			// 
-			// isReturnRowControlColumn
-			// 
-			this.isReturnRowControlColumn.HeaderText = "Control";
-			this.isReturnRowControlColumn.Name = "isReturnRowControlColumn";
-			this.isReturnRowControlColumn.Width = 50;
-			// 
-			// labelGroupBox
-			// 
-			this.labelGroupBox.Controls.Add(this.yAxisFormatLabel);
-			this.labelGroupBox.Controls.Add(this.yAxisFormatComboBox);
-			this.labelGroupBox.Controls.Add(this.yAxisMaxLabel);
-			this.labelGroupBox.Controls.Add(this.yAxisMaxNumericUpDown);
-			this.labelGroupBox.Controls.Add(this.yAxisMinLabel);
-			this.labelGroupBox.Controls.Add(this.yAxisMinNumericUpDown);
-			this.labelGroupBox.Controls.Add(this.yAxisLabelLabel);
-			this.labelGroupBox.Controls.Add(this.yAxisLabelTextBox);
-			this.labelGroupBox.Controls.Add(this.xAxisLabelLabel);
-			this.labelGroupBox.Controls.Add(this.xAxisLabelTextBox);
-			this.labelGroupBox.Location = new System.Drawing.Point(431, 173);
-			this.labelGroupBox.Name = "labelGroupBox";
-			this.labelGroupBox.Size = new System.Drawing.Size(219, 176);
-			this.labelGroupBox.TabIndex = 15;
-			this.labelGroupBox.TabStop = false;
-			this.labelGroupBox.Text = "Label";
-			// 
-			// yAxisFormatLabel
-			// 
-			this.yAxisFormatLabel.AutoSize = true;
-			this.yAxisFormatLabel.Location = new System.Drawing.Point(3, 152);
-			this.yAxisFormatLabel.Name = "yAxisFormatLabel";
-			this.yAxisFormatLabel.Size = new System.Drawing.Size(71, 13);
-			this.yAxisFormatLabel.TabIndex = 9;
-			this.yAxisFormatLabel.Text = "Y Axis Format";
-			// 
-			// yAxisFormatComboBox
-			// 
-			this.yAxisFormatComboBox.FormattingEnabled = true;
-			this.yAxisFormatComboBox.Location = new System.Drawing.Point(92, 149);
-			this.yAxisFormatComboBox.Name = "yAxisFormatComboBox";
-			this.yAxisFormatComboBox.Size = new System.Drawing.Size(121, 21);
-			this.yAxisFormatComboBox.TabIndex = 8;
-			this.yAxisFormatComboBox.SelectedIndexChanged += new System.EventHandler(this.yAxisFormatComboBox_SelectedIndexChanged);
-			// 
-			// yAxisMaxLabel
-			// 
-			this.yAxisMaxLabel.AutoSize = true;
-			this.yAxisMaxLabel.Location = new System.Drawing.Point(3, 125);
-			this.yAxisMaxLabel.Name = "yAxisMaxLabel";
-			this.yAxisMaxLabel.Size = new System.Drawing.Size(83, 13);
-			this.yAxisMaxLabel.TabIndex = 7;
-			this.yAxisMaxLabel.Text = "Y Axis Maximum";
-			// 
-			// yAxisMaxNumericUpDown
-			// 
-			this.yAxisMaxNumericUpDown.DecimalPlaces = 1;
-			this.yAxisMaxNumericUpDown.Increment = new decimal(new int[] {
-            1000,
-            0,
-            0,
-            0});
-			this.yAxisMaxNumericUpDown.Location = new System.Drawing.Point(92, 123);
-			this.yAxisMaxNumericUpDown.Maximum = new decimal(new int[] {
-            10000000,
-            0,
-            0,
-            0});
-			this.yAxisMaxNumericUpDown.Name = "yAxisMaxNumericUpDown";
-			this.yAxisMaxNumericUpDown.Size = new System.Drawing.Size(121, 20);
-			this.yAxisMaxNumericUpDown.TabIndex = 6;
-			this.yAxisMaxNumericUpDown.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-			this.yAxisMaxNumericUpDown.ThousandsSeparator = true;
-			this.yAxisMaxNumericUpDown.ValueChanged += new System.EventHandler(this.yAxisMaxNumericUpDown_ValueChanged);
-			// 
-			// yAxisMinLabel
-			// 
-			this.yAxisMinLabel.AutoSize = true;
-			this.yAxisMinLabel.Location = new System.Drawing.Point(3, 100);
-			this.yAxisMinLabel.Name = "yAxisMinLabel";
-			this.yAxisMinLabel.Size = new System.Drawing.Size(80, 13);
-			this.yAxisMinLabel.TabIndex = 5;
-			this.yAxisMinLabel.Text = "Y Axis Minimum";
-			// 
-			// yAxisMinNumericUpDown
-			// 
-			this.yAxisMinNumericUpDown.DecimalPlaces = 1;
-			this.yAxisMinNumericUpDown.Increment = new decimal(new int[] {
-            1000,
-            0,
-            0,
-            0});
-			this.yAxisMinNumericUpDown.Location = new System.Drawing.Point(93, 97);
-			this.yAxisMinNumericUpDown.Maximum = new decimal(new int[] {
-            10000000,
-            0,
-            0,
-            0});
-			this.yAxisMinNumericUpDown.Name = "yAxisMinNumericUpDown";
-			this.yAxisMinNumericUpDown.Size = new System.Drawing.Size(120, 20);
-			this.yAxisMinNumericUpDown.TabIndex = 4;
-			this.yAxisMinNumericUpDown.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-			this.yAxisMinNumericUpDown.ThousandsSeparator = true;
-			this.yAxisMinNumericUpDown.ValueChanged += new System.EventHandler(this.yAxisMinNumericUpDown_ValueChanged);
-			// 
-			// yAxisLabelLabel
-			// 
-			this.yAxisLabelLabel.AutoSize = true;
-			this.yAxisLabelLabel.Location = new System.Drawing.Point(3, 55);
-			this.yAxisLabelLabel.Name = "yAxisLabelLabel";
-			this.yAxisLabelLabel.Size = new System.Drawing.Size(65, 13);
-			this.yAxisLabelLabel.TabIndex = 3;
-			this.yAxisLabelLabel.Text = "Y Axis Label";
-			// 
-			// yAxisLabelTextBox
-			// 
-			this.yAxisLabelTextBox.Location = new System.Drawing.Point(6, 71);
-			this.yAxisLabelTextBox.Name = "yAxisLabelTextBox";
-			this.yAxisLabelTextBox.Size = new System.Drawing.Size(207, 20);
-			this.yAxisLabelTextBox.TabIndex = 2;
-			this.yAxisLabelTextBox.TextChanged += new System.EventHandler(this.yAxisLabelTextBox_TextChanged);
-			// 
-			// xAxisLabelLabel
-			// 
-			this.xAxisLabelLabel.AutoSize = true;
-			this.xAxisLabelLabel.Location = new System.Drawing.Point(3, 16);
-			this.xAxisLabelLabel.Name = "xAxisLabelLabel";
-			this.xAxisLabelLabel.Size = new System.Drawing.Size(65, 13);
-			this.xAxisLabelLabel.TabIndex = 1;
-			this.xAxisLabelLabel.Text = "X Axis Label";
-			// 
-			// xAxisLabelTextBox
-			// 
-			this.xAxisLabelTextBox.Location = new System.Drawing.Point(6, 32);
-			this.xAxisLabelTextBox.Name = "xAxisLabelTextBox";
-			this.xAxisLabelTextBox.Size = new System.Drawing.Size(207, 20);
-			this.xAxisLabelTextBox.TabIndex = 0;
-			this.xAxisLabelTextBox.TextChanged += new System.EventHandler(this.xAxisLabelTextBox_TextChanged);
-			// 
-			// filtersParametersGroupBox
-			// 
-			this.filtersParametersGroupBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+			this.measureDataGridView.AllowUserToAddRows = false;
+			this.measureDataGridView.AllowUserToDeleteRows = false;
+			this.measureDataGridView.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-			this.filtersParametersGroupBox.Controls.Add(this.deleteFilterParameterButton);
-			this.filtersParametersGroupBox.Controls.Add(this.moveDownFilterParameterButton);
-			this.filtersParametersGroupBox.Controls.Add(this.addFilterParameterButton);
-			this.filtersParametersGroupBox.Controls.Add(this.moveUpFilterParameterButton);
-			this.filtersParametersGroupBox.Controls.Add(this.filterParametersDataGridView);
-			this.filtersParametersGroupBox.Location = new System.Drawing.Point(656, 114);
-			this.filtersParametersGroupBox.Name = "filtersParametersGroupBox";
-			this.filtersParametersGroupBox.Size = new System.Drawing.Size(549, 235);
-			this.filtersParametersGroupBox.TabIndex = 13;
-			this.filtersParametersGroupBox.TabStop = false;
-			this.filtersParametersGroupBox.Text = "Filters/Parameters";
-			// 
-			// deleteFilterParameterButton
-			// 
-			this.deleteFilterParameterButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-			this.deleteFilterParameterButton.Image = global::PortalConfigurator.Properties.Resources._14_Delete_16x16;
-			this.deleteFilterParameterButton.Location = new System.Drawing.Point(518, 100);
-			this.deleteFilterParameterButton.Name = "deleteFilterParameterButton";
-			this.deleteFilterParameterButton.Size = new System.Drawing.Size(28, 25);
-			this.deleteFilterParameterButton.TabIndex = 33;
-			this.deleteFilterParameterButton.TabStop = false;
-			this.deleteFilterParameterButton.UseVisualStyleBackColor = true;
-			this.deleteFilterParameterButton.Click += new System.EventHandler(this.deleteFilterParameterButton_Click);
-			// 
-			// moveDownFilterParameterButton
-			// 
-			this.moveDownFilterParameterButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-			this.moveDownFilterParameterButton.Image = global::PortalConfigurator.Properties.Resources.arrow_Down_16xLG;
-			this.moveDownFilterParameterButton.Location = new System.Drawing.Point(518, 162);
-			this.moveDownFilterParameterButton.Name = "moveDownFilterParameterButton";
-			this.moveDownFilterParameterButton.Size = new System.Drawing.Size(28, 25);
-			this.moveDownFilterParameterButton.TabIndex = 31;
-			this.moveDownFilterParameterButton.TabStop = false;
-			this.moveDownFilterParameterButton.UseVisualStyleBackColor = true;
-			this.moveDownFilterParameterButton.Click += new System.EventHandler(this.moveDownFilterParameterButton_Click);
-			// 
-			// addFilterParameterButton
-			// 
-			this.addFilterParameterButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-			this.addFilterParameterButton.Image = global::PortalConfigurator.Properties.Resources.action_add_16xLG;
-			this.addFilterParameterButton.Location = new System.Drawing.Point(518, 69);
-			this.addFilterParameterButton.Name = "addFilterParameterButton";
-			this.addFilterParameterButton.Size = new System.Drawing.Size(28, 25);
-			this.addFilterParameterButton.TabIndex = 32;
-			this.addFilterParameterButton.TabStop = false;
-			this.addFilterParameterButton.UseVisualStyleBackColor = true;
-			this.addFilterParameterButton.Click += new System.EventHandler(this.addFilterParameterButton_Click);
-			// 
-			// moveUpFilterParameterButton
-			// 
-			this.moveUpFilterParameterButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-			this.moveUpFilterParameterButton.Image = global::PortalConfigurator.Properties.Resources.arrow_Up_16xLG;
-			this.moveUpFilterParameterButton.Location = new System.Drawing.Point(518, 131);
-			this.moveUpFilterParameterButton.Name = "moveUpFilterParameterButton";
-			this.moveUpFilterParameterButton.Size = new System.Drawing.Size(28, 25);
-			this.moveUpFilterParameterButton.TabIndex = 30;
-			this.moveUpFilterParameterButton.TabStop = false;
-			this.moveUpFilterParameterButton.UseVisualStyleBackColor = true;
-			this.moveUpFilterParameterButton.Click += new System.EventHandler(this.moveUpFilterParameterButton_Click);
-			// 
-			// filterParametersDataGridView
-			// 
-			this.filterParametersDataGridView.AllowUserToAddRows = false;
-			this.filterParametersDataGridView.AllowUserToDeleteRows = false;
-			this.filterParametersDataGridView.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-			this.filterParametersDataGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-			this.filterParametersDataGridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.filterParameterNameColumn,
+			this.measureDataGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+			this.measureDataGridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.controlParameterColumn,
             this.controlTypeColumn,
             this.isDateColumn,
-            this.isRequiredColumn});
-			this.filterParametersDataGridView.Location = new System.Drawing.Point(6, 19);
-			this.filterParametersDataGridView.MultiSelect = false;
-			this.filterParametersDataGridView.Name = "filterParametersDataGridView";
-			this.filterParametersDataGridView.RowHeadersVisible = false;
-			this.filterParametersDataGridView.Size = new System.Drawing.Size(506, 210);
-			this.filterParametersDataGridView.TabIndex = 0;
-			this.filterParametersDataGridView.TabStop = false;
-			this.filterParametersDataGridView.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.filterParametersDataGridView_CellValueChanged);
-			this.filterParametersDataGridView.CurrentCellDirtyStateChanged += new System.EventHandler(this.filterParametersDataGridView_CurrentCellDirtyStateChanged);
+            this.isRequiredColumn,
+            this.columnNameColumn,
+            this.headerTypeColumn,
+            this.headerTextColumn,
+            this.isReturnRowColumn,
+            this.isReturnRowDateColumn,
+            this.isReturnRowControlColumn,
+            this.isValueFieldColumn,
+            this.isRemoveFieldColumn});
+			this.measureDataGridView.EditMode = System.Windows.Forms.DataGridViewEditMode.EditOnEnter;
+			this.measureDataGridView.Location = new System.Drawing.Point(6, 19);
+			this.measureDataGridView.MultiSelect = false;
+			this.measureDataGridView.Name = "measureDataGridView";
+			this.measureDataGridView.RowHeadersVisible = false;
+			this.measureDataGridView.Size = new System.Drawing.Size(1156, 240);
+			this.measureDataGridView.TabIndex = 0;
+			this.measureDataGridView.TabStop = false;
+			this.measureDataGridView.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.measureDataGridView_CellValueChanged);
+			this.measureDataGridView.CurrentCellDirtyStateChanged += new System.EventHandler(this.measureDataGridView_CurrentCellDirtyStateChanged);
 			// 
-			// filterParameterNameColumn
+			// controlParameterColumn
 			// 
-			this.filterParameterNameColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-			this.filterParameterNameColumn.HeaderText = "Filter/Parameter Name";
-			this.filterParameterNameColumn.MaxDropDownItems = 100;
-			this.filterParameterNameColumn.Name = "filterParameterNameColumn";
+			this.controlParameterColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+			this.controlParameterColumn.HeaderText = "Control/Parameter Name";
+			this.controlParameterColumn.Name = "controlParameterColumn";
 			// 
 			// controlTypeColumn
 			// 
 			this.controlTypeColumn.HeaderText = "Control Type";
 			this.controlTypeColumn.Name = "controlTypeColumn";
+			this.controlTypeColumn.Width = 80;
 			// 
 			// isDateColumn
 			// 
 			this.isDateColumn.HeaderText = "Date";
 			this.isDateColumn.Name = "isDateColumn";
-			this.isDateColumn.Width = 80;
+			this.isDateColumn.Width = 60;
 			// 
 			// isRequiredColumn
 			// 
 			this.isRequiredColumn.HeaderText = "Required";
 			this.isRequiredColumn.Name = "isRequiredColumn";
-			this.isRequiredColumn.Width = 80;
+			this.isRequiredColumn.Width = 60;
 			// 
-			// transformGroupBox
+			// columnNameColumn
 			// 
-			this.transformGroupBox.Controls.Add(this.transformFieldsDataGridView);
-			this.transformGroupBox.Controls.Add(this.dateFieldLabel);
-			this.transformGroupBox.Controls.Add(this.dateFieldComboBox);
-			this.transformGroupBox.Controls.Add(this.functionLabel);
-			this.transformGroupBox.Controls.Add(this.functionComboBox);
-			this.transformGroupBox.Location = new System.Drawing.Point(3, 173);
-			this.transformGroupBox.Name = "transformGroupBox";
-			this.transformGroupBox.Size = new System.Drawing.Size(422, 227);
-			this.transformGroupBox.TabIndex = 14;
-			this.transformGroupBox.TabStop = false;
-			this.transformGroupBox.Text = "Transform";
+			this.columnNameColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+			this.columnNameColumn.HeaderText = "Column Name";
+			this.columnNameColumn.Name = "columnNameColumn";
 			// 
-			// transformFieldsDataGridView
+			// headerTypeColumn
 			// 
-			this.transformFieldsDataGridView.AllowUserToAddRows = false;
-			this.transformFieldsDataGridView.AllowUserToDeleteRows = false;
-			this.transformFieldsDataGridView.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-			this.transformFieldsDataGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-			this.transformFieldsDataGridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.fieldNameColumn,
-            this.isValueFieldColumn,
-            this.removeFieldColumn});
-			this.transformFieldsDataGridView.Location = new System.Drawing.Point(6, 59);
-			this.transformFieldsDataGridView.MultiSelect = false;
-			this.transformFieldsDataGridView.Name = "transformFieldsDataGridView";
-			this.transformFieldsDataGridView.RowHeadersVisible = false;
-			this.transformFieldsDataGridView.Size = new System.Drawing.Size(410, 162);
-			this.transformFieldsDataGridView.TabIndex = 4;
-			this.transformFieldsDataGridView.TabStop = false;
-			this.transformFieldsDataGridView.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.transformFieldsDataGridView_CellValueChanged);
-			this.transformFieldsDataGridView.CurrentCellDirtyStateChanged += new System.EventHandler(this.transformFieldsDataGridView_CurrentCellDirtyStateChanged);
+			this.headerTypeColumn.HeaderText = "Header Type";
+			this.headerTypeColumn.Name = "headerTypeColumn";
 			// 
-			// fieldNameColumn
+			// headerTextColumn
 			// 
-			this.fieldNameColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-			this.fieldNameColumn.HeaderText = "Field";
-			this.fieldNameColumn.Name = "fieldNameColumn";
-			this.fieldNameColumn.ReadOnly = true;
-			this.fieldNameColumn.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+			this.headerTextColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+			this.headerTextColumn.HeaderText = "Header Text";
+			this.headerTextColumn.Name = "headerTextColumn";
+			this.headerTextColumn.ReadOnly = true;
+			// 
+			// isReturnRowColumn
+			// 
+			this.isReturnRowColumn.HeaderText = "Return Row";
+			this.isReturnRowColumn.Name = "isReturnRowColumn";
+			this.isReturnRowColumn.Width = 60;
+			// 
+			// isReturnRowDateColumn
+			// 
+			this.isReturnRowDateColumn.HeaderText = "Return Date";
+			this.isReturnRowDateColumn.Name = "isReturnRowDateColumn";
+			this.isReturnRowDateColumn.Width = 60;
+			// 
+			// isReturnRowControlColumn
+			// 
+			this.isReturnRowControlColumn.HeaderText = "Return Control";
+			this.isReturnRowControlColumn.Name = "isReturnRowControlColumn";
+			this.isReturnRowControlColumn.Width = 60;
 			// 
 			// isValueFieldColumn
 			// 
-			this.isValueFieldColumn.HeaderText = "Value";
+			this.isValueFieldColumn.HeaderText = "Value Column";
 			this.isValueFieldColumn.Name = "isValueFieldColumn";
-			this.isValueFieldColumn.Width = 75;
+			this.isValueFieldColumn.Width = 60;
 			// 
-			// removeFieldColumn
+			// isRemoveFieldColumn
 			// 
-			this.removeFieldColumn.HeaderText = "Remove";
-			this.removeFieldColumn.Name = "removeFieldColumn";
-			this.removeFieldColumn.Width = 75;
-			// 
-			// dateFieldLabel
-			// 
-			this.dateFieldLabel.AutoSize = true;
-			this.dateFieldLabel.Location = new System.Drawing.Point(130, 16);
-			this.dateFieldLabel.Name = "dateFieldLabel";
-			this.dateFieldLabel.Size = new System.Drawing.Size(55, 13);
-			this.dateFieldLabel.TabIndex = 3;
-			this.dateFieldLabel.Text = "Date Field";
-			// 
-			// dateFieldComboBox
-			// 
-			this.dateFieldComboBox.FormattingEnabled = true;
-			this.dateFieldComboBox.Location = new System.Drawing.Point(133, 32);
-			this.dateFieldComboBox.Name = "dateFieldComboBox";
-			this.dateFieldComboBox.Size = new System.Drawing.Size(201, 21);
-			this.dateFieldComboBox.TabIndex = 2;
-			this.dateFieldComboBox.SelectedIndexChanged += new System.EventHandler(this.dateFieldComboBox_SelectedIndexChanged);
-			// 
-			// functionLabel
-			// 
-			this.functionLabel.AutoSize = true;
-			this.functionLabel.Location = new System.Drawing.Point(3, 16);
-			this.functionLabel.Name = "functionLabel";
-			this.functionLabel.Size = new System.Drawing.Size(48, 13);
-			this.functionLabel.TabIndex = 1;
-			this.functionLabel.Text = "Function";
-			// 
-			// functionComboBox
-			// 
-			this.functionComboBox.FormattingEnabled = true;
-			this.functionComboBox.Location = new System.Drawing.Point(6, 32);
-			this.functionComboBox.Name = "functionComboBox";
-			this.functionComboBox.Size = new System.Drawing.Size(121, 21);
-			this.functionComboBox.TabIndex = 0;
-			this.functionComboBox.SelectedIndexChanged += new System.EventHandler(this.functionComboBox_SelectedIndexChanged);
+			this.isRemoveFieldColumn.HeaderText = "Remove Column";
+			this.isRemoveFieldColumn.Name = "isRemoveFieldColumn";
+			this.isRemoveFieldColumn.Width = 60;
 			// 
 			// chartTypeLabel
 			// 
@@ -1192,7 +1080,7 @@
 			this.chartTypeComboBox.Location = new System.Drawing.Point(794, 87);
 			this.chartTypeComboBox.Name = "chartTypeComboBox";
 			this.chartTypeComboBox.Size = new System.Drawing.Size(136, 21);
-			this.chartTypeComboBox.TabIndex = 9;
+			this.chartTypeComboBox.TabIndex = 8;
 			this.chartTypeComboBox.SelectedIndexChanged += new System.EventHandler(this.chartTypeComboBox_SelectedIndexChanged);
 			// 
 			// muteAllOthersCheckBox
@@ -1209,7 +1097,7 @@
 			this.muteAllOthersCheckBox.Text = "Mute All Others";
 			this.muteAllOthersCheckBox.ThreeState = true;
 			this.muteAllOthersCheckBox.UseVisualStyleBackColor = true;
-			this.muteAllOthersCheckBox.CheckedChanged += new System.EventHandler(this.muteAllOthersCheckBox_CheckedChanged);
+			this.muteAllOthersCheckBox.CheckStateChanged += new System.EventHandler(this.muteAllOthersCheckBox_CheckStateChanged);
 			// 
 			// maxCheckedLabel
 			// 
@@ -1225,14 +1113,9 @@
 			// 
 			this.maxCheckedNumericUpDown.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
 			this.maxCheckedNumericUpDown.Location = new System.Drawing.Point(656, 87);
-			this.maxCheckedNumericUpDown.Maximum = new decimal(new int[] {
-            10000,
-            0,
-            0,
-            0});
 			this.maxCheckedNumericUpDown.Name = "maxCheckedNumericUpDown";
 			this.maxCheckedNumericUpDown.Size = new System.Drawing.Size(132, 20);
-			this.maxCheckedNumericUpDown.TabIndex = 8;
+			this.maxCheckedNumericUpDown.TabIndex = 7;
 			this.maxCheckedNumericUpDown.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
 			this.maxCheckedNumericUpDown.ValueChanged += new System.EventHandler(this.maxCheckedNumericUpDown_ValueChanged);
 			// 
@@ -1245,17 +1128,17 @@
 			this.showAllOthersCheckBox.Location = new System.Drawing.Point(936, 89);
 			this.showAllOthersCheckBox.Name = "showAllOthersCheckBox";
 			this.showAllOthersCheckBox.Size = new System.Drawing.Size(101, 17);
-			this.showAllOthersCheckBox.TabIndex = 10;
+			this.showAllOthersCheckBox.TabIndex = 9;
 			this.showAllOthersCheckBox.Text = "Show All Others";
 			this.showAllOthersCheckBox.ThreeState = true;
 			this.showAllOthersCheckBox.UseVisualStyleBackColor = true;
-			this.showAllOthersCheckBox.CheckedChanged += new System.EventHandler(this.showAllOthersCheckBox_CheckedChanged);
+			this.showAllOthersCheckBox.CheckStateChanged += new System.EventHandler(this.showAllOthersCheckBox_CheckStateChanged);
 			// 
 			// filterLabel
 			// 
 			this.filterLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
 			this.filterLabel.AutoSize = true;
-			this.filterLabel.Location = new System.Drawing.Point(429, 71);
+			this.filterLabel.Location = new System.Drawing.Point(933, 31);
 			this.filterLabel.Name = "filterLabel";
 			this.filterLabel.Size = new System.Drawing.Size(29, 13);
 			this.filterLabel.TabIndex = 17;
@@ -1264,17 +1147,17 @@
 			// filterTextBox
 			// 
 			this.filterTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-			this.filterTextBox.Location = new System.Drawing.Point(432, 87);
+			this.filterTextBox.Location = new System.Drawing.Point(936, 47);
 			this.filterTextBox.Name = "filterTextBox";
 			this.filterTextBox.Size = new System.Drawing.Size(218, 20);
-			this.filterTextBox.TabIndex = 7;
+			this.filterTextBox.TabIndex = 10;
 			this.filterTextBox.TextChanged += new System.EventHandler(this.filterTextBox_TextChanged);
 			// 
 			// baseLabel
 			// 
 			this.baseLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
 			this.baseLabel.AutoSize = true;
-			this.baseLabel.Location = new System.Drawing.Point(653, 31);
+			this.baseLabel.Location = new System.Drawing.Point(429, 31);
 			this.baseLabel.Name = "baseLabel";
 			this.baseLabel.Size = new System.Drawing.Size(129, 13);
 			this.baseLabel.TabIndex = 15;
@@ -1294,34 +1177,34 @@
 			this.summaryTextBox.Location = new System.Drawing.Point(3, 126);
 			this.summaryTextBox.Multiline = true;
 			this.summaryTextBox.Name = "summaryTextBox";
-			this.summaryTextBox.Size = new System.Drawing.Size(647, 41);
+			this.summaryTextBox.Size = new System.Drawing.Size(423, 92);
 			this.summaryTextBox.TabIndex = 12;
 			this.summaryTextBox.TextChanged += new System.EventHandler(this.summaryTextBox_TextChanged);
 			// 
-			// fullTitleLabel
+			// dropdownLabel
 			// 
-			this.fullTitleLabel.AutoSize = true;
-			this.fullTitleLabel.Location = new System.Drawing.Point(0, 71);
-			this.fullTitleLabel.Name = "fullTitleLabel";
-			this.fullTitleLabel.Size = new System.Drawing.Size(46, 13);
-			this.fullTitleLabel.TabIndex = 11;
-			this.fullTitleLabel.Text = "Full Title";
+			this.dropdownLabel.AutoSize = true;
+			this.dropdownLabel.Location = new System.Drawing.Point(429, 71);
+			this.dropdownLabel.Name = "dropdownLabel";
+			this.dropdownLabel.Size = new System.Drawing.Size(56, 13);
+			this.dropdownLabel.TabIndex = 11;
+			this.dropdownLabel.Text = "Dropdown";
 			// 
-			// fullTitleTextBox
+			// dropdownTextBox
 			// 
-			this.fullTitleTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+			this.dropdownTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-			this.fullTitleTextBox.Location = new System.Drawing.Point(3, 87);
-			this.fullTitleTextBox.Name = "fullTitleTextBox";
-			this.fullTitleTextBox.Size = new System.Drawing.Size(423, 20);
-			this.fullTitleTextBox.TabIndex = 6;
-			this.fullTitleTextBox.TextChanged += new System.EventHandler(this.fullTitleTextBox_TextChanged);
+			this.dropdownTextBox.Location = new System.Drawing.Point(432, 87);
+			this.dropdownTextBox.Name = "dropdownTextBox";
+			this.dropdownTextBox.Size = new System.Drawing.Size(218, 20);
+			this.dropdownTextBox.TabIndex = 3;
+			this.dropdownTextBox.TextChanged += new System.EventHandler(this.dropdownTextBox_TextChanged);
 			// 
 			// orderLabel
 			// 
 			this.orderLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
 			this.orderLabel.AutoSize = true;
-			this.orderLabel.Location = new System.Drawing.Point(933, 31);
+			this.orderLabel.Location = new System.Drawing.Point(653, 31);
 			this.orderLabel.Name = "orderLabel";
 			this.orderLabel.Size = new System.Drawing.Size(33, 13);
 			this.orderLabel.TabIndex = 9;
@@ -1330,10 +1213,10 @@
 			// orderNumericUpDown
 			// 
 			this.orderNumericUpDown.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-			this.orderNumericUpDown.Location = new System.Drawing.Point(936, 47);
+			this.orderNumericUpDown.Location = new System.Drawing.Point(656, 47);
 			this.orderNumericUpDown.Name = "orderNumericUpDown";
-			this.orderNumericUpDown.Size = new System.Drawing.Size(120, 20);
-			this.orderNumericUpDown.TabIndex = 4;
+			this.orderNumericUpDown.Size = new System.Drawing.Size(131, 20);
+			this.orderNumericUpDown.TabIndex = 5;
 			this.orderNumericUpDown.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
 			this.orderNumericUpDown.ValueChanged += new System.EventHandler(this.orderNumericUpDown_ValueChanged);
 			// 
@@ -1350,7 +1233,7 @@
 			// titleLabel
 			// 
 			this.titleLabel.AutoSize = true;
-			this.titleLabel.Location = new System.Drawing.Point(429, 31);
+			this.titleLabel.Location = new System.Drawing.Point(0, 71);
 			this.titleLabel.Name = "titleLabel";
 			this.titleLabel.Size = new System.Drawing.Size(27, 13);
 			this.titleLabel.TabIndex = 4;
@@ -1360,9 +1243,9 @@
 			// 
 			this.titleTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-			this.titleTextBox.Location = new System.Drawing.Point(432, 47);
+			this.titleTextBox.Location = new System.Drawing.Point(3, 87);
 			this.titleTextBox.Name = "titleTextBox";
-			this.titleTextBox.Size = new System.Drawing.Size(218, 20);
+			this.titleTextBox.Size = new System.Drawing.Size(423, 20);
 			this.titleTextBox.TabIndex = 2;
 			this.titleTextBox.TextChanged += new System.EventHandler(this.titleTextBox_TextChanged);
 			// 
@@ -1428,6 +1311,64 @@
 			this.saveMeasureFileToolStripButton.Size = new System.Drawing.Size(23, 22);
 			this.saveMeasureFileToolStripButton.Text = "&Save";
 			this.saveMeasureFileToolStripButton.Click += new System.EventHandler(this.saveMeasureFileToolStripButton_Click);
+			// 
+			// functionComboBox
+			// 
+			this.functionComboBox.FormattingEnabled = true;
+			this.functionComboBox.Location = new System.Drawing.Point(246, 320);
+			this.functionComboBox.Name = "functionComboBox";
+			this.functionComboBox.Size = new System.Drawing.Size(180, 21);
+			this.functionComboBox.TabIndex = 19;
+			this.functionComboBox.SelectedIndexChanged += new System.EventHandler(this.functionComboBox_SelectedIndexChanged);
+			// 
+			// parametersCoveredGroupBox
+			// 
+			this.parametersCoveredGroupBox.Controls.Add(this.parametersNeededLabel);
+			this.parametersCoveredGroupBox.Controls.Add(this.parametersCoveredOfLabel);
+			this.parametersCoveredGroupBox.Controls.Add(this.parametersCountLabel);
+			this.parametersCoveredGroupBox.Location = new System.Drawing.Point(246, 347);
+			this.parametersCoveredGroupBox.Name = "parametersCoveredGroupBox";
+			this.parametersCoveredGroupBox.Size = new System.Drawing.Size(180, 53);
+			this.parametersCoveredGroupBox.TabIndex = 38;
+			this.parametersCoveredGroupBox.TabStop = false;
+			this.parametersCoveredGroupBox.Text = "Parameters Covered";
+			// 
+			// parametersNeededLabel
+			// 
+			this.parametersNeededLabel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+			this.parametersNeededLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 20F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.parametersNeededLabel.Location = new System.Drawing.Point(116, 16);
+			this.parametersNeededLabel.Name = "parametersNeededLabel";
+			this.parametersNeededLabel.Size = new System.Drawing.Size(58, 31);
+			this.parametersNeededLabel.TabIndex = 39;
+			this.parametersNeededLabel.Text = "0";
+			this.parametersNeededLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+			// 
+			// parametersCoveredOfLabel
+			// 
+			this.parametersCoveredOfLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+			this.parametersCoveredOfLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 20F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.parametersCoveredOfLabel.Location = new System.Drawing.Point(70, 16);
+			this.parametersCoveredOfLabel.Name = "parametersCoveredOfLabel";
+			this.parametersCoveredOfLabel.Size = new System.Drawing.Size(40, 31);
+			this.parametersCoveredOfLabel.TabIndex = 38;
+			this.parametersCoveredOfLabel.Text = "of";
+			this.parametersCoveredOfLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+			// 
+			// parametersCountLabel
+			// 
+			this.parametersCountLabel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left)));
+			this.parametersCountLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 20F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.parametersCountLabel.Location = new System.Drawing.Point(6, 16);
+			this.parametersCountLabel.Name = "parametersCountLabel";
+			this.parametersCountLabel.Size = new System.Drawing.Size(58, 31);
+			this.parametersCountLabel.TabIndex = 37;
+			this.parametersCountLabel.Text = "0";
+			this.parametersCountLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
 			// 
 			// filterParameterTabPage
 			// 
@@ -1586,12 +1527,10 @@
 			this.displayGroupBox.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-			this.displayGroupBox.Controls.Add(this.allMonthsCheckBox);
+			this.displayGroupBox.Controls.Add(this.monthLimitCheckBox);
 			this.displayGroupBox.Controls.Add(this.valuesTypeLabel);
 			this.displayGroupBox.Controls.Add(this.valuesTypeButton);
 			this.displayGroupBox.Controls.Add(this.helpGroupBox);
-			this.displayGroupBox.Controls.Add(this.sortFunctionComboBox);
-			this.displayGroupBox.Controls.Add(this.sortFunctionLabel);
 			this.displayGroupBox.Controls.Add(this.deleteKeyButton);
 			this.displayGroupBox.Controls.Add(this.moveDownKeyButton);
 			this.displayGroupBox.Controls.Add(this.addKeyButton);
@@ -1599,7 +1538,6 @@
 			this.displayGroupBox.Controls.Add(this.resultUnavailableLabel);
 			this.displayGroupBox.Controls.Add(this.resultUnavailableComboBox);
 			this.displayGroupBox.Controls.Add(this.keysDataGridView);
-			this.displayGroupBox.Controls.Add(this.monthLimitLabel);
 			this.displayGroupBox.Controls.Add(this.monthLimitNumericUpDown);
 			this.displayGroupBox.Controls.Add(this.monthStepLabel);
 			this.displayGroupBox.Controls.Add(this.monthStepNumericUpDown);
@@ -1608,8 +1546,8 @@
 			this.displayGroupBox.Controls.Add(this.quarterDateComboBox);
 			this.displayGroupBox.Controls.Add(this.aliasLabel);
 			this.displayGroupBox.Controls.Add(this.aliasTextBox);
-			this.displayGroupBox.Controls.Add(this.sortLabel);
-			this.displayGroupBox.Controls.Add(this.sortComboBox);
+			this.displayGroupBox.Controls.Add(this.sortTypeLabel);
+			this.displayGroupBox.Controls.Add(this.sortTypeComboBox);
 			this.displayGroupBox.Controls.Add(this.zeroLastCheckBox);
 			this.displayGroupBox.Controls.Add(this.multiCheckBox);
 			this.displayGroupBox.Controls.Add(this.displayTypeLabel);
@@ -1625,21 +1563,22 @@
 			this.displayGroupBox.TabStop = false;
 			this.displayGroupBox.Text = "Display";
 			// 
-			// allMonthsCheckBox
+			// monthLimitCheckBox
 			// 
-			this.allMonthsCheckBox.AutoSize = true;
-			this.allMonthsCheckBox.Location = new System.Drawing.Point(369, 74);
-			this.allMonthsCheckBox.Name = "allMonthsCheckBox";
-			this.allMonthsCheckBox.Size = new System.Drawing.Size(75, 17);
-			this.allMonthsCheckBox.TabIndex = 34;
-			this.allMonthsCheckBox.Text = "All Months";
-			this.allMonthsCheckBox.UseVisualStyleBackColor = true;
-			this.allMonthsCheckBox.CheckedChanged += new System.EventHandler(this.allMonthsCheckBox_CheckedChanged);
+			this.monthLimitCheckBox.AutoSize = true;
+			this.monthLimitCheckBox.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
+			this.monthLimitCheckBox.Location = new System.Drawing.Point(243, 55);
+			this.monthLimitCheckBox.Name = "monthLimitCheckBox";
+			this.monthLimitCheckBox.Size = new System.Drawing.Size(80, 17);
+			this.monthLimitCheckBox.TabIndex = 34;
+			this.monthLimitCheckBox.Text = "Month Limit";
+			this.monthLimitCheckBox.UseVisualStyleBackColor = true;
+			this.monthLimitCheckBox.CheckedChanged += new System.EventHandler(this.monthLimitCheckBox_CheckedChanged);
 			// 
 			// valuesTypeLabel
 			// 
 			this.valuesTypeLabel.AutoSize = true;
-			this.valuesTypeLabel.Location = new System.Drawing.Point(772, 57);
+			this.valuesTypeLabel.Location = new System.Drawing.Point(779, 57);
 			this.valuesTypeLabel.Name = "valuesTypeLabel";
 			this.valuesTypeLabel.Size = new System.Drawing.Size(66, 13);
 			this.valuesTypeLabel.TabIndex = 33;
@@ -1647,7 +1586,7 @@
 			// 
 			// valuesTypeButton
 			// 
-			this.valuesTypeButton.Location = new System.Drawing.Point(775, 71);
+			this.valuesTypeButton.Location = new System.Drawing.Point(782, 71);
 			this.valuesTypeButton.Name = "valuesTypeButton";
 			this.valuesTypeButton.Size = new System.Drawing.Size(118, 23);
 			this.valuesTypeButton.TabIndex = 15;
@@ -1694,13 +1633,14 @@
 			this.helpDataGridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.helpName,
             this.helpContent});
+			this.helpDataGridView.EditMode = System.Windows.Forms.DataGridViewEditMode.EditOnEnter;
 			this.helpDataGridView.Location = new System.Drawing.Point(6, 19);
 			this.helpDataGridView.MultiSelect = false;
 			this.helpDataGridView.Name = "helpDataGridView";
 			this.helpDataGridView.RowHeadersVisible = false;
 			this.helpDataGridView.Size = new System.Drawing.Size(933, 132);
 			this.helpDataGridView.TabIndex = 25;
-			this.helpDataGridView.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.helpDataGridView_CellEndEdit);
+			this.helpDataGridView.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.helpDataGridView_CellValueChanged);
 			// 
 			// helpName
 			// 
@@ -1751,26 +1691,6 @@
 			this.moveUpHelpButton.TabStop = false;
 			this.moveUpHelpButton.UseVisualStyleBackColor = true;
 			this.moveUpHelpButton.Click += new System.EventHandler(this.moveUpHelpButton_Click);
-			// 
-			// sortFunctionComboBox
-			// 
-			this.sortFunctionComboBox.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
-			this.sortFunctionComboBox.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
-			this.sortFunctionComboBox.Enabled = false;
-			this.sortFunctionComboBox.Location = new System.Drawing.Point(640, 72);
-			this.sortFunctionComboBox.Name = "sortFunctionComboBox";
-			this.sortFunctionComboBox.Size = new System.Drawing.Size(129, 21);
-			this.sortFunctionComboBox.TabIndex = 14;
-			this.sortFunctionComboBox.SelectedIndexChanged += new System.EventHandler(this.sortFunctionComboBox_SelectedIndexChanged);
-			// 
-			// sortFunctionLabel
-			// 
-			this.sortFunctionLabel.AutoSize = true;
-			this.sortFunctionLabel.Location = new System.Drawing.Point(645, 56);
-			this.sortFunctionLabel.Name = "sortFunctionLabel";
-			this.sortFunctionLabel.Size = new System.Drawing.Size(70, 13);
-			this.sortFunctionLabel.TabIndex = 31;
-			this.sortFunctionLabel.Text = "Sort Function";
 			// 
 			// deleteKeyButton
 			// 
@@ -1823,7 +1743,7 @@
 			// resultUnavailableLabel
 			// 
 			this.resultUnavailableLabel.AutoSize = true;
-			this.resultUnavailableLabel.Location = new System.Drawing.Point(747, 16);
+			this.resultUnavailableLabel.Location = new System.Drawing.Point(625, 16);
 			this.resultUnavailableLabel.Name = "resultUnavailableLabel";
 			this.resultUnavailableLabel.Size = new System.Drawing.Size(96, 13);
 			this.resultUnavailableLabel.TabIndex = 25;
@@ -1833,9 +1753,9 @@
 			// 
 			this.resultUnavailableComboBox.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
 			this.resultUnavailableComboBox.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
-			this.resultUnavailableComboBox.Location = new System.Drawing.Point(750, 32);
+			this.resultUnavailableComboBox.Location = new System.Drawing.Point(628, 32);
 			this.resultUnavailableComboBox.Name = "resultUnavailableComboBox";
-			this.resultUnavailableComboBox.Size = new System.Drawing.Size(143, 21);
+			this.resultUnavailableComboBox.Size = new System.Drawing.Size(148, 21);
 			this.resultUnavailableComboBox.TabIndex = 15;
 			this.resultUnavailableComboBox.SelectedIndexChanged += new System.EventHandler(this.resultUnavailableComboBox_SelectedIndexChanged);
 			// 
@@ -1857,13 +1777,13 @@
             this.formatKeyColumn,
             this.isTableSourceColumn,
             this.sourceLabelColumn});
+			this.keysDataGridView.EditMode = System.Windows.Forms.DataGridViewEditMode.EditOnEnter;
 			this.keysDataGridView.Location = new System.Drawing.Point(6, 99);
 			this.keysDataGridView.MultiSelect = false;
 			this.keysDataGridView.Name = "keysDataGridView";
 			this.keysDataGridView.RowHeadersVisible = false;
 			this.keysDataGridView.Size = new System.Drawing.Size(945, 220);
 			this.keysDataGridView.TabIndex = 23;
-			this.keysDataGridView.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.keysDataGridView_CellEndEdit);
 			this.keysDataGridView.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.keysDataGridView_CellValueChanged);
 			this.keysDataGridView.CurrentCellDirtyStateChanged += new System.EventHandler(this.keysDataGridView_CurrentCellDirtyStateChanged);
 			// 
@@ -1918,15 +1838,6 @@
 			this.sourceLabelColumn.ReadOnly = true;
 			this.sourceLabelColumn.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
 			// 
-			// monthLimitLabel
-			// 
-			this.monthLimitLabel.AutoSize = true;
-			this.monthLimitLabel.Location = new System.Drawing.Point(240, 57);
-			this.monthLimitLabel.Name = "monthLimitLabel";
-			this.monthLimitLabel.Size = new System.Drawing.Size(61, 13);
-			this.monthLimitLabel.TabIndex = 22;
-			this.monthLimitLabel.Text = "Month Limit";
-			// 
 			// monthLimitNumericUpDown
 			// 
 			this.monthLimitNumericUpDown.Enabled = false;
@@ -1961,14 +1872,14 @@
 			this.visibleCheckBox.AutoSize = true;
 			this.visibleCheckBox.Checked = true;
 			this.visibleCheckBox.CheckState = System.Windows.Forms.CheckState.Indeterminate;
-			this.visibleCheckBox.Location = new System.Drawing.Point(899, 34);
+			this.visibleCheckBox.Location = new System.Drawing.Point(566, 73);
 			this.visibleCheckBox.Name = "visibleCheckBox";
 			this.visibleCheckBox.Size = new System.Drawing.Size(56, 17);
 			this.visibleCheckBox.TabIndex = 21;
 			this.visibleCheckBox.Text = "Visible";
 			this.visibleCheckBox.ThreeState = true;
 			this.visibleCheckBox.UseVisualStyleBackColor = true;
-			this.visibleCheckBox.CheckedChanged += new System.EventHandler(this.visibleCheckBox_CheckedChanged);
+			this.visibleCheckBox.CheckStateChanged += new System.EventHandler(this.visibleCheckBox_CheckStateChanged);
 			// 
 			// quarterDateLabel
 			// 
@@ -2006,57 +1917,57 @@
 			this.aliasTextBox.TabIndex = 10;
 			this.aliasTextBox.TextChanged += new System.EventHandler(this.aliasTextBox_TextChanged);
 			// 
-			// sortLabel
+			// sortTypeLabel
 			// 
-			this.sortLabel.AutoSize = true;
-			this.sortLabel.Location = new System.Drawing.Point(620, 16);
-			this.sortLabel.Name = "sortLabel";
-			this.sortLabel.Size = new System.Drawing.Size(26, 13);
-			this.sortLabel.TabIndex = 13;
-			this.sortLabel.Text = "Sort";
+			this.sortTypeLabel.AutoSize = true;
+			this.sortTypeLabel.Location = new System.Drawing.Point(625, 56);
+			this.sortTypeLabel.Name = "sortTypeLabel";
+			this.sortTypeLabel.Size = new System.Drawing.Size(53, 13);
+			this.sortTypeLabel.TabIndex = 13;
+			this.sortTypeLabel.Text = "Sort Type";
 			// 
-			// sortComboBox
+			// sortTypeComboBox
 			// 
-			this.sortComboBox.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
-			this.sortComboBox.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
-			this.sortComboBox.Location = new System.Drawing.Point(623, 32);
-			this.sortComboBox.Name = "sortComboBox";
-			this.sortComboBox.Size = new System.Drawing.Size(121, 21);
-			this.sortComboBox.TabIndex = 13;
-			this.sortComboBox.SelectedIndexChanged += new System.EventHandler(this.sortComboBox_SelectedIndexChanged);
+			this.sortTypeComboBox.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
+			this.sortTypeComboBox.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
+			this.sortTypeComboBox.Location = new System.Drawing.Point(628, 72);
+			this.sortTypeComboBox.Name = "sortTypeComboBox";
+			this.sortTypeComboBox.Size = new System.Drawing.Size(148, 21);
+			this.sortTypeComboBox.TabIndex = 13;
+			this.sortTypeComboBox.SelectedIndexChanged += new System.EventHandler(this.sortTypeComboBox_SelectedIndexChanged);
 			// 
 			// zeroLastCheckBox
 			// 
 			this.zeroLastCheckBox.AutoSize = true;
 			this.zeroLastCheckBox.Checked = true;
 			this.zeroLastCheckBox.CheckState = System.Windows.Forms.CheckState.Indeterminate;
-			this.zeroLastCheckBox.Location = new System.Drawing.Point(570, 74);
+			this.zeroLastCheckBox.Location = new System.Drawing.Point(489, 74);
 			this.zeroLastCheckBox.Name = "zeroLastCheckBox";
 			this.zeroLastCheckBox.Size = new System.Drawing.Size(71, 17);
 			this.zeroLastCheckBox.TabIndex = 20;
 			this.zeroLastCheckBox.Text = "Zero Last";
 			this.zeroLastCheckBox.ThreeState = true;
 			this.zeroLastCheckBox.UseVisualStyleBackColor = true;
-			this.zeroLastCheckBox.CheckedChanged += new System.EventHandler(this.zeroLastCheckBox_CheckedChanged);
+			this.zeroLastCheckBox.CheckStateChanged += new System.EventHandler(this.zeroLastCheckBox_CheckStateChanged);
 			// 
 			// multiCheckBox
 			// 
 			this.multiCheckBox.AutoSize = true;
 			this.multiCheckBox.Checked = true;
 			this.multiCheckBox.CheckState = System.Windows.Forms.CheckState.Indeterminate;
-			this.multiCheckBox.Location = new System.Drawing.Point(450, 74);
+			this.multiCheckBox.Location = new System.Drawing.Point(369, 74);
 			this.multiCheckBox.Name = "multiCheckBox";
 			this.multiCheckBox.Size = new System.Drawing.Size(114, 17);
 			this.multiCheckBox.TabIndex = 19;
 			this.multiCheckBox.Text = "Multiple Selections";
 			this.multiCheckBox.ThreeState = true;
 			this.multiCheckBox.UseVisualStyleBackColor = true;
-			this.multiCheckBox.CheckedChanged += new System.EventHandler(this.multiCheckBox_CheckedChanged);
+			this.multiCheckBox.CheckStateChanged += new System.EventHandler(this.multiCheckBox_CheckStateChanged);
 			// 
 			// displayTypeLabel
 			// 
 			this.displayTypeLabel.AutoSize = true;
-			this.displayTypeLabel.Location = new System.Drawing.Point(366, 16);
+			this.displayTypeLabel.Location = new System.Drawing.Point(493, 16);
 			this.displayTypeLabel.Name = "displayTypeLabel";
 			this.displayTypeLabel.Size = new System.Drawing.Size(31, 13);
 			this.displayTypeLabel.TabIndex = 5;
@@ -2066,16 +1977,16 @@
 			// 
 			this.displayTypeComboBox.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
 			this.displayTypeComboBox.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
-			this.displayTypeComboBox.Location = new System.Drawing.Point(369, 32);
+			this.displayTypeComboBox.Location = new System.Drawing.Point(496, 32);
 			this.displayTypeComboBox.Name = "displayTypeComboBox";
-			this.displayTypeComboBox.Size = new System.Drawing.Size(121, 21);
-			this.displayTypeComboBox.TabIndex = 11;
+			this.displayTypeComboBox.Size = new System.Drawing.Size(126, 21);
+			this.displayTypeComboBox.TabIndex = 12;
 			this.displayTypeComboBox.SelectedIndexChanged += new System.EventHandler(this.displayTypeComboBox_SelectedIndexChanged);
 			// 
 			// displayColumnLabel
 			// 
 			this.displayColumnLabel.AutoSize = true;
-			this.displayColumnLabel.Location = new System.Drawing.Point(493, 16);
+			this.displayColumnLabel.Location = new System.Drawing.Point(366, 16);
 			this.displayColumnLabel.Name = "displayColumnLabel";
 			this.displayColumnLabel.Size = new System.Drawing.Size(42, 13);
 			this.displayColumnLabel.TabIndex = 3;
@@ -2085,10 +1996,10 @@
 			// 
 			this.displayColumnComboBox.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
 			this.displayColumnComboBox.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
-			this.displayColumnComboBox.Location = new System.Drawing.Point(496, 32);
+			this.displayColumnComboBox.Location = new System.Drawing.Point(369, 32);
 			this.displayColumnComboBox.Name = "displayColumnComboBox";
 			this.displayColumnComboBox.Size = new System.Drawing.Size(121, 21);
-			this.displayColumnComboBox.TabIndex = 12;
+			this.displayColumnComboBox.TabIndex = 11;
 			this.displayColumnComboBox.SelectedIndexChanged += new System.EventHandler(this.displayColumnComboBox_SelectedIndexChanged);
 			// 
 			// legendLabel
@@ -2159,13 +2070,14 @@
 			this.commentsDataGridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.commentName,
             this.commentContent});
+			this.commentsDataGridView.EditMode = System.Windows.Forms.DataGridViewEditMode.EditOnEnter;
 			this.commentsDataGridView.Location = new System.Drawing.Point(6, 19);
 			this.commentsDataGridView.MultiSelect = false;
 			this.commentsDataGridView.Name = "commentsDataGridView";
 			this.commentsDataGridView.RowHeadersVisible = false;
 			this.commentsDataGridView.Size = new System.Drawing.Size(512, 125);
 			this.commentsDataGridView.TabIndex = 25;
-			this.commentsDataGridView.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.commentsDataGridView_CellEndEdit);
+			this.commentsDataGridView.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.commentsDataGridView_CellValueChanged);
 			// 
 			// commentName
 			// 
@@ -2207,6 +2119,7 @@
 			// 
 			// tableSettingsGroupBox
 			// 
+			this.tableSettingsGroupBox.Controls.Add(this.filterParameterTableNameComboBox);
 			this.tableSettingsGroupBox.Controls.Add(this.orderByTextBox);
 			this.tableSettingsGroupBox.Controls.Add(this.orderByLabel);
 			this.tableSettingsGroupBox.Controls.Add(this.lagColumnLabel);
@@ -2214,27 +2127,34 @@
 			this.tableSettingsGroupBox.Controls.Add(this.valueColumnLabel);
 			this.tableSettingsGroupBox.Controls.Add(this.valueColumnComboBox);
 			this.tableSettingsGroupBox.Controls.Add(this.filterPrarameterTableNameLabel);
-			this.tableSettingsGroupBox.Controls.Add(this.filterParameterTableNameTextBox);
-			this.tableSettingsGroupBox.Controls.Add(this.loadFilterParameterTableButton);
-			this.tableSettingsGroupBox.Location = new System.Drawing.Point(214, 75);
+			this.tableSettingsGroupBox.Location = new System.Drawing.Point(300, 75);
 			this.tableSettingsGroupBox.Name = "tableSettingsGroupBox";
 			this.tableSettingsGroupBox.Size = new System.Drawing.Size(341, 107);
 			this.tableSettingsGroupBox.TabIndex = 9;
 			this.tableSettingsGroupBox.TabStop = false;
 			this.tableSettingsGroupBox.Text = "Table Settings";
 			// 
+			// filterParameterTableNameComboBox
+			// 
+			this.filterParameterTableNameComboBox.FormattingEnabled = true;
+			this.filterParameterTableNameComboBox.Location = new System.Drawing.Point(6, 32);
+			this.filterParameterTableNameComboBox.Name = "filterParameterTableNameComboBox";
+			this.filterParameterTableNameComboBox.Size = new System.Drawing.Size(163, 21);
+			this.filterParameterTableNameComboBox.TabIndex = 5;
+			this.filterParameterTableNameComboBox.SelectedIndexChanged += new System.EventHandler(this.filterParameterTableNameComboBox_SelectedIndexChanged);
+			// 
 			// orderByTextBox
 			// 
-			this.orderByTextBox.Location = new System.Drawing.Point(188, 32);
+			this.orderByTextBox.Location = new System.Drawing.Point(175, 32);
 			this.orderByTextBox.Name = "orderByTextBox";
-			this.orderByTextBox.Size = new System.Drawing.Size(147, 20);
+			this.orderByTextBox.Size = new System.Drawing.Size(160, 20);
 			this.orderByTextBox.TabIndex = 6;
 			this.orderByTextBox.TextChanged += new System.EventHandler(this.orderByTextBox_TextChanged);
 			// 
 			// orderByLabel
 			// 
 			this.orderByLabel.AutoSize = true;
-			this.orderByLabel.Location = new System.Drawing.Point(185, 17);
+			this.orderByLabel.Location = new System.Drawing.Point(172, 17);
 			this.orderByLabel.Name = "orderByLabel";
 			this.orderByLabel.Size = new System.Drawing.Size(48, 13);
 			this.orderByLabel.TabIndex = 5;
@@ -2285,25 +2205,6 @@
 			this.filterPrarameterTableNameLabel.TabIndex = 1;
 			this.filterPrarameterTableNameLabel.Text = "Name";
 			// 
-			// filterParameterTableNameTextBox
-			// 
-			this.filterParameterTableNameTextBox.Location = new System.Drawing.Point(6, 32);
-			this.filterParameterTableNameTextBox.Name = "filterParameterTableNameTextBox";
-			this.filterParameterTableNameTextBox.Size = new System.Drawing.Size(142, 20);
-			this.filterParameterTableNameTextBox.TabIndex = 5;
-			this.filterParameterTableNameTextBox.TextChanged += new System.EventHandler(this.filterParameterTableNameTextBox_TextChanged);
-			// 
-			// loadFilterParameterTableButton
-			// 
-			this.loadFilterParameterTableButton.Image = global::PortalConfigurator.Properties.Resources._112_ArrowCurve_Blue_Right_16x16_72;
-			this.loadFilterParameterTableButton.Location = new System.Drawing.Point(154, 29);
-			this.loadFilterParameterTableButton.Name = "loadFilterParameterTableButton";
-			this.loadFilterParameterTableButton.Size = new System.Drawing.Size(28, 25);
-			this.loadFilterParameterTableButton.TabIndex = 2;
-			this.loadFilterParameterTableButton.TabStop = false;
-			this.loadFilterParameterTableButton.UseVisualStyleBackColor = true;
-			this.loadFilterParameterTableButton.Click += new System.EventHandler(this.loadFilterParameterTableButton_Click);
-			// 
 			// filterParameterNameTextBox
 			// 
 			this.filterParameterNameTextBox.Location = new System.Drawing.Point(214, 49);
@@ -2315,7 +2216,7 @@
 			// filterParameterNameLabel
 			// 
 			this.filterParameterNameLabel.AutoSize = true;
-			this.filterParameterNameLabel.Location = new System.Drawing.Point(213, 32);
+			this.filterParameterNameLabel.Location = new System.Drawing.Point(211, 33);
 			this.filterParameterNameLabel.Name = "filterParameterNameLabel";
 			this.filterParameterNameLabel.Size = new System.Drawing.Size(113, 13);
 			this.filterParameterNameLabel.TabIndex = 7;
@@ -2327,7 +2228,7 @@
 			this.typeGroupBox.Controls.Add(this.neitherRadioButton);
 			this.typeGroupBox.Controls.Add(this.tableRadioButton);
 			this.typeGroupBox.Controls.Add(this.valuesRadioButton);
-			this.typeGroupBox.Location = new System.Drawing.Point(561, 75);
+			this.typeGroupBox.Location = new System.Drawing.Point(214, 75);
 			this.typeGroupBox.Name = "typeGroupBox";
 			this.typeGroupBox.Size = new System.Drawing.Size(80, 107);
 			this.typeGroupBox.TabIndex = 5;
@@ -2346,11 +2247,12 @@
 			this.dateCheckBox.Text = "Date";
 			this.dateCheckBox.ThreeState = true;
 			this.dateCheckBox.UseVisualStyleBackColor = true;
-			this.dateCheckBox.CheckedChanged += new System.EventHandler(this.dateCheckBox_CheckedChanged);
+			this.dateCheckBox.CheckStateChanged += new System.EventHandler(this.dateCheckBox_CheckStateChanged);
 			// 
 			// neitherRadioButton
 			// 
 			this.neitherRadioButton.AutoSize = true;
+			this.neitherRadioButton.Checked = true;
 			this.neitherRadioButton.Location = new System.Drawing.Point(6, 65);
 			this.neitherRadioButton.Name = "neitherRadioButton";
 			this.neitherRadioButton.Size = new System.Drawing.Size(59, 17);
@@ -2367,7 +2269,6 @@
 			this.tableRadioButton.Name = "tableRadioButton";
 			this.tableRadioButton.Size = new System.Drawing.Size(52, 17);
 			this.tableRadioButton.TabIndex = 2;
-			this.tableRadioButton.TabStop = true;
 			this.tableRadioButton.Text = "Table";
 			this.tableRadioButton.UseVisualStyleBackColor = true;
 			this.tableRadioButton.CheckedChanged += new System.EventHandler(this.tableRadioButton_CheckedChanged);
@@ -2379,7 +2280,6 @@
 			this.valuesRadioButton.Name = "valuesRadioButton";
 			this.valuesRadioButton.Size = new System.Drawing.Size(71, 17);
 			this.valuesRadioButton.TabIndex = 1;
-			this.valuesRadioButton.TabStop = true;
 			this.valuesRadioButton.Text = "Value List";
 			this.valuesRadioButton.UseVisualStyleBackColor = true;
 			this.valuesRadioButton.CheckedChanged += new System.EventHandler(this.valuesRadioButton_CheckedChanged);
@@ -2399,6 +2299,16 @@
 			this.colorDialog.AnyColor = true;
 			this.colorDialog.FullOpen = true;
 			// 
+			// dateColumnErrorProvider
+			// 
+			this.dateColumnErrorProvider.ContainerControl = this;
+			this.dateColumnErrorProvider.Icon = ((System.Drawing.Icon)(resources.GetObject("dateColumnErrorProvider.Icon")));
+			// 
+			// valuesTypeErrorProvider
+			// 
+			this.valuesTypeErrorProvider.ContainerControl = this;
+			this.valuesTypeErrorProvider.Icon = ((System.Drawing.Icon)(resources.GetObject("valuesTypeErrorProvider.Icon")));
+			// 
 			// PortalConfiguratorForm
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -2410,7 +2320,7 @@
 			this.MainMenuStrip = this.menuStrip;
 			this.Name = "PortalConfiguratorForm";
 			this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-			this.Text = "Portal Configurator";
+			this.Text = "Portal Chart Configuration Tool";
 			this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.PortalConfiguratorForm_FormClosing);
 			this.Load += new System.EventHandler(this.PortalConfiguratorForm_Load);
 			this.menuStrip.ResumeLayout(false);
@@ -2418,26 +2328,20 @@
 			this.configTabControl.ResumeLayout(false);
 			this.measureTabPage.ResumeLayout(false);
 			this.measureTabPage.PerformLayout();
+			((System.ComponentModel.ISupportInitialize)(this.yAxisMaxNumericUpDown)).EndInit();
+			((System.ComponentModel.ISupportInitialize)(this.yAxisMinNumericUpDown)).EndInit();
 			this.chartsGroupBox.ResumeLayout(false);
 			this.chartsGroupBox.PerformLayout();
 			((System.ComponentModel.ISupportInitialize)(this.chartsDataGridView)).EndInit();
 			this.numberFormatGroupBox.ResumeLayout(false);
 			((System.ComponentModel.ISupportInitialize)(this.numberFormatsDataGridView)).EndInit();
-			this.headersGroupBox.ResumeLayout(false);
-			((System.ComponentModel.ISupportInitialize)(this.headersDataGridView)).EndInit();
-			this.labelGroupBox.ResumeLayout(false);
-			this.labelGroupBox.PerformLayout();
-			((System.ComponentModel.ISupportInitialize)(this.yAxisMaxNumericUpDown)).EndInit();
-			((System.ComponentModel.ISupportInitialize)(this.yAxisMinNumericUpDown)).EndInit();
-			this.filtersParametersGroupBox.ResumeLayout(false);
-			((System.ComponentModel.ISupportInitialize)(this.filterParametersDataGridView)).EndInit();
-			this.transformGroupBox.ResumeLayout(false);
-			this.transformGroupBox.PerformLayout();
-			((System.ComponentModel.ISupportInitialize)(this.transformFieldsDataGridView)).EndInit();
+			this.measureGroupBox.ResumeLayout(false);
+			((System.ComponentModel.ISupportInitialize)(this.measureDataGridView)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.maxCheckedNumericUpDown)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.orderNumericUpDown)).EndInit();
 			this.measureToolStrip.ResumeLayout(false);
 			this.measureToolStrip.PerformLayout();
+			this.parametersCoveredGroupBox.ResumeLayout(false);
 			this.filterParameterTabPage.ResumeLayout(false);
 			this.filterParameterTabPage.PerformLayout();
 			this.filterParameterToolStrip.ResumeLayout(false);
@@ -2455,6 +2359,8 @@
 			this.tableSettingsGroupBox.PerformLayout();
 			this.typeGroupBox.ResumeLayout(false);
 			this.typeGroupBox.PerformLayout();
+			((System.ComponentModel.ISupportInitialize)(this.dateColumnErrorProvider)).EndInit();
+			((System.ComponentModel.ISupportInitialize)(this.valuesTypeErrorProvider)).EndInit();
 			this.ResumeLayout(false);
 			this.PerformLayout();
 
@@ -2474,8 +2380,6 @@
 		private System.Windows.Forms.RadioButton valuesRadioButton;
 		private System.Windows.Forms.TextBox filterParameterNameTextBox;
 		private System.Windows.Forms.Label filterPrarameterTableNameLabel;
-		private System.Windows.Forms.TextBox filterParameterTableNameTextBox;
-		private System.Windows.Forms.Button loadFilterParameterTableButton;
 		private System.Windows.Forms.RadioButton neitherRadioButton;
 		private System.Windows.Forms.GroupBox tableSettingsGroupBox;
 		private System.Windows.Forms.Label valueColumnLabel;
@@ -2497,7 +2401,6 @@
 		private System.Windows.Forms.ComboBox displayColumnComboBox;
 		private System.Windows.Forms.Label legendLabel;
 		private System.Windows.Forms.TextBox legendTextBox;
-		private System.Windows.Forms.Label monthLimitLabel;
 		private System.Windows.Forms.NumericUpDown monthLimitNumericUpDown;
 		private System.Windows.Forms.Label monthStepLabel;
 		private System.Windows.Forms.NumericUpDown monthStepNumericUpDown;
@@ -2506,8 +2409,8 @@
 		private System.Windows.Forms.ComboBox quarterDateComboBox;
 		private System.Windows.Forms.Label aliasLabel;
 		private System.Windows.Forms.TextBox aliasTextBox;
-		private System.Windows.Forms.Label sortLabel;
-		private System.Windows.Forms.ComboBox sortComboBox;
+		private System.Windows.Forms.Label sortTypeLabel;
+		private System.Windows.Forms.ComboBox sortTypeComboBox;
 		private System.Windows.Forms.GroupBox helpGroupBox;
 		private System.Windows.Forms.Button moveDownHelpButton;
 		private System.Windows.Forms.Button moveUpHelpButton;
@@ -2535,8 +2438,6 @@
 		private System.Windows.Forms.DataGridView helpDataGridView;
 		private System.Windows.Forms.Button deleteHelpButton;
 		private System.Windows.Forms.Button addHelpButton;
-		private System.Windows.Forms.Label sortFunctionLabel;
-		private System.Windows.Forms.ComboBox sortFunctionComboBox;
 		private System.Windows.Forms.ToolStripMenuItem fileToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem helpToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem exitToolStripMenuItem;
@@ -2554,8 +2455,8 @@
 		private System.Windows.Forms.Label baseLabel;
 		private System.Windows.Forms.Label summaryLabel;
 		private System.Windows.Forms.TextBox summaryTextBox;
-		private System.Windows.Forms.Label fullTitleLabel;
-		private System.Windows.Forms.TextBox fullTitleTextBox;
+		private System.Windows.Forms.Label dropdownLabel;
+		private System.Windows.Forms.TextBox dropdownTextBox;
 		private System.Windows.Forms.Label orderLabel;
 		private System.Windows.Forms.NumericUpDown orderNumericUpDown;
 		private System.Windows.Forms.Label filterLabel;
@@ -2566,19 +2467,14 @@
 		private System.Windows.Forms.CheckBox muteAllOthersCheckBox;
 		private System.Windows.Forms.Label chartTypeLabel;
 		private System.Windows.Forms.ComboBox chartTypeComboBox;
-		private System.Windows.Forms.GroupBox transformGroupBox;
-		private System.Windows.Forms.DataGridView transformFieldsDataGridView;
-		private System.Windows.Forms.Label dateFieldLabel;
-		private System.Windows.Forms.ComboBox dateFieldComboBox;
 		private System.Windows.Forms.Label functionLabel;
 		private System.Windows.Forms.ComboBox functionComboBox;
-		private System.Windows.Forms.GroupBox filtersParametersGroupBox;
-		private System.Windows.Forms.DataGridView filterParametersDataGridView;
-		private System.Windows.Forms.Button deleteFilterParameterButton;
-		private System.Windows.Forms.Button moveDownFilterParameterButton;
-		private System.Windows.Forms.Button addFilterParameterButton;
-		private System.Windows.Forms.Button moveUpFilterParameterButton;
-		private System.Windows.Forms.GroupBox labelGroupBox;
+		private System.Windows.Forms.GroupBox measureGroupBox;
+		private System.Windows.Forms.DataGridView measureDataGridView;
+		private System.Windows.Forms.Button deleteMeasureGridRowButton;
+		private System.Windows.Forms.Button moveDownMeasureGridRowButton;
+		private System.Windows.Forms.Button addMeasureGridRowButton;
+		private System.Windows.Forms.Button moveUpMeasureGridRowButton;
 		private System.Windows.Forms.Label xAxisLabelLabel;
 		private System.Windows.Forms.TextBox xAxisLabelTextBox;
 		private System.Windows.Forms.Label yAxisLabelLabel;
@@ -2589,8 +2485,6 @@
 		private System.Windows.Forms.NumericUpDown yAxisMaxNumericUpDown;
 		private System.Windows.Forms.Label yAxisMinLabel;
 		private System.Windows.Forms.Label yAxisFormatLabel;
-		private System.Windows.Forms.GroupBox headersGroupBox;
-		private System.Windows.Forms.DataGridView headersDataGridView;
 		private System.Windows.Forms.GroupBox numberFormatGroupBox;
 		private System.Windows.Forms.DataGridView numberFormatsDataGridView;
 		private System.Windows.Forms.Button deleteNumberFormatButton;
@@ -2614,7 +2508,6 @@
 		private System.Windows.Forms.Button baseButton;
 		private System.Windows.Forms.Button valuesTypeButton;
 		private System.Windows.Forms.Label valuesTypeLabel;
-		private System.Windows.Forms.Button measureTableButton;
 		private System.Windows.Forms.DataGridViewTextBoxColumn chartIdColumn;
 		private System.Windows.Forms.DataGridViewTextBoxColumn chartTypeColumn;
 		private System.Windows.Forms.DataGridViewTextBoxColumn maxSetsColumn;
@@ -2625,14 +2518,7 @@
 		private System.Windows.Forms.DataGridViewTextBoxColumn helpContent;
 		private System.Windows.Forms.DataGridViewTextBoxColumn commentName;
 		private System.Windows.Forms.DataGridViewTextBoxColumn commentContent;
-		private System.Windows.Forms.CheckBox allMonthsCheckBox;
-		private System.Windows.Forms.DataGridViewComboBoxColumn filterParameterNameColumn;
-		private System.Windows.Forms.DataGridViewComboBoxColumn controlTypeColumn;
-		private System.Windows.Forms.DataGridViewCheckBoxColumn isDateColumn;
-		private System.Windows.Forms.DataGridViewCheckBoxColumn isRequiredColumn;
-		private System.Windows.Forms.DataGridViewTextBoxColumn fieldNameColumn;
-		private System.Windows.Forms.DataGridViewCheckBoxColumn isValueFieldColumn;
-		private System.Windows.Forms.DataGridViewCheckBoxColumn removeFieldColumn;
+		private System.Windows.Forms.CheckBox monthLimitCheckBox;
 		private System.Windows.Forms.Button changeMultichartNameButton;
 		private System.Windows.Forms.DataGridViewTextBoxColumn keysKeyColumn;
 		private System.Windows.Forms.DataGridViewTextBoxColumn keysValueColumn;
@@ -2652,13 +2538,27 @@
 		private System.Windows.Forms.DataGridViewTextBoxColumn suffixColumn;
 		private System.Windows.Forms.DataGridViewCheckBoxColumn negativeParensColumn;
 		private System.Windows.Forms.DataGridViewButtonColumn negativeColorButtonColumn;
-		private System.Windows.Forms.DataGridViewTextBoxColumn headerKeyColumn;
-		private System.Windows.Forms.DataGridViewTextBoxColumn columnNameColumn;
+		private System.Windows.Forms.ComboBox tableComboBox;
+		private System.Windows.Forms.GroupBox parametersCoveredGroupBox;
+		private System.Windows.Forms.Label parametersNeededLabel;
+		private System.Windows.Forms.Label parametersCoveredOfLabel;
+		private System.Windows.Forms.Label parametersCountLabel;
+		private System.Windows.Forms.ErrorProvider dateColumnErrorProvider;
+		private System.Windows.Forms.ComboBox filterParameterTableNameComboBox;
+		private System.Windows.Forms.ToolStripMenuItem reloadFromDatabaseToolStripMenuItem;
+		private System.Windows.Forms.DataGridViewComboBoxColumn controlParameterColumn;
+		private System.Windows.Forms.DataGridViewComboBoxColumn controlTypeColumn;
+		private System.Windows.Forms.DataGridViewCheckBoxColumn isDateColumn;
+		private System.Windows.Forms.DataGridViewCheckBoxColumn isRequiredColumn;
+		private System.Windows.Forms.DataGridViewComboBoxColumn columnNameColumn;
 		private System.Windows.Forms.DataGridViewComboBoxColumn headerTypeColumn;
-		private System.Windows.Forms.DataGridViewComboBoxColumn headerFilterParameterColumn;
+		private System.Windows.Forms.DataGridViewTextBoxColumn headerTextColumn;
 		private System.Windows.Forms.DataGridViewCheckBoxColumn isReturnRowColumn;
 		private System.Windows.Forms.DataGridViewCheckBoxColumn isReturnRowDateColumn;
 		private System.Windows.Forms.DataGridViewCheckBoxColumn isReturnRowControlColumn;
+		private System.Windows.Forms.DataGridViewCheckBoxColumn isValueFieldColumn;
+		private System.Windows.Forms.DataGridViewCheckBoxColumn isRemoveFieldColumn;
+		private System.Windows.Forms.ErrorProvider valuesTypeErrorProvider;
 	}
 }
 

@@ -58,7 +58,7 @@ namespace Framework
 			if (!BaseOptionSet.IsEmpty)
 				myJson.Add("baseOptions", BaseOptionSet.CompileJson());
 
-			if (!Label.IsEmpty)
+			if (ChartType != ChartType.NoChartType)
 				myJson.Add("labels", Label.CompileJson());
 
 			if (HideColumns.Count != 0)
@@ -74,24 +74,35 @@ namespace Framework
 		{
 			foreach (var property in json.Properties())
 			{
-				if (property.Name == "chartType")
-					ChartType = Enums.GetChartTypeEnum(Json.Parse(String.Empty, property));
-				else if (property.Name == "chartId")
-					ChartId = Json.Parse(ChartId, property);
-				else if (property.Name == "style")
-					ChartStyle = Json.Parse(ChartStyle, property);
-				else if (property.Name == "maxSets")
-					MaxSets = Json.Parse(MaxSets, property);
-				else if (property.Name == "baseOptions")
-					BaseOptionSet.ParseJson((JObject)property.Value);
-				else if (property.Name == "labels")
-					Label.ParseJson((JObject)property.Value);
-				else if (property.Name == "hideColumns")
-					HideColumns = Json.Parse(HideColumns, property);
-				else if (property.Name == "addInputClass")
-					AddInputClass = Enums.GetAddInputClassEnum(Json.Parse(String.Empty, property));
-				else
-					throw new UnknownJsonPropertyException(String.Format("The {0} property is not defined for a Chart Info.", property.Name));
+				switch (property.Name)
+				{
+					case "chartType":
+						ChartType = Enums.GetChartTypeEnum(Json.Parse(String.Empty, property));
+						break;
+					case "chartId":
+						ChartId = Json.Parse(ChartId, property);
+						break;
+					case "style":
+						ChartStyle = Json.Parse(ChartStyle, property);
+						break;
+					case "maxSets":
+						MaxSets = Json.Parse(MaxSets, property);
+						break;
+					case "baseOptions":
+						BaseOptionSet.ParseJson((JObject)property.Value);
+						break;
+					case "labels":
+						Label.ParseJson((JObject)property.Value);
+						break;
+					case "hideColumns":
+						HideColumns = Json.Parse(HideColumns, property);
+						break;
+					case "addInputClass":
+						AddInputClass = Enums.GetAddInputClassEnum(Json.Parse(String.Empty, property));
+						break;
+					default:
+						throw new UnknownJsonPropertyException(String.Format("The {0} property is not defined for a Chart Info.", property.Name));
+				}
 			}
 		}
 

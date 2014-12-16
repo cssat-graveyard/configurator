@@ -129,9 +129,11 @@
 			this.exampleJsonTextBox.Multiline = true;
 			this.exampleJsonTextBox.Name = "exampleJsonTextBox";
 			this.exampleJsonTextBox.ReadOnly = true;
+			this.exampleJsonTextBox.ScrollBars = System.Windows.Forms.ScrollBars.Both;
 			this.exampleJsonTextBox.Size = new System.Drawing.Size(188, 209);
 			this.exampleJsonTextBox.TabIndex = 7;
 			this.exampleJsonTextBox.TabStop = false;
+			this.exampleJsonTextBox.WordWrap = false;
 			// 
 			// exampleJsonLabel
 			// 
@@ -160,7 +162,7 @@
 			this.Name = "ValuesTypeDialog";
 			this.ShowIcon = false;
 			this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-			this.Text = "Select Values Type";
+			this.Text = "Select a Values Type";
 			this.TopMost = true;
 			this.Load += new System.EventHandler(this.ValuesTypeInterface_Load);
 			this.ResumeLayout(false);

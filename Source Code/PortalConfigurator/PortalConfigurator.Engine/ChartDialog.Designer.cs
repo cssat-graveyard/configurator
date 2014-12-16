@@ -264,11 +264,6 @@
 			// maxSetsNumericUpDown
 			// 
 			this.maxSetsNumericUpDown.Location = new System.Drawing.Point(266, 25);
-			this.maxSetsNumericUpDown.Maximum = new decimal(new int[] {
-            10000,
-            0,
-            0,
-            0});
 			this.maxSetsNumericUpDown.Name = "maxSetsNumericUpDown";
 			this.maxSetsNumericUpDown.Size = new System.Drawing.Size(121, 20);
 			this.maxSetsNumericUpDown.TabIndex = 4;

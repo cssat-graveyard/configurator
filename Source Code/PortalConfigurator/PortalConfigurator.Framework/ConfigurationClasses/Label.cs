@@ -34,11 +34,8 @@ namespace Framework
 		{
 			JObject myJson = new JObject();
 
-			if (!String.IsNullOrEmpty(XAxisLabel))
-				myJson.Add("x", XAxisLabel);
-
-			if (!String.IsNullOrEmpty(YAxisLabel))
-				myJson.Add("y", YAxisLabel);
+			myJson.Add("x", XAxisLabel);
+			myJson.Add("y", YAxisLabel);
 
 			if (YAxisMin != null)
 				myJson.Add("yMin", YAxisMin);
@@ -56,18 +53,26 @@ namespace Framework
 		{
 			foreach (var property in json.Properties())
 			{
-				if (property.Name == "x")
-					XAxisLabel = Json.Parse(XAxisLabel, property);
-				else if (property.Name == "y")
-					YAxisLabel = Json.Parse(YAxisLabel, property);
-				else if (property.Name == "yMin")
-					YAxisMin = Json.Parse(YAxisMin, property);
-				else if (property.Name == "yMax")
-					YAxisMax = Json.Parse(YAxisMax, property);
-				else if (property.Name == "yFormat")
-					YAxisFormat = Enums.GetAxisFormatEnum(Json.Parse(String.Empty, property));
-				else
-					throw new UnknownJsonPropertyException(String.Format("The {0} property is not defined for a Label.", property.Name));
+				switch (property.Name)
+				{
+					case "x":
+						XAxisLabel = Json.Parse(XAxisLabel, property);
+						break;
+					case "y":
+						YAxisLabel = Json.Parse(YAxisLabel, property);
+						break;
+					case "yMin":
+						YAxisMin = Json.Parse(YAxisMin, property);
+						break;
+					case "yMax":
+						YAxisMax = Json.Parse(YAxisMax, property);
+						break;
+					case "yFormat":
+						YAxisFormat = Enums.GetAxisFormatEnum(Json.Parse(String.Empty, property));
+						break;
+					default:
+						throw new UnknownJsonPropertyException(String.Format("The {0} property is not defined for a Label.", property.Name));
+				}
 			}
 		}
 

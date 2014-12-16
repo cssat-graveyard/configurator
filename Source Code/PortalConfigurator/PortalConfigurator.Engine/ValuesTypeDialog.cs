@@ -13,6 +13,9 @@ namespace PortalConfigurator
 		private FilterParameter Subject { get; set; }
 		private FilterParameter Original { get; set; }
 		private Color ChangedValueColor { get; set; }
+		private List<ValuesType> PossibleValueTypes { get; set; }
+		private List<ValuesType> ValuesTypes { get; set; }
+		private string[] ValuesTypeNames { get; set; }
 
 		public ValuesTypeDialog()
 		{
@@ -20,6 +23,9 @@ namespace PortalConfigurator
 			this.Subject = new FilterParameter();
 			this.Original = new FilterParameter();
 			this.ChangedValueColor = Color.LemonChiffon;
+			this.PossibleValueTypes = new List<ValuesType>();
+			this.ValuesTypes = new List<ValuesType>();
+			this.ValuesTypeNames = new string[0];
 		}
 
 		public ValuesTypeDialog(ref FilterParameter subject, ref FilterParameter original, Color changedValueColor)
@@ -28,23 +34,25 @@ namespace PortalConfigurator
 			this.Subject = subject;
 			this.Original = original;
 			this.ChangedValueColor = changedValueColor;
+			this.PossibleValueTypes = subject.GetPossibleValuesTypes();
+			this.ValuesTypes = Enum.GetValues(typeof(ValuesType)).Cast<ValuesType>().Where(p => p != ValuesType.NoValues).ToList();
+			this.ValuesTypeNames = Enums.GetFormattedValuesTypeEnumNames().Where(p => Enums.GetValuesTypeEnum(p) != ValuesType.NoValues).ToArray<string>();
 		}
 
 		private void ValuesTypeInterface_Load(object sender, EventArgs e)
 		{
-			List<ValuesType> possibleValueTypes = Subject.GetPossibleValuesTypes();
-			List<ValuesType> valueTypes = Enum.GetValues(typeof(ValuesType)).Cast<ValuesType>().ToList();
-			valueTypes.RemoveAt(0);
 			typeListView.Columns[0].Width = typeListView.ClientSize.Width - SystemInformation.VerticalScrollBarWidth;
 
-			for (int i = 0; i < valueTypes.Count; i++)
+			for (int i = 0; i < ValuesTypeNames.Length; i++)
 			{
-				typeListView.Items.Add(Enums.GetString(valueTypes.ElementAt(i)));
-				typeListView.Items[i].ForeColor = possibleValueTypes.Contains(valueTypes.ElementAt(i)) ? default(Color) : Color.Gray;
-
-				if (Subject.ValuesType == valueTypes.ElementAt(i))
-					typeListView.SelectedIndices.Add(i);
+				typeListView.Items.Add(ValuesTypeNames.ElementAt(i));
+				typeListView.Items[i].ForeColor = PossibleValueTypes.Contains(ValuesTypes.ElementAt(i)) ? default(Color) : Color.Gray;
 			}
+
+			if (PossibleValueTypes.Contains(Subject.ValuesType))
+				typeListView.SelectedIndices.Add(ValuesTypes.FindIndex(p => p == Subject.ValuesType));
+			else
+				typeListView.SelectedIndices.Add(ValuesTypes.FindIndex(p => p == ValuesType.DictionaryStrings));
 		}
 
 		private void typeListView_SelectedIndexChanged(object sender, EventArgs e)
@@ -53,7 +61,7 @@ namespace PortalConfigurator
 			{
 				int selectedIndex = typeListView.SelectedIndices[0];
 
-				if (typeListView.Items[selectedIndex].ForeColor != Color.Gray)
+				if (PossibleValueTypes.Contains(ValuesTypes.ElementAt(selectedIndex)))
 				{
 					ValuesType valuesType = (ValuesType)(selectedIndex + 1);
 					JObject exampleJson = new JObject();
@@ -84,7 +92,7 @@ namespace PortalConfigurator
 				else
 				{
 					typeListView.SelectedIndices.Clear();
-					typeListView.SelectedIndices.Add(((int)Subject.ValuesType) - 1);
+					typeListView.SelectedIndices.Add(ValuesTypes.FindIndex(p => p == Subject.ValuesType));
 				}
 			}
 		}
@@ -107,7 +115,6 @@ namespace PortalConfigurator
 			bool selectedTypesEqual = Subject.Display.SelectedType == Original.Display.SelectedType;
 			bool selectedListsEqual = Subject.Display.SelectedList.SequenceEqual(Original.Display.SelectedList);
 			selectedTypeTextBox.BackColor = selectedTypesEqual && selectedListsEqual ? SystemColors.Window : ChangedValueColor;
-
 			disabledTypeTextBox.BackColor = Subject.Display.DisabledType == Original.Display.DisabledType ? SystemColors.Window : ChangedValueColor;
 		}
 	}

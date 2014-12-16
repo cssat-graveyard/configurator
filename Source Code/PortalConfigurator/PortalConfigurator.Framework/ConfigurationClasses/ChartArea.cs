@@ -51,16 +51,23 @@ namespace Framework
 		{
 			foreach (var property in json.Properties())
 			{
-				if (property.Name == "left")
-					Left = Json.Parse(Left, property);
-				else if (property.Name == "top")
-					Top = Json.Parse(Top, property);
-				else if (property.Name == "width")
-					Width = Json.Parse(Width, property);
-				else if (property.Name == "height")
-					Height = Json.Parse(Height, property);
-				else
-					throw new UnknownJsonPropertyException(String.Format("The {0} property is not defined for a Chart Area.", property.Name));
+				switch (property.Name)
+				{ 
+					case "left":
+						Left = Json.Parse(Left, property);
+						break;
+					case "top":
+						Top = Json.Parse(Top, property);
+						break;
+					case "width":
+						Width = Json.Parse(Width, property);
+						break;
+					case "height":
+						Height = Json.Parse(Height, property);
+						break;
+					default:
+						throw new UnknownJsonPropertyException(String.Format("The {0} property is not defined for a Chart Area.", property.Name));
+				}
 			}
 		}
 

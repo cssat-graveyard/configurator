@@ -111,6 +111,16 @@ namespace PortalConfigurator.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap Count_of_Placement_Prevention_Service_Cases {
+            get {
+                object obj = ResourceManager.GetObject("Count_of_Placement_Prevention_Service_Cases", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
         /// </summary>
         internal static System.Drawing.Icon Globe {

@@ -7,142 +7,53 @@ namespace Framework
 {
 	public class Transform : IConfigurationBase
 	{
-		private Dictionary<int, TransformFieldGridRow> _transformFieldGridRows;
-		private Dictionary<int, string> _tableColumns;
-		internal bool _transformFieldGridRowsAreUpdated;
-		private bool _tableDataAreLoaded;
-		
-		public TransformFunction Function { get; set; }
+		public Function Function { get; set; }
 		public string Table { get; set; }
 		public string DateField { get; set; }
 		public List<string> ValueFields { get; set; }
 		public List<string> RemoveFields { get; set; }
 		public bool IsEmpty { get { return CheckForEmpty(); } }
+		public List<string> TableColumns { get; internal set; }
+		internal bool SynchedWithMeasure { get; set; }
 
-		public Dictionary<int, TransformFieldGridRow> TransformFieldGridRows
+		public bool RequiresDateRow
 		{
-			get
-			{
-				if (!_transformFieldGridRowsAreUpdated)
-					RefreshMyTransformFieldGridRows();
-
-				return _transformFieldGridRows;
-			}
-			set
-			{
-				_transformFieldGridRows = value;
-				UpdatePropertiesFromTransformFieldGridRows();
-			}
+			get { return TransformRule.RequiresDateRow(Function); }
 		}
 
-		public Dictionary<int, string> TableColumns
+		public bool HasDateRow
 		{
-			get
-			{
-				if (_tableColumns.Count == 0 && !String.IsNullOrEmpty(Table))
-					LoadTableFromDatabase();
-
-				return _tableColumns;
-			}
-			internal set
-			{
-				_tableColumns = value;
-			}
-		}
-
-		public bool TableDataAreLoaded
-		{
-			get { return _tableDataAreLoaded; }
-			set
-			{
-				_tableDataAreLoaded = value;
-
-				if (!value)
-					_tableColumns.Clear();
-			}
+			get { return TransformRule.RequiresDateRow(Function) && !String.IsNullOrEmpty(DateField); }
 		}
 
 		public Transform()
-			: this(TransformFunction.NoFunction, String.Empty, String.Empty, new List<string>(), new List<string>())
+			: this(Function.NoFunction, String.Empty, String.Empty, new List<string>(), new List<string>())
 		{ }
 
-		public Transform(TransformFunction function, string table, string dateField, List<string> valueFields, List<string> removeFields)
+		public Transform(Function function, string table, string dateField, List<string> valueFields, List<string> removeFields)
 		{
+			this.TableColumns = new List<string>();
 			this.Function = function;
 			this.Table = table;
 			this.DateField = dateField;
 			this.ValueFields = valueFields;
 			this.RemoveFields = removeFields;
-			this._transformFieldGridRows = new Dictionary<int, TransformFieldGridRow>();
-			this._tableColumns = new Dictionary<int, string>();
-			this._transformFieldGridRowsAreUpdated = false;
-			this._tableDataAreLoaded = false;
+			this.SynchedWithMeasure = false;
 		}
 
 		private bool CheckForEmpty()
 		{
-			return Function == TransformFunction.NoFunction && String.IsNullOrEmpty(Table) && String.IsNullOrEmpty(DateField) && ValueFields.Count == 0 && RemoveFields.Count == 0;
-		}
-
-		private void LoadTableFromDatabase()
-		{
-			bool tableDataWasUpdated = false;
-
-			try
-			{
-				_tableColumns = Database.PopulateMeasure(Table);
-				tableDataWasUpdated = true;
-			}
-			catch (Exception)
-			{
-				_tableColumns = new Dictionary<int, string>();
-				throw;
-			}
-			finally
-			{
-				_tableDataAreLoaded = true;
-				_transformFieldGridRowsAreUpdated = !tableDataWasUpdated;
-			}
-		}
-
-		private void RefreshMyTransformFieldGridRows()
-		{
-			_transformFieldGridRows.Clear();
-
-			foreach (var item in TableColumns)
-			{
-				TransformFieldGridRow row = new TransformFieldGridRow(item.Value);
-				row.IsValueField = ValueFields.Contains(item.Value);
-				row.IsRemovedField = RemoveFields.Contains(item.Value);
-				_transformFieldGridRows.Add(item.Key, row);
-			}
-
-			_transformFieldGridRowsAreUpdated = true;
-		}
-
-		public void UpdatePropertiesFromTransformFieldGridRows()
-		{
-			ValueFields.Clear();
-			RemoveFields.Clear();
-
-			foreach (var item in _transformFieldGridRows)
-			{
-				if (item.Value.IsValueField)
-					ValueFields.Add(item.Value.FieldName);
-
-				if (item.Value.IsRemovedField)
-					RemoveFields.Add(item.Value.FieldName);
-			}
+			return Function == Function.NoFunction && String.IsNullOrEmpty(Table) && String.IsNullOrEmpty(DateField) && ValueFields.Count == 0 && RemoveFields.Count == 0;
 		}
 
 		public JObject CompileJson()
 		{
 			JObject myJson = new JObject();
 
-			if (Function != TransformFunction.NoFunction)
+			if (Function != Function.NoFunction)
 				myJson.Add("Function", Enums.GetString(Function));
 
-			if (!String.IsNullOrEmpty(Table))
+			if (!String.IsNullOrEmpty(Table) && !SynchedWithMeasure)
 				myJson.Add("table", Table);
 
 			if (!String.IsNullOrEmpty(DateField))
@@ -158,18 +69,26 @@ namespace Framework
 		{
 			foreach (var property in json.Properties())
 			{
-				if (property.Name == "Function")
-					Function = Enums.GetTransformFunctionEnum(Json.Parse(String.Empty, property));
-				else if (property.Name == "table")
-					Table = Json.Parse(Table, property);
-				else if (property.Name == "dateField")
-					DateField = Json.Parse(DateField, property);
-				else if (property.Name == "valueFields")
-					ValueFields = Json.Parse(ValueFields, property);
-				else if (property.Name == "removeFields")
-					RemoveFields = Json.Parse(RemoveFields, property);
-				else
-					throw new UnknownJsonPropertyException(String.Format("The {0} property is not defined for a Transform.", property.Name));
+				switch (property.Name)
+				{
+					case "Function":
+						Function = Enums.GetFunctionEnum(Json.Parse(String.Empty, property));
+						break;
+					case "table":
+						Table = Json.Parse(Table, property);
+						break;
+					case "dateField":
+						DateField = Json.Parse(DateField, property);
+						break;
+					case "valueFields":
+						ValueFields = Json.Parse(ValueFields, property);
+						break;
+					case "removeFields":
+						RemoveFields = Json.Parse(RemoveFields, property);
+						break;
+					default:
+						throw new UnknownJsonPropertyException(String.Format("The {0} property is not defined for a Transform.", property.Name));
+				}
 			}
 		}
 
@@ -195,6 +114,13 @@ namespace Framework
 		{
 			return Function.GetHashCode() ^ Table.GetHashCode() ^ DateField.GetHashCode() ^ ValueFields.GetHashCode() ^ RemoveFields.GetHashCode();
 		}
+	}
 
+	public static class TransformRule
+	{
+		public static bool RequiresDateRow(Function function)
+		{
+			return function == Function.DateRow || function == Function.Trim;
+		}
 	}
 }

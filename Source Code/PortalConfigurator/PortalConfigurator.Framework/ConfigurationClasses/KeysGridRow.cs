@@ -28,5 +28,28 @@ namespace Framework
 			this.Format = format;
 			this.IsFromTable = isFromTable;
 		}
+
+		public override bool Equals(object obj)
+		{
+			if (obj == null || !this.GetType().Equals(obj.GetType()))
+				return false;
+			else
+			{
+				KeysGridRow kgr = (KeysGridRow)obj;
+
+				bool valueEqual = Value == kgr.Value;
+				bool isRemovedEqual = IsRemoved == kgr.IsRemoved;
+				bool isSelectedEqual = IsSelected == kgr.IsSelected;
+				bool isDisabledEqual = IsDisabled == kgr.IsDisabled;
+				bool formatEqual = Format == kgr.Format;
+
+				return valueEqual && isRemovedEqual && isSelectedEqual && isDisabledEqual && formatEqual;
+			}
+		}
+
+		public override int GetHashCode()
+		{
+			return Value.GetHashCode() ^ IsRemoved.GetHashCode() ^ IsSelected.GetHashCode() ^ IsDisabled.GetHashCode() ^ Format.GetHashCode();
+		}
 	}
 }

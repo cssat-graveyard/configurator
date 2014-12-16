@@ -1,25 +1,19 @@
 ﻿using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 
 namespace Framework
 {
 	public class FilterParameter : IConfigurationBase
 	{
-		private ValuesType _valuesType;
-		private Dictionary<string, KeysGridRow> _keysGridRows;
 		private bool _keysGridRowsAreUpdated;
-		private Dictionary<int, string> _tableColumns;
-		private Dictionary<int, string> _tableKeys;
-		private bool _tableDataAreLoaded;
 		
 		public string FilterParameterName { get; set; }
 		public FilterParameterType Type { get; set; }
 		public Dictionary<string,string> Comments { get; set; }
 		public Dictionary<string, string> ValuesDictionary { get; set; }
-		public string Table { get; set; }
-		public int? ValueColumn { get; set; }
 		public int? LagColumn { get; set; }
 		public Dictionary<string,string> AddKeyValues { get; set; }
 		public List<int> RemoveKeys { get; set; }
@@ -28,6 +22,24 @@ namespace Framework
 		public Display Display { get; set; }
 		public bool IsEmpty { get { return CheckIfEmpty(); } }
 
+		private string _table;
+		public string Table
+		{
+			get { return _table; }
+			set
+			{
+				if (_table != value)
+				{
+					_table = value;
+					OrderBy = String.Empty;
+					_valueColumn = null;
+					LagColumn = null;
+					TableDataAreLoaded = false;
+				}
+			}
+		}
+
+		private ValuesType _valuesType;
 		public ValuesType ValuesType
 		{
 			get { return _valuesType; }
@@ -38,6 +50,22 @@ namespace Framework
 			}
 		}
 
+		private int? _valueColumn;
+		public int? ValueColumn
+		{
+			get { return _valueColumn; }
+			set
+			{
+				if (_valueColumn != value)
+				{
+					_valueColumn = value;
+					TableDataAreLoaded = false;
+					_keysGridRowsAreUpdated = false;
+				}
+			}
+		}
+		
+		private Dictionary<string, KeysGridRow> _keysGridRows;
 		public Dictionary<string, KeysGridRow> KeysGridRows
 		{
 			get
@@ -60,6 +88,7 @@ namespace Framework
 			}
 		}
 
+		private Dictionary<int, string> _tableColumns;
 		public Dictionary<int, string> TableColumns 
 		{
 			get 
@@ -69,6 +98,7 @@ namespace Framework
 			}
 		}
 
+		private Dictionary<int, string> _tableKeys;
 		private Dictionary<int, string> TableKeys
 		{
 			get
@@ -78,6 +108,7 @@ namespace Framework
 			}
 		}
 
+		private bool _tableDataAreLoaded;
 		public bool TableDataAreLoaded
 		{
 			get { return _tableDataAreLoaded; }
@@ -109,11 +140,11 @@ namespace Framework
 			this._keysGridRowsAreUpdated = false;
 			this._valuesType = valuesType;
 			this.ValuesDictionary = valuesDictionary;
-			this.Table = table;
+			this._table = table;
 			this._tableColumns = new Dictionary<int, string>();
 			this._tableKeys = new Dictionary<int, string>();
 			this._tableDataAreLoaded = false;
-			this.ValueColumn = valueColumn;
+			this._valueColumn = valueColumn;
 			this.LagColumn = lagColumn;
 			this.AddKeyValues = addKeyValues;
 			this.RemoveKeys = removeKeys;
@@ -131,21 +162,27 @@ namespace Framework
 
 		private void LoadTableFromDatabase()
 		{
-			if ((_tableKeys.Count == 0 || _tableColumns.Count == 0))
+			if ((_tableKeys.Count == 0 || _tableColumns.Count == 0) && Type == FilterParameterType.Table)
 			{
 				bool tableDataWasUpdated = false;
 
 				try
 				{
-					if (!String.IsNullOrEmpty(Table) && !_tableDataAreLoaded)
+					if (!String.IsNullOrEmpty(Table) && !_tableDataAreLoaded && Database.Tables.ContainsKey(Table))
 					{
-						Dictionary<int, string> columns = new Dictionary<int, string>();
-						Dictionary<int, string> keys = new Dictionary<int, string>();
+						DataTableReader reader = Database.Tables[Table].Values.CreateDataReader();
+						_tableColumns = Database.Tables[Table].Columns.ToDictionary(k => k.Key, v => v.Value);
+						int valueColumn = (ValueColumn ?? 1) < _tableColumns.Count ? ValueColumn ?? 1 : 1;
+						_tableKeys.Clear();
 
-						Database.PopulateFilterParameter(Table, ref columns, ref keys);
+						while (reader.Read())
+						{
+							int key = reader.GetInt32(0);
+							string value = reader.GetValue(valueColumn).ToString();
+							_tableKeys.Add(key, value);
+						}
 
-						_tableColumns = columns;
-						_tableKeys = keys;
+						reader.Close();
 					}
 
 					tableDataWasUpdated = true;
@@ -179,13 +216,13 @@ namespace Framework
 			}
 			else if (Type == FilterParameterType.Table)
 			{
-				Display.SelectedType = SelectedType.Integer;
-				Display.DisabledType = DisabledType.Integer;
+				Display.SelectedType = Display.SelectedList.Count == 0 ? SelectedType.NoSelected : SelectedType.Integer;
+				Display.DisabledType = Display.DisabledList.Count == 0 ? DisabledType.NoDisabled : DisabledType.Integer;
 
 				foreach (var item in TableKeys)
 					_keysGridRows.Add(item.Key.ToString(), ParseToKeysGridRow(item.Key.ToString(), item.Value, true));
 
-				foreach (var item in AddKeyValues)
+				foreach (var item in AddKeyValues.Where(p => !_keysGridRows.ContainsKey(p.Key)))
 					_keysGridRows.Add(item.Key, ParseToKeysGridRow(item.Key, item.Value, false));
 			}
 
@@ -215,19 +252,35 @@ namespace Framework
 
 		public void UpdatePropertiesFromKeysGridRows()
 		{
-			if (Type == FilterParameterType.Values || Type == FilterParameterType.Neither || _keysGridRows.Count == 0)
+			if ((Type == FilterParameterType.Values || Type == FilterParameterType.Neither || _keysGridRows.Count == 0) && ValuesDictionary.Count != 0)
 				ValuesDictionary.Clear();
 			
 			if (Type == FilterParameterType.Table || Type == FilterParameterType.Neither || _keysGridRows.Count == 0)
 			{
-				RemoveKeys.Clear();
-				AddKeyValues.Clear();
+				if (RemoveKeys.Count != 0)
+					RemoveKeys.Clear();
+				
+				if (AddKeyValues.Count != 0)
+					AddKeyValues.Clear();
 			}
 
-			Display.SelectedList.Clear();
-			Display.SelectedType = SelectedType.NoSelected;
-			Display.DisabledList.Clear();
-			Display.DisabledType = DisabledType.NoDisabled;
+			if (Type == FilterParameterType.Values && _keysGridRows.Count != 0 && _valuesType == ValuesType.NoValues)
+				_valuesType = ValuesType.DictionaryStrings;
+			else if (Type == FilterParameterType.Values && _keysGridRows.Count == 0 && _valuesType != ValuesType.NoValues)
+				_valuesType = ValuesType.NoValues;
+
+			if (Display.SelectedList.Count != 0)
+				Display.SelectedList.Clear();
+
+			if (_keysGridRows.Count(p => p.Value.IsSelected) == 0)
+				Display.SelectedType = SelectedType.NoSelected;
+			
+			if (Display.DisabledList.Count != 0)
+				Display.DisabledList.Clear();
+			
+			if (_keysGridRows.Count(p => p.Value.IsDisabled) == 0)
+				Display.DisabledType = DisabledType.NoDisabled;
+			
 			Display.Format.Clear();
 
 			for (int i = 0; i < _keysGridRows.Count; i++)
@@ -238,7 +291,10 @@ namespace Framework
 				if (value.IsFromTable == null)
 				{
 					if (_valuesType == ValuesType.ListStrings || _valuesType == ValuesType.ListIntegers)
+					{
 						ValuesDictionary.Add(key, key);
+						value.Value = key;
+					}
 					else if (_valuesType == ValuesType.DictionaryStrings || _valuesType == ValuesType.DictionaryIntegers)
 						ValuesDictionary.Add(key, value.Value);
 				}
@@ -251,9 +307,10 @@ namespace Framework
 				{
 					Display.SelectedList.Add(key);
 
-					if (_valuesType == ValuesType.ListIntegers || _valuesType == ValuesType.DictionaryStrings || Type == FilterParameterType.Table)
+					if ((_valuesType == ValuesType.ListIntegers || _valuesType == ValuesType.DictionaryStrings || Type == FilterParameterType.Table) && 
+						Display.SelectedType != SelectedType.Integer)
 						Display.SelectedType = SelectedType.Integer;
-					else if (_valuesType == ValuesType.ListStrings || _valuesType == ValuesType.DictionaryIntegers)
+					else if ((_valuesType == ValuesType.ListStrings || _valuesType == ValuesType.DictionaryIntegers) && Display.SelectedType != SelectedType.String)
 						Display.SelectedType = SelectedType.String;
 				}
 
@@ -261,9 +318,10 @@ namespace Framework
 				{
 					Display.DisabledList.Add(key);
 
-					if (_valuesType == ValuesType.ListIntegers || _valuesType == ValuesType.DictionaryStrings || Type == FilterParameterType.Table)
+					if ((_valuesType == ValuesType.ListIntegers || _valuesType == ValuesType.DictionaryStrings || Type == FilterParameterType.Table) &&
+						Display.DisabledType != DisabledType.Integer)
 						Display.DisabledType = DisabledType.Integer;
-					else if (_valuesType == ValuesType.ListStrings || _valuesType == ValuesType.DictionaryIntegers)
+					else if ((_valuesType == ValuesType.ListStrings || _valuesType == ValuesType.DictionaryIntegers) && Display.DisabledType != DisabledType.String)
 						Display.DisabledType = DisabledType.String;
 				}
 
@@ -344,8 +402,19 @@ namespace Framework
 			if (Date != null)
 				myJson.Add("date", Date);
 
-			if (!Display.IsEmpty)
-				myJson.Add("display", Display.CompileJson());
+			if (FilterParameterName == "multichart")
+			{
+				Display.SelectedType = SelectedType.String;
+				Display.SelectedList.Add("Overview");
+			}
+
+			myJson.Add("display", Display.CompileJson());
+
+			if (FilterParameterName == "multichart")
+			{
+				Display.SelectedType = SelectedType.NoSelected;
+				Display.SelectedList.Clear();
+			}
 
 			return myJson;
 		}
@@ -407,74 +476,95 @@ namespace Framework
 			{
 				if (property.Name.StartsWith("_comment"))
 					Comments.Add(property.Name, Json.Parse(String.Empty, property));
-				else if (property.Name == "values")
-				{
-					if (property.Value.Type == JTokenType.Array)
-					{
-						List<JToken> tokens = property.Values().ToList<JToken>();
-
-						if (tokens.Values().All(p => p.Type == JTokenType.String))
-						{
-							List<string> values = new List<string>();
-							values = Json.Parse(values, property);
-
-							foreach (var item in values)
-								ValuesDictionary.Add(item, item);
-
-							_valuesType = ValuesType.ListStrings;
-						}
-						else if (tokens.Values().All(p => p.Type == JTokenType.Integer))
-						{
-							List<int> values = new List<int>();
-							values = Json.Parse(values, property);
-
-							foreach (var item in values)
-								ValuesDictionary.Add(item.ToString(), item.ToString());
-
-							_valuesType = ValuesType.ListIntegers;
-						}
-					}
-					else if (property.Value.Type == JTokenType.Object)
-					{
-						JObject valuesObject = (JObject)property.Value;
-
-						if (valuesObject.Properties().All(p => p.Value.Type == JTokenType.String))
-						{
-							ValuesDictionary = Json.Parse(ValuesDictionary, property);
-							_valuesType = ValuesType.DictionaryStrings;
-						}
-						else if (valuesObject.Properties().All(p => p.Value.Type == JTokenType.Integer))
-						{
-							Dictionary<string, int> values = new Dictionary<string, int>();
-							values = Json.Parse(values, property);
-
-							foreach (var item in values)
-								ValuesDictionary.Add(item.Key, item.Value.ToString());
-
-							_valuesType = ValuesType.DictionaryIntegers;
-						}
-					}
-				}
-				else if (property.Name == "table")
-					Table = Json.Parse(Table, property);
-				else if (property.Name == "valueColumn")
-					ValueColumn = Json.Parse(ValueColumn, property);
-				else if (property.Name == "lagColumn")
-					LagColumn = Json.Parse(LagColumn, property);
-				else if (property.Name == "addKeyValues")
-					AddKeyValues = Json.Parse(AddKeyValues, property);
-				else if (property.Name == "removeKeys")
-					RemoveKeys = Json.Parse(RemoveKeys, property);
-				else if (property.Name == "orderBy")
-					OrderBy = Json.Parse(OrderBy, property);
-				else if (property.Name == "date")
-					Date = Json.Parse(Date, property);
-				else if (property.Name == "display" && property.Value.Type == JTokenType.Object)
-					Display.ParseJson((JObject)property.Value);
 				else
 				{
-					string message = String.Format("The {0} property is not defined for a Filter\\Parameter file.", property.Name);
-					throw new UnknownJsonPropertyException(message);
+					switch (property.Name)
+					{
+						case "values":
+						{
+							if (property.Value.Type == JTokenType.Array)
+							{
+								List<JToken> tokens = property.Values().ToList<JToken>();
+
+								if (tokens.Values().All(p => p.Type == JTokenType.String))
+								{
+									List<string> values = new List<string>();
+									values = Json.Parse(values, property);
+
+									foreach (var item in values)
+										ValuesDictionary.Add(item, item);
+
+									_valuesType = ValuesType.ListStrings;
+								}
+								else if (tokens.Values().All(p => p.Type == JTokenType.Integer))
+								{
+									List<int> values = new List<int>();
+									values = Json.Parse(values, property);
+
+									foreach (var item in values)
+										ValuesDictionary.Add(item.ToString(), item.ToString());
+
+									_valuesType = ValuesType.ListIntegers;
+								}
+							}
+							else if (property.Value.Type == JTokenType.Object)
+							{
+								JObject valuesObject = (JObject)property.Value;
+
+								if (valuesObject.Properties().All(p => p.Value.Type == JTokenType.String))
+								{
+									ValuesDictionary = Json.Parse(ValuesDictionary, property);
+									_valuesType = ValuesType.DictionaryStrings;
+								}
+								else if (valuesObject.Properties().All(p => p.Value.Type == JTokenType.Integer))
+								{
+									Dictionary<string, int> values = new Dictionary<string, int>();
+									values = Json.Parse(values, property);
+
+									foreach (var item in values)
+										ValuesDictionary.Add(item.Key, item.Value.ToString());
+
+									_valuesType = ValuesType.DictionaryIntegers;
+								}
+							}
+
+							if (ValuesDictionary.Count == 0)
+								_valuesType = ValuesType.NoValues;
+						}
+							break;
+						case "table":
+							Table = Json.Parse(Table, property);
+							break;
+						case "valueColumn":
+							ValueColumn = Json.Parse(ValueColumn, property);
+							break;
+						case "lagColumn":
+							LagColumn = Json.Parse(LagColumn, property);
+							break;
+						case "addKeyValues":
+							AddKeyValues = Json.Parse(AddKeyValues, property);
+							break;
+						case "removeKeys":
+							RemoveKeys = Json.Parse(RemoveKeys, property);
+							break;
+						case "orderBy":
+							OrderBy = Json.Parse(OrderBy, property);
+							break;
+						case "date":
+							Date = Json.Parse(Date, property);
+							break;
+						case "display":
+							if (property.Value.Type == JTokenType.Object)
+								Display.ParseJson((JObject)property.Value);
+							if (FilterParameterName == "multichart")
+							{
+								Display.SelectedType = SelectedType.NoSelected;
+								Display.SelectedList.Clear();
+							}
+							break;
+						default:
+							throw new UnknownJsonPropertyException(String.Format("The {0} property is not defined for a Filter\\Parameter file.", property.Name));
+					}
 				}
 			}
 
@@ -485,10 +575,21 @@ namespace Framework
 			}
 			else if (_valuesType != ValuesType.NoValues)
 				Type = FilterParameterType.Values;
-			else if (!String.IsNullOrEmpty(Table))
+			else if (!String.IsNullOrEmpty(Table) || AddKeyValues.Count != 0)
 				Type = FilterParameterType.Table;
 			else
 				Type = FilterParameterType.Neither;
+
+			if (RemoveKeys.Count != 0)
+				RemoveKeys.Sort();
+		}
+
+		public FilterParameter Clone()
+		{
+			FilterParameter myClone = new FilterParameter();
+			JObject myJson = CompileJson();
+			myClone.ParseJson(FilterParameterName, myJson);
+			return myClone;
 		}
 
 		public override bool Equals(object obj)
@@ -513,7 +614,7 @@ namespace Framework
 				bool dateEqual = Date == fp.Date;
 				bool displayEqual = Display.Equals(fp.Display);
 
-				return filterParameterNameEqual && typeEqual && commentsEqual && valuesTypeEqual && valuesDictionaryEqual && tableEqual && valueColumnEqual &&
+			return filterParameterNameEqual && typeEqual && commentsEqual && valuesTypeEqual && valuesDictionaryEqual && tableEqual && valueColumnEqual &&
 					lagColumnEqual && addKeyValuesEqual && removeKeysEqual && orderByEqual && dateEqual && displayEqual;
 			}
 		}

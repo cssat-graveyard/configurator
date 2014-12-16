@@ -46,14 +46,20 @@ namespace Framework
 		{
 			foreach (var property in json.Properties())
 			{
-				if (property.Name == "width")
-					Width = Json.Parse(Width, property);
-				else if (property.Name == "height")
-					Height = Json.Parse(Height, property);
-				else if (property.Name == "chartArea")
-					ChartArea.ParseJson((JObject)property.Value);
-				else
-					throw new UnknownJsonPropertyException(String.Format("The {0} property is not defined for a Base Option Set.", property.Name));
+				switch (property.Name)
+				{
+					case "width":
+						Width = Json.Parse(Width, property);
+						break;
+					case "height":
+						Height = Json.Parse(Height, property);
+						break;
+					case "chartArea":
+						ChartArea.ParseJson((JObject)property.Value);
+						break;
+					default:
+						throw new UnknownJsonPropertyException(String.Format("The {0} property is not defined for a Base Option Set.", property.Name));
+				}
 			}
 		}
 

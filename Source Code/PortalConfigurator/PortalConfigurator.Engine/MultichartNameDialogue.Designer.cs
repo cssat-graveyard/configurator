@@ -28,10 +28,13 @@
 		/// </summary>
 		private void InitializeComponent()
 		{
+			this.components = new System.ComponentModel.Container();
 			this.multichartNameTextBox = new System.Windows.Forms.TextBox();
 			this.multichartNameLabel = new System.Windows.Forms.Label();
 			this.doneButton = new System.Windows.Forms.Button();
 			this.cancelButton = new System.Windows.Forms.Button();
+			this.duplicateNameErrorProvider = new System.Windows.Forms.ErrorProvider(this.components);
+			((System.ComponentModel.ISupportInitialize)(this.duplicateNameErrorProvider)).BeginInit();
 			this.SuspendLayout();
 			// 
 			// multichartNameTextBox
@@ -40,7 +43,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
 			this.multichartNameTextBox.Location = new System.Drawing.Point(12, 25);
 			this.multichartNameTextBox.Name = "multichartNameTextBox";
-			this.multichartNameTextBox.Size = new System.Drawing.Size(260, 20);
+			this.multichartNameTextBox.Size = new System.Drawing.Size(324, 20);
 			this.multichartNameTextBox.TabIndex = 0;
 			this.multichartNameTextBox.TextChanged += new System.EventHandler(this.multichartNameTextBox_TextChanged);
 			// 
@@ -55,7 +58,7 @@
 			// 
 			// doneButton
 			// 
-			this.doneButton.Location = new System.Drawing.Point(63, 51);
+			this.doneButton.Location = new System.Drawing.Point(95, 51);
 			this.doneButton.Name = "doneButton";
 			this.doneButton.Size = new System.Drawing.Size(75, 23);
 			this.doneButton.TabIndex = 2;
@@ -67,7 +70,7 @@
 			// 
 			this.cancelButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
 			this.cancelButton.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-			this.cancelButton.Location = new System.Drawing.Point(144, 51);
+			this.cancelButton.Location = new System.Drawing.Point(176, 51);
 			this.cancelButton.Name = "cancelButton";
 			this.cancelButton.Size = new System.Drawing.Size(75, 23);
 			this.cancelButton.TabIndex = 3;
@@ -75,13 +78,17 @@
 			this.cancelButton.UseVisualStyleBackColor = true;
 			this.cancelButton.Click += new System.EventHandler(this.cancelButton_Click);
 			// 
+			// duplicateNameErrorProvider
+			// 
+			this.duplicateNameErrorProvider.ContainerControl = this;
+			// 
 			// MultichartNameDialogue
 			// 
 			this.AcceptButton = this.doneButton;
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.CancelButton = this.cancelButton;
-			this.ClientSize = new System.Drawing.Size(284, 86);
+			this.ClientSize = new System.Drawing.Size(348, 86);
 			this.ControlBox = false;
 			this.Controls.Add(this.cancelButton);
 			this.Controls.Add(this.doneButton);
@@ -92,6 +99,7 @@
 			this.Text = "Multichart Name";
 			this.TopMost = true;
 			this.Load += new System.EventHandler(this.MultichartNameDialogue_Load);
+			((System.ComponentModel.ISupportInitialize)(this.duplicateNameErrorProvider)).EndInit();
 			this.ResumeLayout(false);
 			this.PerformLayout();
 
@@ -103,5 +111,6 @@
 		private System.Windows.Forms.Label multichartNameLabel;
 		private System.Windows.Forms.Button doneButton;
 		private System.Windows.Forms.Button cancelButton;
+		private System.Windows.Forms.ErrorProvider duplicateNameErrorProvider;
 	}
 }

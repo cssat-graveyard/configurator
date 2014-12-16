@@ -52,6 +52,9 @@ namespace Framework
 		{
 			try
 			{
+				if (FilterParameters.Count != 0)
+					FilterParameters.Clear();
+
 				foreach (var property in base.MyJson.Properties())
 				{
 					FilterParameter filterParameter = new FilterParameter();
@@ -84,7 +87,7 @@ namespace Framework
 
 		public FilterParameterFile Clone()
 		{
-			FilterParameterFile myClone = new FilterParameterFile();
+			FilterParameterFile myClone = new FilterParameterFile(base.FilePath);
 			myClone.MyJson = CompileJson();
 			myClone.ParseFromJson();
 			return myClone;
