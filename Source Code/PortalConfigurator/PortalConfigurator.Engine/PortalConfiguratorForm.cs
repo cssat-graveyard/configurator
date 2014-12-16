@@ -48,7 +48,7 @@ namespace PortalConfigurator
 				catch (Exception exception)
 				{
 					string message = String.Format("{0}\n\nYou may retry or click Cancel to close the application.", exception.Message);
-					DialogResult result = MessageBox.Show("Database Error", message, MessageBoxButtons.RetryCancel, MessageBoxIcon.Asterisk,
+					DialogResult result = MessageBox.Show(message, "Database Error", MessageBoxButtons.RetryCancel, MessageBoxIcon.Asterisk,
 						MessageBoxDefaultButton.Button1);
 					abort = result == DialogResult.Cancel;
 				}
@@ -94,7 +94,8 @@ namespace PortalConfigurator
 				}
 				catch (Exception exception)
 				{
-					DialogResult result = MessageBox.Show("Database Error", exception.Message, MessageBoxButtons.RetryCancel, MessageBoxIcon.Asterisk,
+					string message = String.Format("{0}\n\nYou may retry or click Cancel to close the application.", exception.Message);
+					DialogResult result = MessageBox.Show(message, "Database Error", MessageBoxButtons.RetryCancel, MessageBoxIcon.Asterisk,
 						MessageBoxDefaultButton.Button1);
 					abort = result == DialogResult.Cancel;
 				}
