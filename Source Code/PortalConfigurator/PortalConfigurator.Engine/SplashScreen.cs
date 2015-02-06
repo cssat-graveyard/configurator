@@ -7,6 +7,7 @@ namespace PortalConfigurator
 		public SplashScreen()
 		{
 			InitializeComponent();
+			PreInitializeComponent();
 		}
 
 		public new void Show(IWin32Window owner)
@@ -15,6 +16,19 @@ namespace PortalConfigurator
 			base.Show(owner);
 			Application.DoEvents();
 			Opacity = 1;
+		}
+
+		private void PreInitializeComponent()
+		{
+			this.SuspendLayout();
+			// 
+			// SplashScreen
+			// 
+			this.ClientSize = new System.Drawing.Size(284, 261);
+			this.Name = "SplashScreen";
+			this.ShowInTaskbar = false;
+			this.ResumeLayout(false);
+
 		}
 	}
 }

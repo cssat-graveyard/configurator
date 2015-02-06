@@ -45,8 +45,8 @@ namespace PortalConfigurator
 
 			for (int i = 0; i < ValuesTypeNames.Length; i++)
 			{
-				typeListView.Items.Add(ValuesTypeNames.ElementAt(i));
-				typeListView.Items[i].ForeColor = PossibleValueTypes.Contains(ValuesTypes.ElementAt(i)) ? default(Color) : Color.Gray;
+				typeListView.Items.Add(ValuesTypeNames[i]);
+				typeListView.Items[i].ForeColor = PossibleValueTypes.Contains(ValuesTypes[i]) ? default(Color) : Color.Gray;
 			}
 
 			if (PossibleValueTypes.Contains(Subject.ValuesType))
@@ -61,7 +61,7 @@ namespace PortalConfigurator
 			{
 				int selectedIndex = typeListView.SelectedIndices[0];
 
-				if (PossibleValueTypes.Contains(ValuesTypes.ElementAt(selectedIndex)))
+				if (PossibleValueTypes.Contains(ValuesTypes[selectedIndex]))
 				{
 					ValuesType valuesType = (ValuesType)(selectedIndex + 1);
 					JObject exampleJson = new JObject();

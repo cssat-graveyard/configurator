@@ -27,7 +27,7 @@ namespace Framework
 		}
 
 		public Transform()
-			: this(Function.NoFunction, String.Empty, String.Empty, new List<string>(), new List<string>())
+			: this(Function.NoTransform, String.Empty, String.Empty, new List<string>(), new List<string>())
 		{ }
 
 		public Transform(Function function, string table, string dateField, List<string> valueFields, List<string> removeFields)
@@ -43,14 +43,14 @@ namespace Framework
 
 		private bool CheckForEmpty()
 		{
-			return Function == Function.NoFunction && String.IsNullOrEmpty(Table) && String.IsNullOrEmpty(DateField) && ValueFields.Count == 0 && RemoveFields.Count == 0;
+			return Function == Function.NoTransform && String.IsNullOrEmpty(Table) && String.IsNullOrEmpty(DateField) && ValueFields.Count == 0 && RemoveFields.Count == 0;
 		}
 
 		public JObject CompileJson()
 		{
 			JObject myJson = new JObject();
 
-			if (Function != Function.NoFunction)
+			if (Function != Function.NoTransform)
 				myJson.Add("Function", Enums.GetString(Function));
 
 			if (!String.IsNullOrEmpty(Table) && !SynchedWithMeasure)

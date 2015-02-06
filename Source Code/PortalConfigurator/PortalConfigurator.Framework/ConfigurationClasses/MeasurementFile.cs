@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Windows.Forms;
 
@@ -37,6 +38,29 @@ namespace Framework
 		public bool IsEmpty { get { return CheckForEmpty(); } }
 		public List<string> TableColumns { get; private set; }
 		public int DatabaseParameterCount { get; private set; }
+
+		public string Breadcrumb
+		{
+			get
+			{
+				string breadcrumb = String.Empty;
+
+				if (!String.IsNullOrEmpty(this.FilePath))
+				{
+					FileInfo file = new FileInfo(this.FilePath);
+					DirectoryInfo dir = file.Directory;
+					breadcrumb = file.Name;
+
+					while (!dir.Name.Equals("Table", StringComparison.OrdinalIgnoreCase) && !dir.Name.Equals(dir.Root.Name, StringComparison.OrdinalIgnoreCase))
+					{
+						breadcrumb = String.Concat(dir.Name, "\\", breadcrumb);
+						dir = dir.Parent;
+					}
+				}
+
+				return breadcrumb;
+			}
+		}
 
 		private string _table;
 		public string Table
@@ -162,6 +186,25 @@ namespace Framework
 
 		private void RefreshMeasureGridRows()
 		{
+			if (Transform.IsEmpty && ReturnRowStart != null)
+			{
+				int returnColumnIndex = ReturnRowStart ?? (TableColumns.Count - 1);
+				int returnClusterEndIndex = returnColumnIndex + (ColumnClusterSize ?? 1);
+
+				for (int i = returnColumnIndex; i < returnClusterEndIndex; i++)
+				{
+					if (i >= TableColumns.Count)
+					{
+						ColumnClusterSize = i - returnColumnIndex < 2 ? (int?)null : i - returnColumnIndex;
+						string message = String.Format("{0} value column(s) could not be found in the procedure and have been removed.", returnClusterEndIndex - i);
+						MessageBox.Show(message);
+						break;
+					}
+
+					Transform.ValueFields.Add(TableColumns[i]);
+				}
+			}
+
 			foreach (var item in Transform.ValueFields)
 			{
 				MeasureGridRow row = new MeasureGridRow(Transform.DateField);
@@ -184,7 +227,7 @@ namespace Framework
 					_measureGridRows.Add(row);
 				}
 				else
-					_measureGridRows.ElementAt(gridRowOrdinal).IsRemoveField = true;
+					_measureGridRows[gridRowOrdinal].IsRemoveField = true;
 			}
 
 			if (Transform.HasDateRow)
@@ -233,7 +276,7 @@ namespace Framework
 				int existingRow = _measureGridRows.FindIndex(p => p.FilterParameter == item);
 
 				if (existingRow != -1)
-					_measureGridRows.ElementAt(existingRow).ControlType = ControlType.Both;
+					_measureGridRows[existingRow].ControlType = ControlType.Both;
 				else
 				{
 					MeasureGridRow row = new MeasureGridRow(Transform.DateField);
@@ -430,7 +473,7 @@ namespace Framework
 			if (!String.IsNullOrEmpty(Filter))
 				myJson.Add("filter", Filter);
 
-			if (!Transform.IsEmpty)
+			if (!Transform.IsEmpty && Transform.Function != Function.NoTransform)
 				myJson.Add("transform", Transform.CompileJson());
 
 			myJson.Add("controls", new JArray(Controls));
@@ -468,7 +511,7 @@ namespace Framework
 			}
 
 			if (NumberFormats.Count == 1)
-				myJson.Add("numberFormat", NumberFormats.ElementAt(0).CompileJson());
+				myJson.Add("numberFormat", NumberFormats[0].CompileJson());
 			else if (NumberFormats.Count != 0)
 			{
 				JArray numberFormats = new JArray();
@@ -512,7 +555,7 @@ namespace Framework
 					switch (property.Name)
 					{
 						case "table":
-							Table = Json.Parse(Table, property);
+							_table = Json.Parse(_table, property);
 							break;
 						case "Base":
 							BaseMeasure = Json.Parse(BaseMeasure, property);

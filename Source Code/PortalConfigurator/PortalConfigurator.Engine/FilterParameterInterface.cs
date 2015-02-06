@@ -37,6 +37,7 @@ namespace PortalConfigurator
 
 		private void LoadFilterParameterInterface(object sender, EventArgs e)
 		{
+			filterParameterBreadcrumbLabel.Text = MyFilterParameterFile.Breadcrumb;
 			filterParametersListView.Columns[0].Width = filterParametersListView.Width - SystemInformation.VerticalScrollBarWidth;
 			filterParameterNameTextBox.Enabled = false;
 			filterParameterTableNameComboBox.Items.AddRange(Tables.Keys.ToArray<string>());
@@ -139,6 +140,8 @@ namespace PortalConfigurator
 						MessageBox.Show(message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
 					}
 
+					filterParameterBreadcrumbLabel.Text = MyFilterParameterFile.Breadcrumb;
+
 					foreach (var item in MyFilterParameterFile.FilterParameters)
 						filterParametersListView.Items.Add(item.FilterParameterName);
 				}
@@ -171,6 +174,7 @@ namespace PortalConfigurator
 					MyFilterParameterFile.WriteFile();
 					OriginalFilterParameterFile = MyFilterParameterFile.Clone();
 					GetOriginalFilterParameter();
+					filterParameterBreadcrumbLabel.Text = MyFilterParameterFile.Breadcrumb;
 
 					foreach (ListViewItem item in filterParametersListView.Items)
 						item.BackColor = default(Color);
@@ -337,7 +341,7 @@ namespace PortalConfigurator
 				commentsGroupBox.Enabled = true;
 				displayGroupBox.Enabled = true;
 				SubjectIndex = filterParametersListView.SelectedIndices[0];
-				Subject = MyFilterParameterFile.FilterParameters.ElementAt(SubjectIndex);
+				Subject = MyFilterParameterFile.FilterParameters[SubjectIndex];
 				GetOriginalFilterParameter();
 				KeysGridNeedsRefresh = true;
 				ScreenRefresh = true;
@@ -372,6 +376,7 @@ namespace PortalConfigurator
 				monthLimitNumericUpDown.Value = Subject.Display.MonthLimit ?? 0;
 				monthLimitNumericUpDown.Enabled = Subject.Display.MonthLimit != null;
 				multiCheckBox.CheckState = ToCheckState(Subject.Display.Multi);
+				multiCheckBox.Enabled = Subject.Display.DisplayType != DisplayType.Parameter;
 				zeroLastCheckBox.CheckState = ToCheckState(Subject.Display.ZeroLast);
 				visibleCheckBox.CheckState = ToCheckState(Subject.Display.Visible);
 
@@ -454,6 +459,7 @@ namespace PortalConfigurator
 			monthLimitNumericUpDown.Enabled = false;
 			monthLimitNumericUpDown.BackColor = default(Color);
 			multiCheckBox.CheckState = CheckState.Indeterminate;
+			multiCheckBox.Enabled = false;
 			multiCheckBox.BackColor = default(Color);
 			zeroLastCheckBox.CheckState = CheckState.Indeterminate;
 			zeroLastCheckBox.BackColor = default(Color);
@@ -462,7 +468,7 @@ namespace PortalConfigurator
 			valuesTypeButton.Text = Enums.GetFormattedString(ValuesType.NoValues);
 			valuesTypeButton.BackColor = default(Color);
 			valuesTypeErrorProvider.SetError(valuesTypeLabel, String.Empty);
-			keysDataGridView.Rows.Clear();
+			valuesDataGridView.Rows.Clear();
 			helpDataGridView.Rows.Clear();
 			displayGroupBox.Enabled = false;
 		}
@@ -481,7 +487,7 @@ namespace PortalConfigurator
 						filterParametersListView.Items[selectedIndex].BackColor = Subject.Equals(Original) ? default(Color) : ChangedValueColor;
 					else
 					{
-						FilterParameter subject = MyFilterParameterFile.FilterParameters.ElementAt(selectedIndex);
+						FilterParameter subject = MyFilterParameterFile.FilterParameters[selectedIndex];
 						FilterParameter original = GetOriginalFilterParameter(subject);
 						filterParametersListView.Items[selectedIndex].BackColor = subject.Equals(original) ? default(Color) : ChangedValueColor;
 					}
@@ -879,7 +885,7 @@ namespace PortalConfigurator
 				}
 				else if (neitherRadioButton.Checked)
 				{
-					Subject.KeysGridRows.Clear();
+					Subject.ValuesGridRows.Clear();
 					Subject.TableDataAreLoaded = false;
 					
 					if (Subject.Type == FilterParameterType.Table)
@@ -907,7 +913,7 @@ namespace PortalConfigurator
 				enableValuesTypeButton = false;
 				valuesTypeButton.Text = Enums.GetFormattedString(ValuesType.NoValues);
 				valuesTypeButton.BackColor = default(Color);
-				keysDataGridView.Rows.Clear();
+				valuesDataGridView.Rows.Clear();
 
 				MessageBox.Show(e.Message, "Database Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
 			}
@@ -919,7 +925,7 @@ namespace PortalConfigurator
 				enableValuesTypeButton = false;
 				valuesTypeButton.Text = Enums.GetFormattedString(ValuesType.NoValues);
 				valuesTypeButton.BackColor = default(Color);
-				keysDataGridView.Rows.Clear();
+				valuesDataGridView.Rows.Clear();
 
 				MessageBox.Show(e.Message, "Database Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
 			}
@@ -941,7 +947,7 @@ namespace PortalConfigurator
 				enableValuesTypeButton = false;
 				valuesTypeButton.Text = Enums.GetFormattedString(ValuesType.NoValues);
 				valuesTypeButton.BackColor = default(Color);
-				keysDataGridView.Rows.Clear();
+				valuesDataGridView.Rows.Clear();
 
 				MessageBox.Show(e.Message, "Database Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
 			}
@@ -994,7 +1000,7 @@ namespace PortalConfigurator
 						lagColumnComboBox.SelectedIndex = -1;
 						valueColumnComboBox.Items.Clear();
 						lagColumnComboBox.Items.Clear();
-						keysDataGridView.Rows.Clear();
+						valuesDataGridView.Rows.Clear();
 					}
 					else
 					{
@@ -1168,6 +1174,11 @@ namespace PortalConfigurator
 
 			bool changeDetected = Subject.Display.DisplayType != Original.Display.DisplayType;
 			displayTypeComboBox.BackColor = changeDetected ? ChangedValueColor : default(Color);
+			multiCheckBox.Enabled = Subject.Display.DisplayType != DisplayType.Parameter;
+
+			if (Subject.Display.DisplayType == DisplayType.Parameter)
+				multiCheckBox.CheckState = ToCheckState(Subject.Display.Multi);
+
 			SetListViewItemBackgroundColor(changeDetected, SubjectIndex);
 		}
 
@@ -1327,7 +1338,7 @@ namespace PortalConfigurator
 			if (SubjectIndex != -1)
 			{
 				EndGridCellEditMode();
-				if (Subject.Type == FilterParameterType.Values && Subject.KeysGridRows.Count != 0)
+				if (Subject.Type == FilterParameterType.Values && Subject.ValuesGridRows.Count != 0)
 				{
 					FilterParameter subject = Subject;
 					FilterParameter original = Original;
@@ -1368,87 +1379,91 @@ namespace PortalConfigurator
 			if (!neitherRadioButton.Checked && SubjectIndex != -1)
 			{
 				EndGridCellEditMode();
-				int key = Subject.KeysGridRows.Count;
+				int key = Subject.ValuesGridRows.Count;
 
 				if (Subject.Type == FilterParameterType.Values && key == 0)
 					valuesTypeErrorProvider.SetError(valuesTypeLabel, "Please ensure that the correct format for the JSON output is chosen.");
 
-				while (Subject.KeysGridRows.ContainsKey(key.ToString()))
+				while (Subject.ValuesGridRows.ContainsKey(key.ToString()))
 					key++;
 
-				KeysGridRow value = new KeysGridRow();
-				value.Value = key.ToString();
+				ValuesGridRow value = new ValuesGridRow();
+				value.Name = key.ToString();
 
 				if (tableRadioButton.Checked)
 					value.IsFromTable = false;
 
-				int newRowIndex = keysDataGridView.Rows.Count;
-				Subject.KeysGridRows.Add(key.ToString(), value);
+				int newRowIndex = valuesDataGridView.Rows.Count;
+				Subject.ValuesGridRows.Add(key.ToString(), value);
 				Subject.UpdatePropertiesFromKeysGridRows();
-				keysDataGridView.Rows.Add();
+				valuesDataGridView.Rows.Add();
 				ScreenRefresh = true;
-				RefreshKeysDataGridRow(keysDataGridView.Rows.Count - 1);
+				RefreshKeysDataGridRow(valuesDataGridView.Rows.Count - 1);
 				ScreenRefresh = false;
-				keysDataGridView.CurrentCell = keysDataGridView[keysKeyColumn.Index, newRowIndex];
-				keysDataGridView.BeginEdit(true);
+				valuesDataGridView.CurrentCell = valuesDataGridView[valuesValueColumn.Index, newRowIndex];
+				valuesDataGridView.BeginEdit(true);
 				SetValuesTypeButtonText();
-				SetListViewItemBackgroundColor(Subject.KeysGridRows.SequenceEqual(Original.KeysGridRows), SubjectIndex);
+				SetListViewItemBackgroundColor(Subject.ValuesGridRows.SequenceEqual(Original.ValuesGridRows), SubjectIndex);
 			}
 		}
 
 		private void deleteKeyButton_Click(object sender, EventArgs e)
 		{
-			if (keysDataGridView.RowCount > 0 && SubjectIndex != -1)
+			if (valuesDataGridView.RowCount > 0 && SubjectIndex != -1)
 			{
 				EndGridCellEditMode();
-				int row = keysDataGridView.CurrentCell.RowIndex;
-				Dictionary<string, KeysGridRow> newDictionary = new Dictionary<string, KeysGridRow>();
-				KeysGridRow value = Subject.KeysGridRows.Values.ElementAt(row);
+				int row = valuesDataGridView.CurrentCell.RowIndex;
+				Dictionary<string, ValuesGridRow> newDictionary = new Dictionary<string, ValuesGridRow>();
+				ValuesGridRow value = Subject.ValuesGridRows.Values.ElementAt(row);
 
 				if (value.IsFromTable != true)
 				{
-					keysDataGridView.Rows.RemoveAt(row);
+					valuesDataGridView.Rows.RemoveAt(row);
 
-					for (int i = 0; i < Subject.KeysGridRows.Count; i++)
+					for (int i = 0; i < Subject.ValuesGridRows.Count; i++)
 						if (i != row)
-							newDictionary.Add(Subject.KeysGridRows.Keys.ElementAt(i), Subject.KeysGridRows.Values.ElementAt(i));
+							newDictionary.Add(Subject.ValuesGridRows.Keys.ElementAt(i), Subject.ValuesGridRows.Values.ElementAt(i));
 
-					Subject.KeysGridRows = newDictionary;
+					Subject.ValuesGridRows = newDictionary;
 				}
 
-				SetListViewItemBackgroundColor(Subject.KeysGridRows.SequenceEqual(Original.KeysGridRows), SubjectIndex);
+				SetListViewItemBackgroundColor(Subject.ValuesGridRows.SequenceEqual(Original.ValuesGridRows), SubjectIndex);
 			}
 		}
 
 		private void moveUpKeyButton_Click(object sender, EventArgs e)
 		{
-			int startingIndex = keysDataGridView.CurrentCell.RowIndex;
+			int startingIndex = valuesDataGridView.CurrentCell.RowIndex;
 
 			if (startingIndex > 0 && SubjectIndex != -1)
 			{
 				int minimumIndex = 0;
+				int maximumIndex = valuesDataGridView.RowCount - 1;
 
 				if (tableRadioButton.Checked)
-					minimumIndex = Subject.KeysGridRows.Values.ToList<KeysGridRow>().FindIndex(p => p.IsFromTable != true);
+				{
+					minimumIndex = Subject.ValuesGridRows.Values.ToList<ValuesGridRow>().FindIndex(p => p.IsFromTable != true);
+					maximumIndex = Subject.ValuesGridRows.Values.ToList<ValuesGridRow>().FindLastIndex(p => p.IsFromTable != true);
+				}
 
-				if (startingIndex > minimumIndex && !neitherRadioButton.Checked)
+				if (startingIndex > minimumIndex && startingIndex <= maximumIndex && !neitherRadioButton.Checked)
 					MoveKeyItemInGrid(startingIndex, startingIndex - 1);
 			}
 		}
 
 		private void moveDownKeyButton_Click(object sender, EventArgs e)
 		{
-			int startingIndex = keysDataGridView.CurrentCell.RowIndex;
+			int startingIndex = valuesDataGridView.CurrentCell.RowIndex;
 
-			if (startingIndex < keysDataGridView.Rows.Count - 1 && SubjectIndex != -1)
+			if (startingIndex < valuesDataGridView.Rows.Count - 1 && SubjectIndex != -1)
 			{
 				int minimumIndex = 0;
-				int maximumIndex = keysDataGridView.RowCount - 1;
+				int maximumIndex = valuesDataGridView.RowCount - 1;
 
 				if (tableRadioButton.Checked)
 				{
-					minimumIndex = Subject.KeysGridRows.Values.ToList<KeysGridRow>().FindIndex(p => p.IsFromTable != true);
-					maximumIndex = Subject.KeysGridRows.Values.ToList<KeysGridRow>().FindLastIndex(p => p.IsFromTable != true);
+					minimumIndex = Subject.ValuesGridRows.Values.ToList<ValuesGridRow>().FindIndex(p => p.IsFromTable != true);
+					maximumIndex = Subject.ValuesGridRows.Values.ToList<ValuesGridRow>().FindLastIndex(p => p.IsFromTable != true);
 				}
 
 				if (startingIndex >= minimumIndex && startingIndex < maximumIndex && !neitherRadioButton.Checked)
@@ -1459,38 +1474,38 @@ namespace PortalConfigurator
 		private void MoveKeyItemInGrid(int startingIndex, int destinationIndex)
 		{
 			EndGridCellEditMode();
-			Dictionary<string, KeysGridRow> newDictionary = new Dictionary<string, KeysGridRow>();
+			Dictionary<string, ValuesGridRow> newDictionary = new Dictionary<string, ValuesGridRow>();
 			int i = 0;
-			string key = Subject.KeysGridRows.ElementAt(startingIndex).Key;
-			KeysGridRow value = Subject.KeysGridRows[key];
+			string key = Subject.ValuesGridRows.ElementAt(startingIndex).Key;
+			ValuesGridRow value = Subject.ValuesGridRows[key];
 
-			keysDataGridView.Rows.RemoveAt(startingIndex);
-			keysDataGridView.Rows.Insert(destinationIndex, 1);
+			valuesDataGridView.Rows.RemoveAt(startingIndex);
+			valuesDataGridView.Rows.Insert(destinationIndex, 1);
 
 			do
 			{
 				if (newDictionary.Count == destinationIndex)
 					newDictionary.Add(key, value);
 
-				if (i != startingIndex && i < Subject.KeysGridRows.Count)
-					newDictionary.Add(Subject.KeysGridRows.Keys.ElementAt(i), Subject.KeysGridRows.Values.ElementAt(i));
+				if (i != startingIndex && i < Subject.ValuesGridRows.Count)
+					newDictionary.Add(Subject.ValuesGridRows.Keys.ElementAt(i), Subject.ValuesGridRows.Values.ElementAt(i));
 
 				i++;
-			} while (newDictionary.Count != Subject.KeysGridRows.Count);
+			} while (newDictionary.Count != Subject.ValuesGridRows.Count);
 
-			Subject.KeysGridRows = newDictionary;
+			Subject.ValuesGridRows = newDictionary;
 			ScreenRefresh = true;
 			RefreshKeysDataGridRow(destinationIndex);
 			ScreenRefresh = false;
-			SetListViewItemBackgroundColor(Subject.KeysGridRows.SequenceEqual(Original.KeysGridRows), SubjectIndex);
-			keysDataGridView.CurrentCell = keysDataGridView[keysDataGridView.CurrentCell.ColumnIndex, destinationIndex];
+			SetListViewItemBackgroundColor(Subject.ValuesGridRows.SequenceEqual(Original.ValuesGridRows), SubjectIndex);
+			valuesDataGridView.CurrentCell = valuesDataGridView[valuesDataGridView.CurrentCell.ColumnIndex, destinationIndex];
 		}
 
 		private void SetKeysGridCellsBackgroundColor()
 		{
 			bool changeDetected = false;
 
-			for (int i = 0; i < keysDataGridView.Rows.Count; i++)
+			for (int i = 0; i < valuesDataGridView.Rows.Count; i++)
 			{
 				if (SetKeysGridCellsBackgroundColor(i))
 					changeDetected = true;
@@ -1502,20 +1517,20 @@ namespace PortalConfigurator
 
 		private bool SetKeysGridCellsBackgroundColor(int row)
 		{
-			string key = Subject.KeysGridRows.ElementAt(row).Key;
-			KeysGridRow value = Subject.KeysGridRows.ElementAt(row).Value;
-			KeysGridRow original = Original.KeysGridRows.FirstOrDefault(p => p.Key == key).Value ?? new KeysGridRow();
-			bool originalExists = Original.KeysGridRows.ContainsKey(key);
-			DataGridViewCell keysKeyCell = keysDataGridView[keysKeyColumn.Index, row];
-			DataGridViewCell keysValueCell = keysDataGridView[keysValueColumn.Index, row];
-			DataGridViewCell includeKeyCell = keysDataGridView[includeKeyColumn.Index, row];
-			DataGridViewCell selectKeyCell = keysDataGridView[selectKeyColumn.Index, row];
-			DataGridViewCell disableKeyCell = keysDataGridView[disableKeyColumn.Index, row];
-			DataGridViewCell formatKeyCell = keysDataGridView[formatKeyColumn.Index, row];
-			DataGridViewCell sourceLabelCell = keysDataGridView[sourceLabelColumn.Index, row];
+			string key = Subject.ValuesGridRows.ElementAt(row).Key;
+			ValuesGridRow value = Subject.ValuesGridRows.ElementAt(row).Value;
+			ValuesGridRow original = Original.ValuesGridRows.FirstOrDefault(p => p.Key == key).Value ?? new ValuesGridRow();
+			bool originalExists = Original.ValuesGridRows.ContainsKey(key);
+			DataGridViewCell keysValueCell = valuesDataGridView[valuesValueColumn.Index, row];
+			DataGridViewCell keysNameCell = valuesDataGridView[valuesNameColumn.Index, row];
+			DataGridViewCell includeKeyCell = valuesDataGridView[includeValueColumn.Index, row];
+			DataGridViewCell selectKeyCell = valuesDataGridView[selectValueColumn.Index, row];
+			DataGridViewCell disableKeyCell = valuesDataGridView[disableValueColumn.Index, row];
+			DataGridViewCell formatKeyCell = valuesDataGridView[formatValueColumn.Index, row];
+			DataGridViewCell sourceLabelCell = valuesDataGridView[sourceLabelColumn.Index, row];
 			
-			keysKeyCell.Style.BackColor = !originalExists ? ChangedValueColor : default(Color);
-			keysValueCell.Style.BackColor = !originalExists || value.Value != original.Value ? ChangedValueColor : default(Color);
+			keysValueCell.Style.BackColor = !originalExists ? ChangedValueColor : default(Color);
+			keysNameCell.Style.BackColor = !originalExists || value.Name != original.Name ? ChangedValueColor : default(Color);
 			includeKeyCell.Style.BackColor = !originalExists || value.IsRemoved != original.IsRemoved ? ChangedValueColor : default(Color);
 			selectKeyCell.Style.BackColor = !originalExists || value.IsSelected != original.IsSelected ? ChangedValueColor : default(Color);
 			disableKeyCell.Style.BackColor = !originalExists || value.IsDisabled != original.IsDisabled ? ChangedValueColor : default(Color);
@@ -1526,41 +1541,41 @@ namespace PortalConfigurator
 
 		private void keysDataGridView_CurrentCellDirtyStateChanged(object sender, EventArgs e)
 		{
-			int columnIndex = keysDataGridView.CurrentCell.ColumnIndex;
+			int columnIndex = valuesDataGridView.CurrentCell.ColumnIndex;
 
-			if (columnIndex == includeKeyColumn.Index || columnIndex == selectKeyColumn.Index || columnIndex == disableKeyColumn.Index)
-				keysDataGridView.CommitEdit(DataGridViewDataErrorContexts.Commit);
+			if (columnIndex == includeValueColumn.Index || columnIndex == selectValueColumn.Index || columnIndex == disableValueColumn.Index)
+				valuesDataGridView.CommitEdit(DataGridViewDataErrorContexts.Commit);
 		}
 
 		private void keysDataGridView_CellValueChanged(object sender, DataGridViewCellEventArgs e)
 		{
-			if (e.RowIndex != -1 ? keysDataGridView.CurrentCell.IsInEditMode && keysDataGridView.CurrentCell.ColumnIndex == e.ColumnIndex : false)
+			if (e.RowIndex != -1 ? valuesDataGridView.CurrentCell.IsInEditMode && valuesDataGridView.CurrentCell.ColumnIndex == e.ColumnIndex : false)
 			{
-				DataGridViewCell selectedCell = keysDataGridView[e.ColumnIndex, e.RowIndex];
-				string key = Subject.KeysGridRows.ElementAt(e.RowIndex).Key;
-				KeysGridRow original = Original.KeysGridRows.FirstOrDefault(p => p.Key == key).Value ?? new KeysGridRow();
-				bool originalExists = Original.KeysGridRows.ContainsKey(key);
+				DataGridViewCell selectedCell = valuesDataGridView[e.ColumnIndex, e.RowIndex];
+				string key = Subject.ValuesGridRows.ElementAt(e.RowIndex).Key;
+				ValuesGridRow original = Original.ValuesGridRows.FirstOrDefault(p => p.Key == key).Value ?? new ValuesGridRow();
+				bool originalExists = Original.ValuesGridRows.ContainsKey(key);
 				bool changeDetected = false;
 
-				if (e.ColumnIndex == keysKeyColumn.Index)
+				if (e.ColumnIndex == valuesValueColumn.Index)
 				{
 					string cellValue = selectedCell.Value.ToString();
-					KeysGridRow value = Subject.KeysGridRows[key];
+					ValuesGridRow value = Subject.ValuesGridRows[key];
 
-					if (value.IsFromTable == null && !Subject.KeysGridRows.ContainsKey(cellValue))
+					if (value.IsFromTable == null && !Subject.ValuesGridRows.ContainsKey(cellValue))
 					{
-						Dictionary<string, KeysGridRow> newDictionary = new Dictionary<string, KeysGridRow>();
+						Dictionary<string, ValuesGridRow> newDictionary = new Dictionary<string, ValuesGridRow>();
 
-						for (int i = 0; i < Subject.KeysGridRows.Count; i++)
-							newDictionary.Add(i == e.RowIndex ? cellValue : Subject.KeysGridRows.ElementAt(i).Key, Subject.KeysGridRows.ElementAt(i).Value);
+						for (int i = 0; i < Subject.ValuesGridRows.Count; i++)
+							newDictionary.Add(i == e.RowIndex ? cellValue : Subject.ValuesGridRows.ElementAt(i).Key, Subject.ValuesGridRows.ElementAt(i).Value);
 
-						Subject.KeysGridRows = newDictionary;
+						Subject.ValuesGridRows = newDictionary;
 					}
 					else if (value.IsFromTable == true)
 						selectedCell.Value = key;
 					else if (value.IsFromTable == false)
 					{
-						if (Subject.KeysGridRows.ContainsKey(cellValue) && Subject.KeysGridRows.Keys.ToList().IndexOf(cellValue) != e.RowIndex)
+						if (Subject.ValuesGridRows.ContainsKey(cellValue) && Subject.ValuesGridRows.Keys.ToList().IndexOf(cellValue) != e.RowIndex)
 						{
 							MessageBox.Show("The key value is already present in the current set.", "Invalid Value",
 								MessageBoxButtons.OK, MessageBoxIcon.Warning);
@@ -1572,12 +1587,12 @@ namespace PortalConfigurator
 
 							if (int.TryParse(cellValue, out intValue))
 							{
-								Dictionary<string, KeysGridRow> newDictionary = new Dictionary<string, KeysGridRow>();
+								Dictionary<string, ValuesGridRow> newDictionary = new Dictionary<string, ValuesGridRow>();
 
-								for (int i = 0; i < Subject.KeysGridRows.Count; i++)
-									newDictionary.Add(i == e.RowIndex ? intValue.ToString() : Subject.KeysGridRows.ElementAt(i).Key, Subject.KeysGridRows.ElementAt(i).Value);
+								for (int i = 0; i < Subject.ValuesGridRows.Count; i++)
+									newDictionary.Add(i == e.RowIndex ? intValue.ToString() : Subject.ValuesGridRows.ElementAt(i).Key, Subject.ValuesGridRows.ElementAt(i).Value);
 
-								Subject.KeysGridRows = newDictionary;
+								Subject.ValuesGridRows = newDictionary;
 							}
 							else
 							{
@@ -1590,30 +1605,30 @@ namespace PortalConfigurator
 
 					changeDetected = !originalExists;
 				}
-				else if (e.ColumnIndex == keysValueColumn.Index && Subject.KeysGridRows[key].Value != selectedCell.Value.ToString())
+				else if (e.ColumnIndex == valuesNameColumn.Index && Subject.ValuesGridRows[key].Name != selectedCell.Value.ToString())
 				{
-					Subject.KeysGridRows[key].Value = selectedCell.Value.ToString();
-					changeDetected = !originalExists || Subject.KeysGridRows[key].Value != original.Value;
+					Subject.ValuesGridRows[key].Name = selectedCell.Value.ToString();
+					changeDetected = !originalExists || Subject.ValuesGridRows[key].Name != original.Name;
 				}
-				else if (e.ColumnIndex == includeKeyColumn.Index && Subject.KeysGridRows[key].IsRemoved != !(bool)selectedCell.Value)
+				else if (e.ColumnIndex == includeValueColumn.Index && Subject.ValuesGridRows[key].IsRemoved != !(bool)selectedCell.Value)
 				{
-					Subject.KeysGridRows[key].IsRemoved = !(bool)selectedCell.Value;
-					changeDetected = !originalExists || Subject.KeysGridRows[key].IsRemoved != original.IsRemoved;
+					Subject.ValuesGridRows[key].IsRemoved = !(bool)selectedCell.Value;
+					changeDetected = !originalExists || Subject.ValuesGridRows[key].IsRemoved != original.IsRemoved;
 				}
-				else if (e.ColumnIndex == selectKeyColumn.Index && Subject.KeysGridRows[key].IsSelected != (bool)selectedCell.Value)
+				else if (e.ColumnIndex == selectValueColumn.Index && Subject.ValuesGridRows[key].IsSelected != (bool)selectedCell.Value)
 				{
-					Subject.KeysGridRows[key].IsSelected = (bool)selectedCell.Value;
-					changeDetected = !originalExists || Subject.KeysGridRows[key].IsSelected != original.IsSelected;
+					Subject.ValuesGridRows[key].IsSelected = (bool)selectedCell.Value;
+					changeDetected = !originalExists || Subject.ValuesGridRows[key].IsSelected != original.IsSelected;
 				}
-				else if (e.ColumnIndex == disableKeyColumn.Index && Subject.KeysGridRows[key].IsDisabled != (bool)selectedCell.Value)
+				else if (e.ColumnIndex == disableValueColumn.Index && Subject.ValuesGridRows[key].IsDisabled != (bool)selectedCell.Value)
 				{
-					Subject.KeysGridRows[key].IsDisabled = (bool)selectedCell.Value;
-					changeDetected = !originalExists || Subject.KeysGridRows[key].IsDisabled != original.IsDisabled;
+					Subject.ValuesGridRows[key].IsDisabled = (bool)selectedCell.Value;
+					changeDetected = !originalExists || Subject.ValuesGridRows[key].IsDisabled != original.IsDisabled;
 				}
-				else if (e.ColumnIndex == formatKeyColumn.Index && Subject.KeysGridRows[key].Format != selectedCell.Value.ToString())
+				else if (e.ColumnIndex == formatValueColumn.Index && Subject.ValuesGridRows[key].Format != selectedCell.Value.ToString())
 				{
-					Subject.KeysGridRows[key].Format = selectedCell.Value.ToString();
-					changeDetected = !originalExists || Subject.KeysGridRows[key].Format != original.Format;
+					Subject.ValuesGridRows[key].Format = selectedCell.Value.ToString();
+					changeDetected = !originalExists || Subject.ValuesGridRows[key].Format != original.Format;
 				}
 
 				if (changeDetected)
@@ -1621,7 +1636,7 @@ namespace PortalConfigurator
 					Subject.UpdatePropertiesFromKeysGridRows();
 					RefreshKeysDataGridRow(e.RowIndex);
 
-					if ((e.ColumnIndex == keysKeyColumn.Index || e.ColumnIndex == keysValueColumn.Index) && !Subject.GetPossibleValuesTypes().Contains(Subject.ValuesType))
+					if ((e.ColumnIndex == valuesValueColumn.Index || e.ColumnIndex == valuesNameColumn.Index) && !Subject.GetPossibleValuesTypes().Contains(Subject.ValuesType))
 					{
 						string message = Subject.GetPossibleValuesTypes().Contains(Subject.ValuesType) ? String.Empty :
 							String.Format("A change to the values list caused the {0} format to become invalid.\nTo prevent an error, the format was changed to {1}.",
@@ -1639,55 +1654,55 @@ namespace PortalConfigurator
 
 		private void RefreshKeysDataGridView()
 		{
-			keysDataGridView.Rows.Clear();
+			valuesDataGridView.Rows.Clear();
 
-			if (Subject.KeysGridRows.Count != 0)
+			if (Subject.ValuesGridRows.Count != 0)
 			{
-				for (int i = 0; i < Subject.KeysGridRows.Count; i++)
+				for (int i = 0; i < Subject.ValuesGridRows.Count; i++)
 				{
-					keysDataGridView.Rows.Add();
+					valuesDataGridView.Rows.Add();
 					RefreshKeysDataGridRow(i);
 				}
 
 				string message = String.Empty;
 
-				if (Subject.AddKeyValues.Count != Subject.KeysGridRows.Count(p => p.Value.IsFromTable == false))
+				if (Subject.AddKeyValues.Count != Subject.ValuesGridRows.Count(p => p.Value.IsFromTable == false))
 				{
 					message = String.Concat(message, "The following added keys are no longer valid and have been removed:\n");
-					List<string> addedKeys = Subject.KeysGridRows.Where(p => p.Value.IsFromTable == false).Select(s => s.Key).ToList<string>();
+					List<string> addedKeys = Subject.ValuesGridRows.Where(p => p.Value.IsFromTable == false).Select(s => s.Key).ToList<string>();
 
 					foreach (var item in Subject.AddKeyValues.Where(p => !addedKeys.Contains(p.Key)))
 						message = String.Concat(message, String.Format("\n\t{0}:\t{1}", item.Key, item.Value));
 				}
 
-				if (Subject.RemoveKeys.Count != Subject.KeysGridRows.Count(p => p.Value.IsRemoved))
+				if (Subject.RemoveKeys.Count != Subject.ValuesGridRows.Count(p => p.Value.IsRemoved))
 				{
 					message = String.Concat(message, String.Format("{0}The following removed keys are no longer valid and have been eliminated:\n",
 						!String.IsNullOrEmpty(message) ? "\n\n" : String.Empty));
 
-					List<string> removedKeys = Subject.KeysGridRows.Where(p => p.Value.IsRemoved).Select(s => s.Key).ToList<string>();
+					List<string> removedKeys = Subject.ValuesGridRows.Where(p => p.Value.IsRemoved).Select(s => s.Key).ToList<string>();
 
 					foreach (var item in Subject.RemoveKeys.Where(p => !removedKeys.Contains(p.ToString())))
 						message = String.Concat(message, String.Format("\n\t{0}", item));
 				}
 
-				if (Subject.Display.SelectedList.Count != Subject.KeysGridRows.Count(p => p.Value.IsSelected))
+				if (Subject.Display.SelectedList.Count != Subject.ValuesGridRows.Count(p => p.Value.IsSelected))
 				{
 					message = String.Concat(message, String.Format("{0}The following selected keys are no longer valid and have been removed:\n",
 						!String.IsNullOrEmpty(message) ? "\n\n" : String.Empty));
 
-					List<string> selectedKeys = Subject.KeysGridRows.Where(p => p.Value.IsSelected).Select(s => s.Key).ToList<string>();
+					List<string> selectedKeys = Subject.ValuesGridRows.Where(p => p.Value.IsSelected).Select(s => s.Key).ToList<string>();
 
 					foreach (var item in Subject.Display.SelectedList.Where(p => !selectedKeys.Contains(p)))
 						message = String.Concat(message, String.Format("\n\t{0}", item));
 				}
 
-				if (Subject.Display.DisabledList.Count != Subject.KeysGridRows.Count(p => p.Value.IsDisabled))
+				if (Subject.Display.DisabledList.Count != Subject.ValuesGridRows.Count(p => p.Value.IsDisabled))
 				{
 					message = String.Concat(message, String.Format("{0}The following disabled keys are no longer valid and have been removed:\n",
 						!String.IsNullOrEmpty(message) ? "\n\n" : String.Empty));
 
-					List<string> disabledKeys = Subject.KeysGridRows.Where(p => p.Value.IsDisabled).Select(s => s.Key).ToList<string>();
+					List<string> disabledKeys = Subject.ValuesGridRows.Where(p => p.Value.IsDisabled).Select(s => s.Key).ToList<string>();
 
 					foreach (var item in Subject.Display.DisabledList.Where(p => !disabledKeys.Contains(p)))
 						message = String.Concat(message, String.Format("\n\t{0}", item));
@@ -1706,31 +1721,31 @@ namespace PortalConfigurator
 
 		private void RefreshKeysDataGridRow(int row)
 		{
-			string key = Subject.KeysGridRows.ElementAt(row).Key;
-			KeysGridRow value = Subject.KeysGridRows.ElementAt(row).Value;
-			DataGridViewCell keyCell = keysDataGridView[keysKeyColumn.Index, row];
-			DataGridViewCell valueCell = keysDataGridView[keysValueColumn.Index, row];
-			DataGridViewCell includeKeyCell = keysDataGridView[includeKeyColumn.Index, row];
-			DataGridViewCell selectedCell = keysDataGridView[selectKeyColumn.Index, row];
-			DataGridViewCell disabledCell = keysDataGridView[disableKeyColumn.Index, row];
-			DataGridViewCell formatCell = keysDataGridView[formatKeyColumn.Index, row];
-			DataGridViewCell isTableSourceCell = keysDataGridView[isTableSourceColumn.Index, row];
-			DataGridViewCell sourceLabelCell = keysDataGridView[sourceLabelColumn.Index, row];
+			string key = Subject.ValuesGridRows.ElementAt(row).Key;
+			ValuesGridRow value = Subject.ValuesGridRows.ElementAt(row).Value;
+			DataGridViewCell valueCell = valuesDataGridView[valuesValueColumn.Index, row];
+			DataGridViewCell nameCell = valuesDataGridView[valuesNameColumn.Index, row];
+			DataGridViewCell includedCell = valuesDataGridView[includeValueColumn.Index, row];
+			DataGridViewCell selectedCell = valuesDataGridView[selectValueColumn.Index, row];
+			DataGridViewCell disabledCell = valuesDataGridView[disableValueColumn.Index, row];
+			DataGridViewCell formatCell = valuesDataGridView[formatValueColumn.Index, row];
+			DataGridViewCell isTableSourceCell = valuesDataGridView[isTableSourceColumn.Index, row];
+			DataGridViewCell sourceLabelCell = valuesDataGridView[sourceLabelColumn.Index, row];
 
-			if (keyCell.Value == null ? true : keyCell.Value.ToString() != key)
-				keyCell.Value = key;
+			if (valueCell.Value == null ? true : valueCell.Value.ToString() != key)
+				valueCell.Value = key;
 			
-			keyCell.ReadOnly = value.IsFromTable ?? false;
+			valueCell.ReadOnly = value.IsFromTable ?? false;
 			
-			if (valueCell.Value == null ? true : valueCell.Value.ToString() != value.Value)
-				valueCell.Value = value.Value;
+			if (nameCell.Value == null ? true : nameCell.Value.ToString() != value.Name)
+				nameCell.Value = value.Name;
 
-			valueCell.ReadOnly = value.IsFromTable ?? false || Subject.ValuesType == ValuesType.ListIntegers || Subject.ValuesType == ValuesType.ListStrings;
+			nameCell.ReadOnly = value.IsFromTable ?? false || Subject.ValuesType == ValuesType.ListIntegers || Subject.ValuesType == ValuesType.ListStrings;
 
-			if (includeKeyCell.Value == null ? true : (bool)includeKeyCell.Value != !value.IsRemoved)
-				includeKeyCell.Value = !value.IsRemoved;
+			if (includedCell.Value == null ? true : (bool)includedCell.Value != !value.IsRemoved)
+				includedCell.Value = !value.IsRemoved;
 			
-			includeKeyCell.ReadOnly = !(value.IsFromTable ?? false);
+			includedCell.ReadOnly = !(value.IsFromTable ?? false);
 			
 			if(selectedCell.Value == null ? true : (bool)selectedCell.Value != value.IsSelected)
 				selectedCell.Value = value.IsSelected;
@@ -1817,7 +1832,7 @@ namespace PortalConfigurator
 			int originalIndex = OriginalFilterParameterFile.FilterParameters.FindIndex(p => p.FilterParameterName == subject.FilterParameterName);
 
 			if (originalIndex != -1)
-				original = OriginalFilterParameterFile.FilterParameters.ElementAt(originalIndex);
+				original = OriginalFilterParameterFile.FilterParameters[originalIndex];
 
 			return original;
 		}

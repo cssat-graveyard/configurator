@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 
 namespace Framework
@@ -9,6 +10,29 @@ namespace Framework
 	{
 		public List<FilterParameter> FilterParameters { get; set; }
 		public bool IsEmpty { get { return CheckForEmpty(); } }
+
+		public string Breadcrumb
+		{
+			get
+			{
+				string breadcrumb = String.Empty;
+
+				if (!String.IsNullOrEmpty(this.FilePath))
+				{
+					FileInfo file = new FileInfo(this.FilePath);
+					DirectoryInfo dir = file.Directory;
+					breadcrumb = file.Name;
+
+					while (!dir.Name.Equals("test", StringComparison.OrdinalIgnoreCase) && !dir.Name.Equals(dir.Root.Name, StringComparison.OrdinalIgnoreCase))
+					{
+						breadcrumb = String.Concat(dir.Name, "\\", breadcrumb);
+						dir = dir.Parent;
+					}
+				}
+
+				return breadcrumb;
+			}
+		}
 
 		public FilterParameterFile()
 			: this(String.Empty)

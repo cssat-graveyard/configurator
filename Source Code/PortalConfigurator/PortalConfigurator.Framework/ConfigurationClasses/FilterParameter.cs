@@ -65,25 +65,25 @@ namespace Framework
 			}
 		}
 		
-		private Dictionary<string, KeysGridRow> _keysGridRows;
-		public Dictionary<string, KeysGridRow> KeysGridRows
+		private Dictionary<string, ValuesGridRow> _valuesGridRows;
+		public Dictionary<string, ValuesGridRow> ValuesGridRows
 		{
 			get
 			{
 				if (Type == FilterParameterType.Neither)
 				{
-					_keysGridRows.Clear();
+					_valuesGridRows.Clear();
 					_keysGridRowsAreUpdated = true;
 				}
 
 				if (!_keysGridRowsAreUpdated)
 					RefreshKeysGridRows();
 
-				return _keysGridRows;
+				return _valuesGridRows;
 			}
 			set
 			{
-				_keysGridRows = value;
+				_valuesGridRows = value;
 				UpdatePropertiesFromKeysGridRows();
 			}
 		}
@@ -136,7 +136,7 @@ namespace Framework
 			this.FilterParameterName = filterParameterName;
 			this.Type = type;
 			this.Comments = comments;
-			this._keysGridRows = new Dictionary<string, KeysGridRow>();
+			this._valuesGridRows = new Dictionary<string, ValuesGridRow>();
 			this._keysGridRowsAreUpdated = false;
 			this._valuesType = valuesType;
 			this.ValuesDictionary = valuesDictionary;
@@ -203,16 +203,16 @@ namespace Framework
 
 		private void RefreshKeysGridRows()
 		{
-			_keysGridRows.Clear();
+			_valuesGridRows.Clear();
 
 			if (Type == FilterParameterType.Values)
 			{
 				if (_valuesType == ValuesType.ListStrings || _valuesType == ValuesType.ListIntegers)
 					foreach (var item in ValuesDictionary)
-						_keysGridRows.Add(item.Key, ParseToKeysGridRow(item.Key, item.Key, (bool?)null));
+						_valuesGridRows.Add(item.Key, ParseToKeysGridRow(item.Key, item.Key, (bool?)null));
 				else if (_valuesType == ValuesType.DictionaryStrings || _valuesType == ValuesType.DictionaryIntegers)
 					foreach (var item in ValuesDictionary)
-						_keysGridRows.Add(item.Key, ParseToKeysGridRow(item.Key, item.Value, (bool?)null));
+						_valuesGridRows.Add(item.Key, ParseToKeysGridRow(item.Key, item.Value, (bool?)null));
 			}
 			else if (Type == FilterParameterType.Table)
 			{
@@ -220,21 +220,21 @@ namespace Framework
 				Display.DisabledType = Display.DisabledList.Count == 0 ? DisabledType.NoDisabled : DisabledType.Integer;
 
 				foreach (var item in TableKeys)
-					_keysGridRows.Add(item.Key.ToString(), ParseToKeysGridRow(item.Key.ToString(), item.Value, true));
+					_valuesGridRows.Add(item.Key.ToString(), ParseToKeysGridRow(item.Key.ToString(), item.Value, true));
 
-				foreach (var item in AddKeyValues.Where(p => !_keysGridRows.ContainsKey(p.Key)))
-					_keysGridRows.Add(item.Key, ParseToKeysGridRow(item.Key, item.Value, false));
+				foreach (var item in AddKeyValues.Where(p => !_valuesGridRows.ContainsKey(p.Key)))
+					_valuesGridRows.Add(item.Key, ParseToKeysGridRow(item.Key, item.Value, false));
 			}
 
 			_keysGridRowsAreUpdated = true;
 		}
 
-		private KeysGridRow ParseToKeysGridRow(string key, string value, bool? isFromTable)
+		private ValuesGridRow ParseToKeysGridRow(string key, string value, bool? isFromTable)
 		{
-			KeysGridRow row = new KeysGridRow();
+			ValuesGridRow row = new ValuesGridRow();
 			int intValue;
 
-			row.Value = value;
+			row.Name = value;
 
 			if (int.TryParse(key, out intValue))
 				row.IsRemoved = RemoveKeys.Contains(intValue);
@@ -252,10 +252,10 @@ namespace Framework
 
 		public void UpdatePropertiesFromKeysGridRows()
 		{
-			if ((Type == FilterParameterType.Values || Type == FilterParameterType.Neither || _keysGridRows.Count == 0) && ValuesDictionary.Count != 0)
+			if ((Type == FilterParameterType.Values || Type == FilterParameterType.Neither || _valuesGridRows.Count == 0) && ValuesDictionary.Count != 0)
 				ValuesDictionary.Clear();
 			
-			if (Type == FilterParameterType.Table || Type == FilterParameterType.Neither || _keysGridRows.Count == 0)
+			if (Type == FilterParameterType.Table || Type == FilterParameterType.Neither || _valuesGridRows.Count == 0)
 			{
 				if (RemoveKeys.Count != 0)
 					RemoveKeys.Clear();
@@ -264,44 +264,44 @@ namespace Framework
 					AddKeyValues.Clear();
 			}
 
-			if (Type == FilterParameterType.Values && _keysGridRows.Count != 0 && _valuesType == ValuesType.NoValues)
+			if (Type == FilterParameterType.Values && _valuesGridRows.Count != 0 && _valuesType == ValuesType.NoValues)
 				_valuesType = ValuesType.DictionaryStrings;
-			else if (Type == FilterParameterType.Values && _keysGridRows.Count == 0 && _valuesType != ValuesType.NoValues)
+			else if (Type == FilterParameterType.Values && _valuesGridRows.Count == 0 && _valuesType != ValuesType.NoValues)
 				_valuesType = ValuesType.NoValues;
 
 			if (Display.SelectedList.Count != 0)
 				Display.SelectedList.Clear();
 
-			if (_keysGridRows.Count(p => p.Value.IsSelected) == 0)
+			if (_valuesGridRows.Count(p => p.Value.IsSelected) == 0)
 				Display.SelectedType = SelectedType.NoSelected;
 			
 			if (Display.DisabledList.Count != 0)
 				Display.DisabledList.Clear();
 			
-			if (_keysGridRows.Count(p => p.Value.IsDisabled) == 0)
+			if (_valuesGridRows.Count(p => p.Value.IsDisabled) == 0)
 				Display.DisabledType = DisabledType.NoDisabled;
 			
 			Display.Format.Clear();
 
-			for (int i = 0; i < _keysGridRows.Count; i++)
+			for (int i = 0; i < _valuesGridRows.Count; i++)
 			{
-				string key = _keysGridRows.Keys.ElementAt(i);
-				KeysGridRow value = _keysGridRows.Values.ElementAt(i);
+				string key = _valuesGridRows.Keys.ElementAt(i);
+				ValuesGridRow value = _valuesGridRows.Values.ElementAt(i);
 
 				if (value.IsFromTable == null)
 				{
 					if (_valuesType == ValuesType.ListStrings || _valuesType == ValuesType.ListIntegers)
 					{
 						ValuesDictionary.Add(key, key);
-						value.Value = key;
+						value.Name = key;
 					}
 					else if (_valuesType == ValuesType.DictionaryStrings || _valuesType == ValuesType.DictionaryIntegers)
-						ValuesDictionary.Add(key, value.Value);
+						ValuesDictionary.Add(key, value.Name);
 				}
 				else if (value.IsFromTable == true && value.IsRemoved)
 					RemoveKeys.Add(int.Parse(key));
 				else if (value.IsFromTable == false)
-					AddKeyValues.Add(key, value.Value);
+					AddKeyValues.Add(key, value.Name);
 
 				if (value.IsSelected)
 				{

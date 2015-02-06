@@ -23,7 +23,8 @@ namespace Framework
 		Column,
 		Area,
 		SteppedArea,
-		Scatter
+		Scatter,
+		Combo
 	}
 
 	public enum ControlType
@@ -72,7 +73,7 @@ namespace Framework
 
 	public enum Function
 	{
-		NoFunction,
+		NoTransform,
 		Rotate,
 		Trim,
 		DateRow
@@ -223,6 +224,9 @@ namespace Framework
 				case ChartType.Scatter:
 					enumString = "scatterChart";
 					break;
+				case ChartType.Combo:
+					enumString = "combo";
+					break;
 				default:
 					break;
 			}
@@ -247,6 +251,7 @@ namespace Framework
 				case ChartType.Line:
 				case ChartType.Column:
 				case ChartType.Area:
+				case ChartType.Combo:
 				default:
 					formattedString = Enum.GetName(typeof(ChartType), value);
 					break;
@@ -408,7 +413,7 @@ namespace Framework
 
 			switch (value)
 			{
-				case Function.NoFunction:
+				case Function.NoTransform:
 					break;
 				case Function.Rotate:
 					enumString = "rotate";
@@ -432,7 +437,8 @@ namespace Framework
 
 			switch (value)
 			{
-				case Function.NoFunction:
+				case Function.NoTransform:
+					formattedString = "No Transform";
 					break;
 				case Function.DateRow:
 					formattedString = "Date Row";
@@ -898,7 +904,7 @@ namespace Framework
 
 		public static Function GetFunctionEnum(string value)
 		{
-			Function enumValue = Function.NoFunction;
+			Function enumValue = Function.NoTransform;
 
 			switch (value)
 			{

@@ -9,7 +9,6 @@ namespace Framework
 	{
 		public string Legend { get; set; }
 		public DisplayColumn DisplayColumn { get; set; }
-		public DisplayType DisplayType { get; set; }
 		public bool? Multi { get; set; }
 		public bool? ZeroLast { get; set; }
 		public SortType SortType { get; set; }
@@ -27,6 +26,23 @@ namespace Framework
 		public Dictionary<string, string> Format { get; set; }
 		public bool IsEmpty { get { return CheckIfEmpty(); } }
 
+		private DisplayType _displayType;
+		public DisplayType DisplayType
+		{
+			get
+			{
+				return _displayType;
+			}
+
+			set
+			{
+				if (value == DisplayType.Parameter)
+					Multi = null;
+
+				_displayType = value;
+			}
+		}
+
 		public Display()
 			: this(String.Empty, DisplayColumn.NoColumn, DisplayType.NoDisplayType, (bool?)null, (bool?)null, SortType.NoSortType,
 			SelectedType.NoSelected, new List<string>(), String.Empty, DisabledType.NoDisabled, new List<string>(), QuarterDate.NoQuarterDate, (int?)null,
@@ -39,8 +55,8 @@ namespace Framework
 		{
 			this.Legend = legend;
 			this.DisplayColumn = displayColumn;
-			this.DisplayType = displayType;
 			this.Multi = multi;
+			this.DisplayType = displayType;
 			this.ZeroLast = zeroLast;
 			this.SortType = sortFunction;
 			this.SelectedType = selectedType;
@@ -142,10 +158,10 @@ namespace Framework
 		{
 			int intValue;
 
-			if (SelectedType == SelectedType.Integer && SelectedList.Count == 1 && int.TryParse(SelectedList.ElementAt(0), out intValue))
+			if (SelectedType == SelectedType.Integer && SelectedList.Count == 1 && int.TryParse(SelectedList[0], out intValue))
 				myJson.Add("selected", intValue);
 			else if (SelectedType == SelectedType.String && SelectedList.Count == 1)
-				myJson.Add("selected", SelectedList.ElementAt(0));
+				myJson.Add("selected", SelectedList[0]);
 			else if (SelectedType == SelectedType.Integer && SelectedList.Count != 0)
 			{
 				List<int> intValues = new List<int>();

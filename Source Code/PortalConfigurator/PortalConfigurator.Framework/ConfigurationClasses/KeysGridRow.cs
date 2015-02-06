@@ -2,26 +2,26 @@
 
 namespace Framework
 {
-	public class KeysGridRow
+	public class ValuesGridRow
 	{
-		public string Value { get; set; }
+		public string Name { get; set; }
 		public bool IsRemoved { get; set; }
 		public bool IsSelected { get; set; }
 		public bool IsDisabled { get; set; }
 		public string Format { get; set; }
 		public bool? IsFromTable { get; set; }
 
-		public KeysGridRow()
+		public ValuesGridRow()
 			: this(String.Empty, (bool?)null)
 		{ }
 
-		public KeysGridRow(string value, bool? isFromTable)
-			: this(value, false, false, false, String.Empty, isFromTable)
+		public ValuesGridRow(string name, bool? isFromTable)
+			: this(name, false, false, false, String.Empty, isFromTable)
 		{ }
 
-		public KeysGridRow(string value, bool isRemoved, bool isSelected, bool isDisabled, string format, bool? isFromTable)
+		public ValuesGridRow(string name, bool isRemoved, bool isSelected, bool isDisabled, string format, bool? isFromTable)
 		{
-			this.Value = value;
+			this.Name = name;
 			this.IsRemoved = isRemoved;
 			this.IsSelected = isSelected;
 			this.IsDisabled = isDisabled;
@@ -35,9 +35,9 @@ namespace Framework
 				return false;
 			else
 			{
-				KeysGridRow kgr = (KeysGridRow)obj;
+				ValuesGridRow kgr = (ValuesGridRow)obj;
 
-				bool valueEqual = Value == kgr.Value;
+				bool valueEqual = Name == kgr.Name;
 				bool isRemovedEqual = IsRemoved == kgr.IsRemoved;
 				bool isSelectedEqual = IsSelected == kgr.IsSelected;
 				bool isDisabledEqual = IsDisabled == kgr.IsDisabled;
@@ -49,7 +49,7 @@ namespace Framework
 
 		public override int GetHashCode()
 		{
-			return Value.GetHashCode() ^ IsRemoved.GetHashCode() ^ IsSelected.GetHashCode() ^ IsDisabled.GetHashCode() ^ Format.GetHashCode();
+			return Name.GetHashCode() ^ IsRemoved.GetHashCode() ^ IsSelected.GetHashCode() ^ IsDisabled.GetHashCode() ^ Format.GetHashCode();
 		}
 	}
 }

@@ -108,10 +108,23 @@ namespace PortalConfigurator
 			if (!abort)
 			{
 				filterParameterTableNameComboBox.Items.Clear();
-				filterParameterTableNameComboBox.Items.AddRange(Tables.Keys.ToArray<string>());
+				filterParameterTableNameComboBox.Items.AddRange(Tables.Keys.ToArray());
 
 				if (SubjectIndex != -1)
 					FilterParameterTypeSelectionChanged();
+
+				tableComboBox.Items.Clear();
+				tableComboBox.Items.Add("No Stored Procedure");
+				tableComboBox.Items.AddRange(StoredProcedures.Keys.ToArray());
+				string selection = (tableComboBox.SelectedIndex == -1 || tableComboBox.SelectedIndex == 0) ? String.Empty : tableComboBox.SelectedItem.ToString();
+				
+				if (selection != MyMeasurementFile.Table)
+				{
+					string message = String.Format("The \"{0}\" stored procedure was not found in the database. Transform and column header settings will be lost.", MyMeasurementFile.Table);
+					MessageBox.Show(message, "Warning", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning);
+					ChangeTable(selection);
+					RefreshTableAffectedSettings();
+				}
 			}
 		}
 
@@ -184,7 +197,7 @@ namespace PortalConfigurator
 			bool numberFormatsUncommitted = numberFormatsDataGridView.CurrentCell == null ? false : numberFormatsDataGridView.CurrentCell.IsInEditMode;
 			bool measureUncommitted = measureDataGridView.CurrentCell == null ? false : measureDataGridView.CurrentCell.IsInEditMode;
 			bool commentsUncommitted = commentsDataGridView.CurrentCell == null ? false : commentsDataGridView.CurrentCell.IsInEditMode;
-			bool keysUncommitted = keysDataGridView.CurrentCell == null ? false : keysDataGridView.CurrentCell.IsInEditMode;
+			bool keysUncommitted = valuesDataGridView.CurrentCell == null ? false : valuesDataGridView.CurrentCell.IsInEditMode;
 			bool helpUncommitted = helpDataGridView.CurrentCell == null ? false : helpDataGridView.CurrentCell.IsInEditMode;
 
 			if (chartsUncommitted || numberFormatsUncommitted || measureUncommitted || commentsUncommitted || keysUncommitted || helpUncommitted)

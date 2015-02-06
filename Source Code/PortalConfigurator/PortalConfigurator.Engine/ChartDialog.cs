@@ -57,7 +57,7 @@ namespace PortalConfigurator
 				showColumnNameCell = showColumnsDataGridView[showColumnNameColumn.Index, i];
 				showColumnCell = showColumnsDataGridView[showColumnColumn.Index, i];
 
-				showColumnNameCell.Value = ValueColumns.ElementAt(i);
+				showColumnNameCell.Value = ValueColumns[i];
 				showColumnCell.Value = !currentlyHidden;
 				showColumnCell.Style.BackColor = currentlyHidden == originallyHidden ? default(Color) : ChangedValueColor;
 			}

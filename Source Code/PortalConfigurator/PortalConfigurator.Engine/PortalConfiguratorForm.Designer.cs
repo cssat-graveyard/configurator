@@ -128,6 +128,8 @@
 			this.newMeasureFileToolStripButton = new System.Windows.Forms.ToolStripButton();
 			this.openMeasureFileToolStripButton = new System.Windows.Forms.ToolStripButton();
 			this.saveMeasureFileToolStripButton = new System.Windows.Forms.ToolStripButton();
+			this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
+			this.measureBreadcrumbLabel = new System.Windows.Forms.ToolStripLabel();
 			this.functionComboBox = new System.Windows.Forms.ComboBox();
 			this.parametersCoveredGroupBox = new System.Windows.Forms.GroupBox();
 			this.parametersNeededLabel = new System.Windows.Forms.Label();
@@ -147,6 +149,8 @@
 			this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
 			this.moveUpFilterParameterToolStripButton = new System.Windows.Forms.ToolStripButton();
 			this.moveDownFilterParameterToolStripButton = new System.Windows.Forms.ToolStripButton();
+			this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
+			this.filterParameterBreadcrumbLabel = new System.Windows.Forms.ToolStripLabel();
 			this.displayGroupBox = new System.Windows.Forms.GroupBox();
 			this.monthLimitCheckBox = new System.Windows.Forms.CheckBox();
 			this.valuesTypeLabel = new System.Windows.Forms.Label();
@@ -165,15 +169,7 @@
 			this.moveUpKeyButton = new System.Windows.Forms.Button();
 			this.resultUnavailableLabel = new System.Windows.Forms.Label();
 			this.resultUnavailableComboBox = new System.Windows.Forms.ComboBox();
-			this.keysDataGridView = new System.Windows.Forms.DataGridView();
-			this.keysKeyColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-			this.keysValueColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-			this.includeKeyColumn = new System.Windows.Forms.DataGridViewCheckBoxColumn();
-			this.selectKeyColumn = new System.Windows.Forms.DataGridViewCheckBoxColumn();
-			this.disableKeyColumn = new System.Windows.Forms.DataGridViewCheckBoxColumn();
-			this.formatKeyColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-			this.isTableSourceColumn = new System.Windows.Forms.DataGridViewCheckBoxColumn();
-			this.sourceLabelColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+			this.valuesDataGridView = new System.Windows.Forms.DataGridView();
 			this.monthLimitNumericUpDown = new System.Windows.Forms.NumericUpDown();
 			this.monthStepLabel = new System.Windows.Forms.Label();
 			this.monthStepNumericUpDown = new System.Windows.Forms.NumericUpDown();
@@ -221,6 +217,14 @@
 			this.colorDialog = new System.Windows.Forms.ColorDialog();
 			this.dateColumnErrorProvider = new System.Windows.Forms.ErrorProvider(this.components);
 			this.valuesTypeErrorProvider = new System.Windows.Forms.ErrorProvider(this.components);
+			this.valuesValueColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+			this.valuesNameColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+			this.includeValueColumn = new System.Windows.Forms.DataGridViewCheckBoxColumn();
+			this.selectValueColumn = new System.Windows.Forms.DataGridViewCheckBoxColumn();
+			this.disableValueColumn = new System.Windows.Forms.DataGridViewCheckBoxColumn();
+			this.formatValueColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+			this.isTableSourceColumn = new System.Windows.Forms.DataGridViewCheckBoxColumn();
+			this.sourceLabelColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.menuStrip.SuspendLayout();
 			this.configTabControl.SuspendLayout();
 			this.measureTabPage.SuspendLayout();
@@ -241,7 +245,7 @@
 			this.displayGroupBox.SuspendLayout();
 			this.helpGroupBox.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.helpDataGridView)).BeginInit();
-			((System.ComponentModel.ISupportInitialize)(this.keysDataGridView)).BeginInit();
+			((System.ComponentModel.ISupportInitialize)(this.valuesDataGridView)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.monthLimitNumericUpDown)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.monthStepNumericUpDown)).BeginInit();
 			this.commentsGroupBox.SuspendLayout();
@@ -384,6 +388,7 @@
 			// 
 			// yAxisFormatComboBox
 			// 
+			this.yAxisFormatComboBox.Enabled = false;
 			this.yAxisFormatComboBox.FormattingEnabled = true;
 			this.yAxisFormatComboBox.Location = new System.Drawing.Point(89, 373);
 			this.yAxisFormatComboBox.Name = "yAxisFormatComboBox";
@@ -393,8 +398,7 @@
 			// 
 			// yAxisLabelTextBox
 			// 
-			this.yAxisLabelTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+			this.yAxisLabelTextBox.Enabled = false;
 			this.yAxisLabelTextBox.Location = new System.Drawing.Point(3, 279);
 			this.yAxisLabelTextBox.Name = "yAxisLabelTextBox";
 			this.yAxisLabelTextBox.Size = new System.Drawing.Size(423, 20);
@@ -430,6 +434,7 @@
 			// 
 			// hideRowLabel
 			// 
+			this.hideRowLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
 			this.hideRowLabel.AutoSize = true;
 			this.hideRowLabel.Location = new System.Drawing.Point(791, 31);
 			this.hideRowLabel.Name = "hideRowLabel";
@@ -440,6 +445,7 @@
 			// yAxisMaxNumericUpDown
 			// 
 			this.yAxisMaxNumericUpDown.DecimalPlaces = 1;
+			this.yAxisMaxNumericUpDown.Enabled = false;
 			this.yAxisMaxNumericUpDown.Increment = new decimal(new int[] {
             1000,
             0,
@@ -460,6 +466,7 @@
 			// 
 			// hideRowComboBox
 			// 
+			this.hideRowComboBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
 			this.hideRowComboBox.FormattingEnabled = true;
 			this.hideRowComboBox.Location = new System.Drawing.Point(794, 47);
 			this.hideRowComboBox.Name = "hideRowComboBox";
@@ -470,6 +477,7 @@
 			// yAxisMinNumericUpDown
 			// 
 			this.yAxisMinNumericUpDown.DecimalPlaces = 1;
+			this.yAxisMinNumericUpDown.Enabled = false;
 			this.yAxisMinNumericUpDown.Increment = new decimal(new int[] {
             1000,
             0,
@@ -490,7 +498,8 @@
 			// 
 			// baseButton
 			// 
-			this.baseButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+			this.baseButton.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
 			this.baseButton.Location = new System.Drawing.Point(432, 45);
 			this.baseButton.Name = "baseButton";
 			this.baseButton.Size = new System.Drawing.Size(218, 23);
@@ -743,8 +752,7 @@
 			// 
 			// xAxisLabelTextBox
 			// 
-			this.xAxisLabelTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+			this.xAxisLabelTextBox.Enabled = false;
 			this.xAxisLabelTextBox.Location = new System.Drawing.Point(3, 240);
 			this.xAxisLabelTextBox.Name = "xAxisLabelTextBox";
 			this.xAxisLabelTextBox.Size = new System.Drawing.Size(423, 20);
@@ -1155,7 +1163,6 @@
 			// 
 			// baseLabel
 			// 
-			this.baseLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
 			this.baseLabel.AutoSize = true;
 			this.baseLabel.Location = new System.Drawing.Point(429, 31);
 			this.baseLabel.Name = "baseLabel";
@@ -1215,14 +1222,13 @@
 			this.orderNumericUpDown.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
 			this.orderNumericUpDown.Location = new System.Drawing.Point(656, 47);
 			this.orderNumericUpDown.Name = "orderNumericUpDown";
-			this.orderNumericUpDown.Size = new System.Drawing.Size(131, 20);
+			this.orderNumericUpDown.Size = new System.Drawing.Size(132, 20);
 			this.orderNumericUpDown.TabIndex = 5;
 			this.orderNumericUpDown.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
 			this.orderNumericUpDown.ValueChanged += new System.EventHandler(this.orderNumericUpDown_ValueChanged);
 			// 
 			// measureTableLabel
 			// 
-			this.measureTableLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
 			this.measureTableLabel.AutoSize = true;
 			this.measureTableLabel.Location = new System.Drawing.Point(169, 31);
 			this.measureTableLabel.Name = "measureTableLabel";
@@ -1241,8 +1247,6 @@
 			// 
 			// titleTextBox
 			// 
-			this.titleTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
 			this.titleTextBox.Location = new System.Drawing.Point(3, 87);
 			this.titleTextBox.Name = "titleTextBox";
 			this.titleTextBox.Size = new System.Drawing.Size(423, 20);
@@ -1275,7 +1279,9 @@
 			this.measureToolStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.newMeasureFileToolStripButton,
             this.openMeasureFileToolStripButton,
-            this.saveMeasureFileToolStripButton});
+            this.saveMeasureFileToolStripButton,
+            this.toolStripSeparator2,
+            this.measureBreadcrumbLabel});
 			this.measureToolStrip.Location = new System.Drawing.Point(3, 3);
 			this.measureToolStrip.Name = "measureToolStrip";
 			this.measureToolStrip.Size = new System.Drawing.Size(1202, 25);
@@ -1311,6 +1317,17 @@
 			this.saveMeasureFileToolStripButton.Size = new System.Drawing.Size(23, 22);
 			this.saveMeasureFileToolStripButton.Text = "&Save";
 			this.saveMeasureFileToolStripButton.Click += new System.EventHandler(this.saveMeasureFileToolStripButton_Click);
+			// 
+			// toolStripSeparator2
+			// 
+			this.toolStripSeparator2.Name = "toolStripSeparator2";
+			this.toolStripSeparator2.Size = new System.Drawing.Size(6, 25);
+			// 
+			// measureBreadcrumbLabel
+			// 
+			this.measureBreadcrumbLabel.Name = "measureBreadcrumbLabel";
+			this.measureBreadcrumbLabel.Size = new System.Drawing.Size(145, 22);
+			this.measureBreadcrumbLabel.Text = "MeasureBreadcrumbLabel";
 			// 
 			// functionComboBox
 			// 
@@ -1425,7 +1442,9 @@
             this.deleteFilterParameterToolStripButton,
             this.toolStripSeparator1,
             this.moveUpFilterParameterToolStripButton,
-            this.moveDownFilterParameterToolStripButton});
+            this.moveDownFilterParameterToolStripButton,
+            this.toolStripSeparator3,
+            this.filterParameterBreadcrumbLabel});
 			this.filterParameterToolStrip.Location = new System.Drawing.Point(3, 3);
 			this.filterParameterToolStrip.Name = "filterParameterToolStrip";
 			this.filterParameterToolStrip.Size = new System.Drawing.Size(1202, 25);
@@ -1522,6 +1541,17 @@
 			this.moveDownFilterParameterToolStripButton.Text = "&Move Filter/Parameter Down";
 			this.moveDownFilterParameterToolStripButton.Click += new System.EventHandler(this.moveDownFilterParameterToolStripButton_Click);
 			// 
+			// toolStripSeparator3
+			// 
+			this.toolStripSeparator3.Name = "toolStripSeparator3";
+			this.toolStripSeparator3.Size = new System.Drawing.Size(6, 25);
+			// 
+			// filterParameterBreadcrumbLabel
+			// 
+			this.filterParameterBreadcrumbLabel.Name = "filterParameterBreadcrumbLabel";
+			this.filterParameterBreadcrumbLabel.Size = new System.Drawing.Size(180, 22);
+			this.filterParameterBreadcrumbLabel.Text = "FilterParameterBreadcrumbLabel";
+			// 
 			// displayGroupBox
 			// 
 			this.displayGroupBox.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
@@ -1537,7 +1567,7 @@
 			this.displayGroupBox.Controls.Add(this.moveUpKeyButton);
 			this.displayGroupBox.Controls.Add(this.resultUnavailableLabel);
 			this.displayGroupBox.Controls.Add(this.resultUnavailableComboBox);
-			this.displayGroupBox.Controls.Add(this.keysDataGridView);
+			this.displayGroupBox.Controls.Add(this.valuesDataGridView);
 			this.displayGroupBox.Controls.Add(this.monthLimitNumericUpDown);
 			this.displayGroupBox.Controls.Add(this.monthStepLabel);
 			this.displayGroupBox.Controls.Add(this.monthStepNumericUpDown);
@@ -1759,84 +1789,33 @@
 			this.resultUnavailableComboBox.TabIndex = 15;
 			this.resultUnavailableComboBox.SelectedIndexChanged += new System.EventHandler(this.resultUnavailableComboBox_SelectedIndexChanged);
 			// 
-			// keysDataGridView
+			// valuesDataGridView
 			// 
-			this.keysDataGridView.AllowUserToAddRows = false;
-			this.keysDataGridView.AllowUserToDeleteRows = false;
-			this.keysDataGridView.AllowUserToResizeRows = false;
-			this.keysDataGridView.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+			this.valuesDataGridView.AllowUserToAddRows = false;
+			this.valuesDataGridView.AllowUserToDeleteRows = false;
+			this.valuesDataGridView.AllowUserToResizeRows = false;
+			this.valuesDataGridView.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-			this.keysDataGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-			this.keysDataGridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.keysKeyColumn,
-            this.keysValueColumn,
-            this.includeKeyColumn,
-            this.selectKeyColumn,
-            this.disableKeyColumn,
-            this.formatKeyColumn,
+			this.valuesDataGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+			this.valuesDataGridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.valuesValueColumn,
+            this.valuesNameColumn,
+            this.includeValueColumn,
+            this.selectValueColumn,
+            this.disableValueColumn,
+            this.formatValueColumn,
             this.isTableSourceColumn,
             this.sourceLabelColumn});
-			this.keysDataGridView.EditMode = System.Windows.Forms.DataGridViewEditMode.EditOnEnter;
-			this.keysDataGridView.Location = new System.Drawing.Point(6, 99);
-			this.keysDataGridView.MultiSelect = false;
-			this.keysDataGridView.Name = "keysDataGridView";
-			this.keysDataGridView.RowHeadersVisible = false;
-			this.keysDataGridView.Size = new System.Drawing.Size(945, 220);
-			this.keysDataGridView.TabIndex = 23;
-			this.keysDataGridView.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.keysDataGridView_CellValueChanged);
-			this.keysDataGridView.CurrentCellDirtyStateChanged += new System.EventHandler(this.keysDataGridView_CurrentCellDirtyStateChanged);
-			// 
-			// keysKeyColumn
-			// 
-			this.keysKeyColumn.HeaderText = "Key";
-			this.keysKeyColumn.Name = "keysKeyColumn";
-			this.keysKeyColumn.ReadOnly = true;
-			this.keysKeyColumn.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-			// 
-			// keysValueColumn
-			// 
-			this.keysValueColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-			this.keysValueColumn.HeaderText = "Value";
-			this.keysValueColumn.Name = "keysValueColumn";
-			this.keysValueColumn.ReadOnly = true;
-			this.keysValueColumn.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-			// 
-			// includeKeyColumn
-			// 
-			this.includeKeyColumn.HeaderText = "Include";
-			this.includeKeyColumn.Name = "includeKeyColumn";
-			// 
-			// selectKeyColumn
-			// 
-			this.selectKeyColumn.HeaderText = "Selected";
-			this.selectKeyColumn.Name = "selectKeyColumn";
-			// 
-			// disableKeyColumn
-			// 
-			this.disableKeyColumn.HeaderText = "Disabled";
-			this.disableKeyColumn.Name = "disableKeyColumn";
-			// 
-			// formatKeyColumn
-			// 
-			this.formatKeyColumn.HeaderText = "Format";
-			this.formatKeyColumn.Name = "formatKeyColumn";
-			this.formatKeyColumn.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-			// 
-			// isTableSourceColumn
-			// 
-			this.isTableSourceColumn.HeaderText = "IsTableSource";
-			this.isTableSourceColumn.Name = "isTableSourceColumn";
-			this.isTableSourceColumn.ReadOnly = true;
-			this.isTableSourceColumn.ThreeState = true;
-			this.isTableSourceColumn.Visible = false;
-			// 
-			// sourceLabelColumn
-			// 
-			this.sourceLabelColumn.HeaderText = "Source";
-			this.sourceLabelColumn.Name = "sourceLabelColumn";
-			this.sourceLabelColumn.ReadOnly = true;
-			this.sourceLabelColumn.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+			this.valuesDataGridView.EditMode = System.Windows.Forms.DataGridViewEditMode.EditOnEnter;
+			this.valuesDataGridView.Location = new System.Drawing.Point(6, 99);
+			this.valuesDataGridView.MultiSelect = false;
+			this.valuesDataGridView.Name = "valuesDataGridView";
+			this.valuesDataGridView.RowHeadersVisible = false;
+			this.valuesDataGridView.Size = new System.Drawing.Size(945, 220);
+			this.valuesDataGridView.TabIndex = 23;
+			this.valuesDataGridView.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.keysDataGridView_CellValueChanged);
+			this.valuesDataGridView.CurrentCellDirtyStateChanged += new System.EventHandler(this.keysDataGridView_CurrentCellDirtyStateChanged);
 			// 
 			// monthLimitNumericUpDown
 			// 
@@ -2309,6 +2288,57 @@
 			this.valuesTypeErrorProvider.ContainerControl = this;
 			this.valuesTypeErrorProvider.Icon = ((System.Drawing.Icon)(resources.GetObject("valuesTypeErrorProvider.Icon")));
 			// 
+			// valuesValueColumn
+			// 
+			this.valuesValueColumn.HeaderText = "Value";
+			this.valuesValueColumn.Name = "valuesValueColumn";
+			this.valuesValueColumn.ReadOnly = true;
+			this.valuesValueColumn.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+			// 
+			// valuesNameColumn
+			// 
+			this.valuesNameColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+			this.valuesNameColumn.HeaderText = "Name";
+			this.valuesNameColumn.Name = "valuesNameColumn";
+			this.valuesNameColumn.ReadOnly = true;
+			this.valuesNameColumn.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+			// 
+			// includeValueColumn
+			// 
+			this.includeValueColumn.HeaderText = "Include";
+			this.includeValueColumn.Name = "includeValueColumn";
+			// 
+			// selectValueColumn
+			// 
+			this.selectValueColumn.HeaderText = "Selected";
+			this.selectValueColumn.Name = "selectValueColumn";
+			// 
+			// disableValueColumn
+			// 
+			this.disableValueColumn.HeaderText = "Disabled";
+			this.disableValueColumn.Name = "disableValueColumn";
+			// 
+			// formatValueColumn
+			// 
+			this.formatValueColumn.HeaderText = "Format";
+			this.formatValueColumn.Name = "formatValueColumn";
+			this.formatValueColumn.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+			// 
+			// isTableSourceColumn
+			// 
+			this.isTableSourceColumn.HeaderText = "IsTableSource";
+			this.isTableSourceColumn.Name = "isTableSourceColumn";
+			this.isTableSourceColumn.ReadOnly = true;
+			this.isTableSourceColumn.ThreeState = true;
+			this.isTableSourceColumn.Visible = false;
+			// 
+			// sourceLabelColumn
+			// 
+			this.sourceLabelColumn.HeaderText = "Source";
+			this.sourceLabelColumn.Name = "sourceLabelColumn";
+			this.sourceLabelColumn.ReadOnly = true;
+			this.sourceLabelColumn.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+			// 
 			// PortalConfiguratorForm
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -2350,7 +2380,7 @@
 			this.displayGroupBox.PerformLayout();
 			this.helpGroupBox.ResumeLayout(false);
 			((System.ComponentModel.ISupportInitialize)(this.helpDataGridView)).EndInit();
-			((System.ComponentModel.ISupportInitialize)(this.keysDataGridView)).EndInit();
+			((System.ComponentModel.ISupportInitialize)(this.valuesDataGridView)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.monthLimitNumericUpDown)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.monthStepNumericUpDown)).EndInit();
 			this.commentsGroupBox.ResumeLayout(false);
@@ -2416,7 +2446,7 @@
 		private System.Windows.Forms.Button moveUpHelpButton;
 		private System.Windows.Forms.Label resultUnavailableLabel;
 		private System.Windows.Forms.ComboBox resultUnavailableComboBox;
-		private System.Windows.Forms.DataGridView keysDataGridView;
+		private System.Windows.Forms.DataGridView valuesDataGridView;
 		private System.Windows.Forms.Button moveDownKeyButton;
 		private System.Windows.Forms.Button moveUpKeyButton;
 		private System.Windows.Forms.Button deleteCommentButton;
@@ -2520,14 +2550,6 @@
 		private System.Windows.Forms.DataGridViewTextBoxColumn commentContent;
 		private System.Windows.Forms.CheckBox monthLimitCheckBox;
 		private System.Windows.Forms.Button changeMultichartNameButton;
-		private System.Windows.Forms.DataGridViewTextBoxColumn keysKeyColumn;
-		private System.Windows.Forms.DataGridViewTextBoxColumn keysValueColumn;
-		private System.Windows.Forms.DataGridViewCheckBoxColumn includeKeyColumn;
-		private System.Windows.Forms.DataGridViewCheckBoxColumn selectKeyColumn;
-		private System.Windows.Forms.DataGridViewCheckBoxColumn disableKeyColumn;
-		private System.Windows.Forms.DataGridViewTextBoxColumn formatKeyColumn;
-		private System.Windows.Forms.DataGridViewCheckBoxColumn isTableSourceColumn;
-		private System.Windows.Forms.DataGridViewTextBoxColumn sourceLabelColumn;
 		private System.Windows.Forms.Label hideRowLabel;
 		private System.Windows.Forms.ComboBox hideRowComboBox;
 		private System.Windows.Forms.DataGridViewTextBoxColumn prefixColumn;
@@ -2559,6 +2581,18 @@
 		private System.Windows.Forms.DataGridViewCheckBoxColumn isValueFieldColumn;
 		private System.Windows.Forms.DataGridViewCheckBoxColumn isRemoveFieldColumn;
 		private System.Windows.Forms.ErrorProvider valuesTypeErrorProvider;
+		private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
+		private System.Windows.Forms.ToolStripLabel measureBreadcrumbLabel;
+		private System.Windows.Forms.ToolStripSeparator toolStripSeparator3;
+		private System.Windows.Forms.ToolStripLabel filterParameterBreadcrumbLabel;
+		private System.Windows.Forms.DataGridViewTextBoxColumn valuesValueColumn;
+		private System.Windows.Forms.DataGridViewTextBoxColumn valuesNameColumn;
+		private System.Windows.Forms.DataGridViewCheckBoxColumn includeValueColumn;
+		private System.Windows.Forms.DataGridViewCheckBoxColumn selectValueColumn;
+		private System.Windows.Forms.DataGridViewCheckBoxColumn disableValueColumn;
+		private System.Windows.Forms.DataGridViewTextBoxColumn formatValueColumn;
+		private System.Windows.Forms.DataGridViewCheckBoxColumn isTableSourceColumn;
+		private System.Windows.Forms.DataGridViewTextBoxColumn sourceLabelColumn;
 	}
 }
 
