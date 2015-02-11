@@ -15,7 +15,7 @@ namespace Test
 			string actual = String.Empty;
 			Transform transform = new Transform();
 
-			transform.Function = TransformFunction.DateRow;
+			transform.Function = Function.DateRow;
 			transform.Table = "sp_table";
 			transform.DateField = "Date Field";
 			transform.ValueFields.Add("Value Field 1");
@@ -51,7 +51,7 @@ namespace Test
 			JArray valueFieldsJson = new JArray();
 			JArray removeFieldsJson = new JArray();
 
-			expected.Function = TransformFunction.DateRow;
+			expected.Function = Function.DateRow;
 			expected.Table = "sp_table";
 			expected.DateField = "Date Field";
 			expected.ValueFields.Add("Value Field 1");

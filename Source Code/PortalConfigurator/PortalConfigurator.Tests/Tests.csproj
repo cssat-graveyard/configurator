@@ -63,7 +63,6 @@
     <Compile Include="ConfigurationTests\FilterParameterTest.cs" />
     <Compile Include="ConfigurationTests\MultichartsTest.cs" />
     <Compile Include="ConfigurationTests\MeasurementFileTest.cs" />
-    <Compile Include="DatabaseTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\PortalConfigurator.Framework\Framework.csproj">

@@ -1622,7 +1622,10 @@ namespace PortalConfigurator
 						changeOccurred = true;
 					}
 					else if (subject.ColumnName != selection && columnAlreadyUsed)
+					{
+						measureDataGridView.CancelEdit();
 						measureDataGridView[e.ColumnIndex, e.RowIndex].Value = MyMeasurementFile.MeasureGridRows[e.RowIndex].ColumnName;
+					}
 				}
 				else if (e.ColumnIndex == headerTypeColumn.Index)
 				{
@@ -1644,7 +1647,10 @@ namespace PortalConfigurator
 						changeOccurred = true;
 					}
 					else if (subject.HeaderType != selection && selection == HeaderType.DateColumn && !missingRequiredDateColumn)
+					{
+						measureDataGridView.CancelEdit();
 						measureDataGridView[e.ColumnIndex, e.RowIndex].Value = Enums.GetFormattedString(MyMeasurementFile.MeasureGridRows[e.RowIndex].HeaderType);
+					}
 
 					SetDateColumnWarning();
 				}

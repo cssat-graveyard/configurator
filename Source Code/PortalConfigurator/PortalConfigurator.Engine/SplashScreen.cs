@@ -21,14 +21,9 @@ namespace PortalConfigurator
 		private void PreInitializeComponent()
 		{
 			this.SuspendLayout();
-			// 
-			// SplashScreen
-			// 
-			this.ClientSize = new System.Drawing.Size(284, 261);
-			this.Name = "SplashScreen";
-			this.ShowInTaskbar = false;
+//			this.ClientSize = new System.Drawing.Size(284, 261);
+//			this.ShowInTaskbar = false;
 			this.ResumeLayout(false);
-
 		}
 	}
 }
