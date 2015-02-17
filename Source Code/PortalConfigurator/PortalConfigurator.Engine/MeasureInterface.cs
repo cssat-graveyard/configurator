@@ -290,6 +290,19 @@ namespace PortalConfigurator
 				FileInfo filePath = new FileInfo(MyMeasurementFile.FilePath);
 				saveFileDialog.InitialDirectory = filePath.DirectoryName;
 				saveFileDialog.FileName = filePath.Name;
+
+				switch (CheckForNewerFile(filePath, MyMeasurementFile.FileDate))
+				{
+					case FileSaveConflictDecision.Overwrite:
+						break;
+					case FileSaveConflictDecision.Reload:
+						openMeasureFileToolStripButton_Click(this, new EventArgs());
+						return;
+					case FileSaveConflictDecision.Cancel:
+						return;
+					default:
+						break;
+				}
 			}
 			else
 			{

@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Windows.Forms;
 
@@ -207,6 +208,48 @@ namespace PortalConfigurator
 		private void configTabControl_Click(object sender, EventArgs e)
 		{
 			EndGridCellEditMode();
+		}
+
+		private FileSaveConflictDecision CheckForNewerFile(FileInfo file, DateTime originalDate)
+		{
+			DateTime fileDate;
+			FileSaveConflictDecision decision = FileSaveConflictDecision.Overwrite;
+
+			try
+			{
+				fileDate = file.LastWriteTime;
+			}
+			catch (PlatformNotSupportedException)
+			{
+				fileDate = file.CreationTime;
+			}
+			catch (Exception)
+			{
+				throw;
+			}
+
+			if (fileDate.CompareTo(originalDate) > 0)
+			{
+				NewerFileDialog dialog = new NewerFileDialog();
+				DialogResult result = dialog.ShowDialog();
+
+				switch (result)
+				{
+					case DialogResult.Cancel:
+						decision = FileSaveConflictDecision.Cancel;
+						break;
+					case DialogResult.Ignore:
+						decision = FileSaveConflictDecision.Overwrite;
+						break;
+					case DialogResult.Retry:
+						decision = FileSaveConflictDecision.Reload;
+						break;
+					default:
+						break;
+				}
+			}
+
+			return decision;
 		}
 	}
 }

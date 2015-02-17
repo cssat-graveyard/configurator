@@ -70,6 +70,7 @@
     <Compile Include="ChartDialog.Designer.cs">
       <DependentUpon>ChartDialog.cs</DependentUpon>
     </Compile>
+    <Compile Include="FileConflictDecision.cs" />
     <Compile Include="FilterParameterInterface.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -81,6 +82,12 @@
     </Compile>
     <Compile Include="MultichartNameDialogue.Designer.cs">
       <DependentUpon>MultichartNameDialogue.cs</DependentUpon>
+    </Compile>
+    <Compile Include="NewerFileDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="NewerFileDialog.Designer.cs">
+      <DependentUpon>NewerFileDialog.cs</DependentUpon>
     </Compile>
     <Compile Include="PortalConfiguratorForm.cs">
       <SubType>Form</SubType>
@@ -108,6 +115,9 @@
     <EmbeddedResource Include="MultichartNameDialogue.resx">
       <DependentUpon>MultichartNameDialogue.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="NewerFileDialog.resx">
+      <DependentUpon>NewerFileDialog.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="PortalConfiguratorForm.resx">
       <DependentUpon>PortalConfiguratorForm.cs</DependentUpon>
       <SubType>Designer</SubType>
@@ -116,7 +126,10 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <EmbeddedResource Include="SplashScreen.resx" />
+    <EmbeddedResource Include="SplashScreen.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>SplashScreen1.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
     <EmbeddedResource Include="ValuesTypeDialog.resx">
       <DependentUpon>ValuesTypeDialog.cs</DependentUpon>
     </EmbeddedResource>

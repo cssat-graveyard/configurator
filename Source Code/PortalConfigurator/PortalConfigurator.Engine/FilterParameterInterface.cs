@@ -158,6 +158,19 @@ namespace PortalConfigurator
 				FileInfo currentFile = new FileInfo(MyFilterParameterFile.FilePath);
 				saveFileDialog.InitialDirectory = currentFile.DirectoryName;
 				saveFileDialog.FileName = currentFile.Name;
+
+				switch (CheckForNewerFile(currentFile, MyFilterParameterFile.FileDate))
+				{
+					case FileSaveConflictDecision.Overwrite:
+						break;
+					case FileSaveConflictDecision.Reload:
+						openFilterParameterFileToolStripButton_Click(this, new EventArgs());
+						return;
+					case FileSaveConflictDecision.Cancel:
+						return;
+					default:
+						break;
+				}
 			}
 			else
 			{
