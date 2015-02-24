@@ -47,6 +47,10 @@ namespace PortalConfigurator
 					LoadFilterParameterInterface(sender, e);
 					break;
 				}
+				catch (CancelException)
+				{
+					abort = true;
+				}
 				catch (Exception exception)
 				{
 					string message = String.Format("{0}\n\nYou may retry or click Cancel to close the application.", exception.Message);

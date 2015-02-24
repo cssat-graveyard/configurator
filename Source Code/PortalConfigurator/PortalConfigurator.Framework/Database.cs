@@ -38,7 +38,7 @@ namespace Framework
 					}
 					else
 					{
-						throw new DatabaseException("Required credentials not provided.");
+						throw new CancelException("Required credentials not provided.");
 					}
 #endif
 				}
@@ -66,7 +66,7 @@ namespace Framework
 					}
 					else
 					{
-						throw new DatabaseException("Required credentials not provided.");
+						throw new CancelException("Required credentials not provided.");
 					}
 				}
 
@@ -336,6 +336,22 @@ namespace Framework
 		{ }
 
 		public DatabaseException(string message, Exception inner)
+			: base(message, inner)
+		{ }
+	}
+
+	[Serializable]
+	public class CancelException : Exception
+	{
+		public CancelException()
+			: base()
+		{ }
+
+		public CancelException(string message)
+			: base(message)
+		{ }
+
+		public CancelException(string message, Exception inner)
 			: base(message, inner)
 		{ }
 	}
