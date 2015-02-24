@@ -43,7 +43,7 @@ namespace Framework
 
 		private bool CheckForEmpty()
 		{
-			return Function == Function.NoTransform && String.IsNullOrEmpty(Table) && String.IsNullOrEmpty(DateField) && ValueFields.Count == 0 && RemoveFields.Count == 0;
+			return Function == Function.NoTransform || (String.IsNullOrEmpty(Table) && String.IsNullOrEmpty(DateField) && ValueFields.Count == 0 && RemoveFields.Count == 0);
 		}
 
 		public JObject CompileJson()

@@ -18,6 +18,7 @@ namespace PortalConfigurator
 		private List<string> TableColumnList { get; set; }
 		private int FilterParameterComboBoxEvents { get; set; }
 		private int HeaderComboBoxEvents { get; set; }
+		private bool SimpleReload { get; set; }
 
 		public void InitializeMeasureInterface()
 		{
@@ -28,6 +29,7 @@ namespace PortalConfigurator
 			FilterParameterList = new List<string>();
 			TableColumnList = new List<string>();
 			FilterParameterComboBoxEvents = 0;
+			SimpleReload = false;
 		}
 
 		public void LoadMeasureInterface(object sender, EventArgs e)
@@ -180,7 +182,7 @@ namespace PortalConfigurator
 					openFileDialog.FileName = String.Empty;
 				}
 
-				if (openFileDialog.ShowDialog() == DialogResult.OK)
+				if ((SimpleReload && !String.IsNullOrEmpty(openFileDialog.FileName))? true : openFileDialog.ShowDialog() == DialogResult.OK)
 				{
 					bool openFileError = false;
 					ResetMeasureInterface();
@@ -281,6 +283,8 @@ namespace PortalConfigurator
 					RefreshMeasureGrid();
 				}
 			}
+
+			SimpleReload = false;
 		}
 
 		private void saveMeasureFileToolStripButton_Click(object sender, EventArgs e)
@@ -299,6 +303,7 @@ namespace PortalConfigurator
 					case FileSaveConflictDecision.Overwrite:
 						break;
 					case FileSaveConflictDecision.Reload:
+						SimpleReload = true;
 						openMeasureFileToolStripButton_Click(this, new EventArgs());
 						return;
 					case FileSaveConflictDecision.Cancel:

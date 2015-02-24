@@ -99,6 +99,7 @@
 			this.Controls.Add(this.decisionLabel);
 			this.Controls.Add(this.dialogLabel);
 			this.Name = "NewerFileDialog";
+			this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
 			this.Text = "Newer File Conflict";
 			this.ResumeLayout(false);
 			this.PerformLayout();

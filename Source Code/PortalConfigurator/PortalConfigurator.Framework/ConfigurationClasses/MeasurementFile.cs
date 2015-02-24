@@ -195,6 +195,9 @@ namespace Framework
 
 				for (int i = returnColumnIndex; i < returnClusterEndIndex; i++)
 				{
+					if (TableColumns.Count == 0)
+						ResetTableColumnOrdinals();
+
 					if (i >= TableColumns.Count)
 					{
 						ColumnClusterSize = i - returnColumnIndex < 2 ? (int?)null : i - returnColumnIndex;
