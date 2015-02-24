@@ -5,6 +5,7 @@ using System.ComponentModel;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Windows.Forms;
 
 namespace PortalConfigurator
@@ -250,6 +251,13 @@ namespace PortalConfigurator
 			}
 
 			return decision;
+		}
+
+		private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			Version version = Assembly.GetExecutingAssembly().GetName().Version;
+			string message = String.Format("{0}\n\n{1} version {2}", Application.CompanyName, Application.ProductName, version);
+			MessageBox.Show(message, "About", MessageBoxButtons.OK, MessageBoxIcon.None);
 		}
 	}
 }

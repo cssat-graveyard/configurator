@@ -11,6 +11,7 @@ namespace Framework
     {
 		public string BaseMeasure { get; set; }
 		public string Title { get; set; }
+		public string Subtitle { get; set; }
 		public string Dropdown { get; set; }
 		public int? Order { get; set; }
 		public string Summary { get; set; }
@@ -128,13 +129,13 @@ namespace Framework
 		{ }
 
 		public MeasurementFile(string filePath)
-			: this(filePath, String.Empty, String.Empty, String.Empty, String.Empty, (int?)null, String.Empty, String.Empty, new Transform(), new List<string>(),
+			: this(filePath, String.Empty, String.Empty, String.Empty, String.Empty, String.Empty, (int?)null, String.Empty, String.Empty, new Transform(), new List<string>(),
 			new List<string>(), new List<string>(), new List<string>(), (bool?)null, (int?)null, (bool?)null, new List<int>(), new List<int>(), new List<int>(),
 			new List<string>(), (int?)null, HideRow.NoHideRow, (int?)null, ChartType.NoChartType, new Label(), new List<NumberFormat>(), new List<ChartInfo>(),
 			new Multicharts())
 		{ }
 
-		public MeasurementFile(string filePath, string table, string baseMeasure, string title, string dropdown, int? order, string summary, string filter,
+		public MeasurementFile(string filePath, string table, string baseMeasure, string title, string subtitle, string dropdown, int? order, string summary, string filter,
 			Transform transform, List<string> controls, List<string> parameters, List<string> dateParameters, List<string> requiredParameters, bool? showAllOthers,
 			int? maxChecked, bool? mutexAllOthers, List<int> returnRowHeaders, List<int> returnRowDateHeaders, List<int> returnRowControlHeaders,
 			List<string> headerNames, int? returnRowStart, HideRow hideRow, int? columnClusterSize, ChartType chartType, Label label,
@@ -148,6 +149,7 @@ namespace Framework
 			this.Table = table;
 			this.BaseMeasure = baseMeasure;
 			this.Title = title;
+			this.Subtitle = subtitle;
 			this.Dropdown = dropdown;
 			this.Order = order;
 			this.Summary = summary;
@@ -175,7 +177,7 @@ namespace Framework
 
 		private bool CheckForEmpty()
 		{
-			return (String.IsNullOrEmpty(Table) && String.IsNullOrEmpty(BaseMeasure) && String.IsNullOrEmpty(Title) && Order == null &&
+			return (String.IsNullOrEmpty(Table) && String.IsNullOrEmpty(BaseMeasure) && String.IsNullOrEmpty(Title) && String.IsNullOrEmpty(Subtitle) && Order == null &&
 				String.IsNullOrEmpty(Dropdown) && Order == null && String.IsNullOrEmpty(Summary) && String.IsNullOrEmpty(Filter) && Transform.IsEmpty &&
 				Controls.Count == 0 && Parameters.Count == 0 && DateParameters.Count == 0 && RequiredParameters.Count == 0 && ShowAllOthers == null &&
 				MaxChecked == null && MutexAllOthers == null && ReturnRowHeaders.Count == 0 && ReturnRowDateHeaders.Count == 0 &&
@@ -461,6 +463,9 @@ namespace Framework
 			if (!String.IsNullOrEmpty(Title))
 				myJson.Add("title", Title);
 
+			if (!String.IsNullOrEmpty(Subtitle))
+				myJson.Add("subtitle", Subtitle);
+
 			if (!String.IsNullOrEmpty(Dropdown))
 				myJson.Add("dropdown", Dropdown);
 
@@ -563,6 +568,9 @@ namespace Framework
 						case "title":
 							Title = Json.Parse(Title, property);
 							break;
+						case "subtitle":
+							Subtitle = Json.Parse(Subtitle, property);
+							break;
 						case "measurementOrder":
 							Order = Json.Parse(Order, property);
 							break;
@@ -664,6 +672,7 @@ namespace Framework
 				Table = String.Empty;
 				BaseMeasure = String.Empty;
 				Title = String.Empty;
+				Subtitle = String.Empty;
 				Order = null;
 				Dropdown = String.Empty;
 				Summary = String.Empty;
@@ -718,8 +727,9 @@ namespace Framework
 				bool tableEqual = Table == mf.Table;
 				bool baseMeasureEqual = BaseMeasure == mf.BaseMeasure;
 				bool titleEqual = Title == mf.Title;
-				bool dropdownEqual = Dropdown == mf.Dropdown;
+				bool subtitleEqual = Subtitle == mf.Subtitle;
 				bool orderEqual = Order == mf.Order;
+				bool dropdownEqual = Dropdown == mf.Dropdown;
 				bool summaryEqual = Summary == mf.Summary;
 				bool filterEqual = Filter == mf.Filter;
 				bool transformEqual = Transform.Equals(mf.Transform);
@@ -743,7 +753,7 @@ namespace Framework
 				bool chartsEqual = Charts.SequenceEqual(mf.Charts);
 				bool multichartsEqual = Multicharts.Equals(mf.Multicharts);
 
-				return tableEqual && baseMeasureEqual && titleEqual && orderEqual && dropdownEqual && summaryEqual && filterEqual && transformEqual &&
+				return tableEqual && baseMeasureEqual && titleEqual && subtitleEqual && orderEqual && dropdownEqual && summaryEqual && filterEqual && transformEqual &&
 					controlsEqual && parametersEqual && dateParametersEqual && requiredParametersEqual && showAllOthersEqual && maxCheckedEqual &&
 					mutexAllOthersEqual && returnRowHeadersEqual && returnRowDateHeadersEqual && returnRowControlHeadersEqual && headerNamesEqual &&
 					returnRowStartEqual && hideRowEqual && columnClusterSizeEqual && chartTypeEqual && labelEqual && numberFormatsEqual && chartsEqual &&
@@ -753,7 +763,7 @@ namespace Framework
 
 		public override int GetHashCode()
 		{
-			return Table.GetHashCode() ^ BaseMeasure.GetHashCode() ^ Title.GetHashCode() ^ Dropdown.GetHashCode() ^ Order.GetHashCode() ^
+			return Table.GetHashCode() ^ BaseMeasure.GetHashCode() ^ Title.GetHashCode() ^ Subtitle.GetHashCode() ^ Order.GetHashCode() ^ Dropdown.GetHashCode() ^
 				Summary.GetHashCode() ^ Filter.GetHashCode() ^ Transform.GetHashCode() ^ Controls.GetHashCode() ^ Parameters.GetHashCode() ^
 				DateParameters.GetHashCode() ^ RequiredParameters.GetHashCode() ^ ShowAllOthers.GetHashCode() ^ MaxChecked.GetHashCode() ^
 				MutexAllOthers.GetHashCode() ^ ReturnRowHeaders.GetHashCode() ^ ReturnRowDateHeaders.GetHashCode() ^ ReturnRowControlHeaders.GetHashCode() ^

@@ -97,6 +97,8 @@ namespace PortalConfigurator
 			tableComboBox.BackColor = default(Color);
 			titleTextBox.Text = MyMeasurementFile.Title;
 			titleTextBox.BackColor = default(Color);
+			subtitleTextBox.Text = MyMeasurementFile.Subtitle;
+			subtitleTextBox.BackColor = default(Color);
 			baseButton.Text = "No Base Measure File";
 			baseButton.BackColor = default(Color);
 			orderNumericUpDown.Value = MyMeasurementFile.Order ?? 0;
@@ -239,6 +241,7 @@ namespace PortalConfigurator
 					measureBreadcrumbLabel.Text = MyMeasurementFile.Breadcrumb;
 					tableComboBox.SelectedIndex = StoredProcedures.Keys.ToList<string>().FindIndex(p => p == MyMeasurementFile.Table) + 1;
 					titleTextBox.Text = MyMeasurementFile.Title;
+					subtitleTextBox.Text = MyMeasurementFile.Subtitle;
 					baseButton.Text = String.IsNullOrEmpty(MyMeasurementFile.BaseMeasure) ? "No Base Measure File" : MyMeasurementFile.BaseMeasure;
 					orderNumericUpDown.Value = MyMeasurementFile.Order ?? 0;
 					hideRowComboBox.SelectedIndex = (int)MyMeasurementFile.HideRow;
@@ -350,6 +353,7 @@ namespace PortalConfigurator
 					measureBreadcrumbLabel.Text = MyMeasurementFile.Breadcrumb;
 					tableComboBox.BackColor = default(Color);
 					titleTextBox.BackColor = default(Color);
+					subtitleTextBox.BackColor = default(Color);
 					baseButton.BackColor = default(Color);
 					orderNumericUpDown.BackColor = default(Color);
 					hideRowComboBox.BackColor = default(Color);
@@ -722,6 +726,15 @@ namespace PortalConfigurator
 			{
 				MyMeasurementFile.Title = titleTextBox.Text;
 				titleTextBox.BackColor = MyMeasurementFile.Title == OriginalMeasurementFile.Title ? default(Color) : ChangedValueColor;
+			}
+		}
+
+		private void subtitleTextBox_TextChanged(object sender, EventArgs e)
+		{
+			if (subtitleTextBox.Text != MyMeasurementFile.Subtitle)
+			{
+				MyMeasurementFile.Subtitle = subtitleTextBox.Text;
+				subtitleTextBox.BackColor = MyMeasurementFile.Subtitle == OriginalMeasurementFile.Subtitle ? default(Color) : ChangedValueColor;
 			}
 		}
 

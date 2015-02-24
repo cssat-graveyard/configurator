@@ -37,6 +37,8 @@
 			this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.configTabControl = new System.Windows.Forms.TabControl();
 			this.measureTabPage = new System.Windows.Forms.TabPage();
+			this.subtitleLabel = new System.Windows.Forms.Label();
+			this.subtitleTextBox = new System.Windows.Forms.TextBox();
 			this.yAxisFormatLabel = new System.Windows.Forms.Label();
 			this.functionLabel = new System.Windows.Forms.Label();
 			this.xAxisLabelLabel = new System.Windows.Forms.Label();
@@ -170,6 +172,14 @@
 			this.resultUnavailableLabel = new System.Windows.Forms.Label();
 			this.resultUnavailableComboBox = new System.Windows.Forms.ComboBox();
 			this.valuesDataGridView = new System.Windows.Forms.DataGridView();
+			this.valuesValueColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+			this.valuesNameColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+			this.includeValueColumn = new System.Windows.Forms.DataGridViewCheckBoxColumn();
+			this.selectValueColumn = new System.Windows.Forms.DataGridViewCheckBoxColumn();
+			this.disableValueColumn = new System.Windows.Forms.DataGridViewCheckBoxColumn();
+			this.formatValueColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+			this.isTableSourceColumn = new System.Windows.Forms.DataGridViewCheckBoxColumn();
+			this.sourceLabelColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.monthLimitNumericUpDown = new System.Windows.Forms.NumericUpDown();
 			this.monthStepLabel = new System.Windows.Forms.Label();
 			this.monthStepNumericUpDown = new System.Windows.Forms.NumericUpDown();
@@ -217,14 +227,7 @@
 			this.colorDialog = new System.Windows.Forms.ColorDialog();
 			this.dateColumnErrorProvider = new System.Windows.Forms.ErrorProvider(this.components);
 			this.valuesTypeErrorProvider = new System.Windows.Forms.ErrorProvider(this.components);
-			this.valuesValueColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-			this.valuesNameColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-			this.includeValueColumn = new System.Windows.Forms.DataGridViewCheckBoxColumn();
-			this.selectValueColumn = new System.Windows.Forms.DataGridViewCheckBoxColumn();
-			this.disableValueColumn = new System.Windows.Forms.DataGridViewCheckBoxColumn();
-			this.formatValueColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-			this.isTableSourceColumn = new System.Windows.Forms.DataGridViewCheckBoxColumn();
-			this.sourceLabelColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+			this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.menuStrip.SuspendLayout();
 			this.configTabControl.SuspendLayout();
 			this.measureTabPage.SuspendLayout();
@@ -292,6 +295,8 @@
 			// 
 			// helpToolStripMenuItem
 			// 
+			this.helpToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.aboutToolStripMenuItem});
 			this.helpToolStripMenuItem.Name = "helpToolStripMenuItem";
 			this.helpToolStripMenuItem.Size = new System.Drawing.Size(44, 20);
 			this.helpToolStripMenuItem.Text = "Help";
@@ -310,6 +315,8 @@
 			// 
 			// measureTabPage
 			// 
+			this.measureTabPage.Controls.Add(this.subtitleLabel);
+			this.measureTabPage.Controls.Add(this.subtitleTextBox);
 			this.measureTabPage.Controls.Add(this.yAxisFormatLabel);
 			this.measureTabPage.Controls.Add(this.functionLabel);
 			this.measureTabPage.Controls.Add(this.xAxisLabelLabel);
@@ -358,6 +365,23 @@
 			this.measureTabPage.TabIndex = 0;
 			this.measureTabPage.Text = "Measure";
 			this.measureTabPage.UseVisualStyleBackColor = true;
+			// 
+			// subtitleLabel
+			// 
+			this.subtitleLabel.AutoSize = true;
+			this.subtitleLabel.Location = new System.Drawing.Point(429, 71);
+			this.subtitleLabel.Name = "subtitleLabel";
+			this.subtitleLabel.Size = new System.Drawing.Size(42, 13);
+			this.subtitleLabel.TabIndex = 40;
+			this.subtitleLabel.Text = "Subtitle";
+			// 
+			// subtitleTextBox
+			// 
+			this.subtitleTextBox.Location = new System.Drawing.Point(432, 87);
+			this.subtitleTextBox.Name = "subtitleTextBox";
+			this.subtitleTextBox.Size = new System.Drawing.Size(218, 20);
+			this.subtitleTextBox.TabIndex = 3;
+			this.subtitleTextBox.TextChanged += new System.EventHandler(this.subtitleTextBox_TextChanged);
 			// 
 			// yAxisFormatLabel
 			// 
@@ -471,7 +495,7 @@
 			this.hideRowComboBox.Location = new System.Drawing.Point(794, 47);
 			this.hideRowComboBox.Name = "hideRowComboBox";
 			this.hideRowComboBox.Size = new System.Drawing.Size(136, 21);
-			this.hideRowComboBox.TabIndex = 6;
+			this.hideRowComboBox.TabIndex = 7;
 			this.hideRowComboBox.SelectedIndexChanged += new System.EventHandler(this.hideRowComboBox_SelectedIndexChanged);
 			// 
 			// yAxisMinNumericUpDown
@@ -503,7 +527,7 @@
 			this.baseButton.Location = new System.Drawing.Point(432, 45);
 			this.baseButton.Name = "baseButton";
 			this.baseButton.Size = new System.Drawing.Size(218, 23);
-			this.baseButton.TabIndex = 4;
+			this.baseButton.TabIndex = 5;
 			this.baseButton.Text = "No Base Measure File";
 			this.baseButton.UseVisualStyleBackColor = true;
 			this.baseButton.Click += new System.EventHandler(this.baseButton_Click);
@@ -1088,7 +1112,7 @@
 			this.chartTypeComboBox.Location = new System.Drawing.Point(794, 87);
 			this.chartTypeComboBox.Name = "chartTypeComboBox";
 			this.chartTypeComboBox.Size = new System.Drawing.Size(136, 21);
-			this.chartTypeComboBox.TabIndex = 8;
+			this.chartTypeComboBox.TabIndex = 9;
 			this.chartTypeComboBox.SelectedIndexChanged += new System.EventHandler(this.chartTypeComboBox_SelectedIndexChanged);
 			// 
 			// muteAllOthersCheckBox
@@ -1101,7 +1125,7 @@
 			this.muteAllOthersCheckBox.Location = new System.Drawing.Point(1043, 89);
 			this.muteAllOthersCheckBox.Name = "muteAllOthersCheckBox";
 			this.muteAllOthersCheckBox.Size = new System.Drawing.Size(98, 17);
-			this.muteAllOthersCheckBox.TabIndex = 11;
+			this.muteAllOthersCheckBox.TabIndex = 12;
 			this.muteAllOthersCheckBox.Text = "Mute All Others";
 			this.muteAllOthersCheckBox.ThreeState = true;
 			this.muteAllOthersCheckBox.UseVisualStyleBackColor = true;
@@ -1123,7 +1147,7 @@
 			this.maxCheckedNumericUpDown.Location = new System.Drawing.Point(656, 87);
 			this.maxCheckedNumericUpDown.Name = "maxCheckedNumericUpDown";
 			this.maxCheckedNumericUpDown.Size = new System.Drawing.Size(132, 20);
-			this.maxCheckedNumericUpDown.TabIndex = 7;
+			this.maxCheckedNumericUpDown.TabIndex = 8;
 			this.maxCheckedNumericUpDown.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
 			this.maxCheckedNumericUpDown.ValueChanged += new System.EventHandler(this.maxCheckedNumericUpDown_ValueChanged);
 			// 
@@ -1136,7 +1160,7 @@
 			this.showAllOthersCheckBox.Location = new System.Drawing.Point(936, 89);
 			this.showAllOthersCheckBox.Name = "showAllOthersCheckBox";
 			this.showAllOthersCheckBox.Size = new System.Drawing.Size(101, 17);
-			this.showAllOthersCheckBox.TabIndex = 9;
+			this.showAllOthersCheckBox.TabIndex = 10;
 			this.showAllOthersCheckBox.Text = "Show All Others";
 			this.showAllOthersCheckBox.ThreeState = true;
 			this.showAllOthersCheckBox.UseVisualStyleBackColor = true;
@@ -1158,7 +1182,7 @@
 			this.filterTextBox.Location = new System.Drawing.Point(936, 47);
 			this.filterTextBox.Name = "filterTextBox";
 			this.filterTextBox.Size = new System.Drawing.Size(218, 20);
-			this.filterTextBox.TabIndex = 10;
+			this.filterTextBox.TabIndex = 11;
 			this.filterTextBox.TextChanged += new System.EventHandler(this.filterTextBox_TextChanged);
 			// 
 			// baseLabel
@@ -1173,7 +1197,7 @@
 			// summaryLabel
 			// 
 			this.summaryLabel.AutoSize = true;
-			this.summaryLabel.Location = new System.Drawing.Point(0, 110);
+			this.summaryLabel.Location = new System.Drawing.Point(0, 149);
 			this.summaryLabel.Name = "summaryLabel";
 			this.summaryLabel.Size = new System.Drawing.Size(50, 13);
 			this.summaryLabel.TabIndex = 13;
@@ -1181,17 +1205,17 @@
 			// 
 			// summaryTextBox
 			// 
-			this.summaryTextBox.Location = new System.Drawing.Point(3, 126);
+			this.summaryTextBox.Location = new System.Drawing.Point(3, 165);
 			this.summaryTextBox.Multiline = true;
 			this.summaryTextBox.Name = "summaryTextBox";
-			this.summaryTextBox.Size = new System.Drawing.Size(423, 92);
-			this.summaryTextBox.TabIndex = 12;
+			this.summaryTextBox.Size = new System.Drawing.Size(423, 53);
+			this.summaryTextBox.TabIndex = 13;
 			this.summaryTextBox.TextChanged += new System.EventHandler(this.summaryTextBox_TextChanged);
 			// 
 			// dropdownLabel
 			// 
 			this.dropdownLabel.AutoSize = true;
-			this.dropdownLabel.Location = new System.Drawing.Point(429, 71);
+			this.dropdownLabel.Location = new System.Drawing.Point(0, 110);
 			this.dropdownLabel.Name = "dropdownLabel";
 			this.dropdownLabel.Size = new System.Drawing.Size(56, 13);
 			this.dropdownLabel.TabIndex = 11;
@@ -1199,12 +1223,10 @@
 			// 
 			// dropdownTextBox
 			// 
-			this.dropdownTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-			this.dropdownTextBox.Location = new System.Drawing.Point(432, 87);
+			this.dropdownTextBox.Location = new System.Drawing.Point(3, 126);
 			this.dropdownTextBox.Name = "dropdownTextBox";
-			this.dropdownTextBox.Size = new System.Drawing.Size(218, 20);
-			this.dropdownTextBox.TabIndex = 3;
+			this.dropdownTextBox.Size = new System.Drawing.Size(423, 20);
+			this.dropdownTextBox.TabIndex = 4;
 			this.dropdownTextBox.TextChanged += new System.EventHandler(this.dropdownTextBox_TextChanged);
 			// 
 			// orderLabel
@@ -1223,7 +1245,7 @@
 			this.orderNumericUpDown.Location = new System.Drawing.Point(656, 47);
 			this.orderNumericUpDown.Name = "orderNumericUpDown";
 			this.orderNumericUpDown.Size = new System.Drawing.Size(132, 20);
-			this.orderNumericUpDown.TabIndex = 5;
+			this.orderNumericUpDown.TabIndex = 6;
 			this.orderNumericUpDown.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
 			this.orderNumericUpDown.ValueChanged += new System.EventHandler(this.orderNumericUpDown_ValueChanged);
 			// 
@@ -1817,6 +1839,57 @@
 			this.valuesDataGridView.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.keysDataGridView_CellValueChanged);
 			this.valuesDataGridView.CurrentCellDirtyStateChanged += new System.EventHandler(this.keysDataGridView_CurrentCellDirtyStateChanged);
 			// 
+			// valuesValueColumn
+			// 
+			this.valuesValueColumn.HeaderText = "Value";
+			this.valuesValueColumn.Name = "valuesValueColumn";
+			this.valuesValueColumn.ReadOnly = true;
+			this.valuesValueColumn.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+			// 
+			// valuesNameColumn
+			// 
+			this.valuesNameColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+			this.valuesNameColumn.HeaderText = "Name";
+			this.valuesNameColumn.Name = "valuesNameColumn";
+			this.valuesNameColumn.ReadOnly = true;
+			this.valuesNameColumn.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+			// 
+			// includeValueColumn
+			// 
+			this.includeValueColumn.HeaderText = "Include";
+			this.includeValueColumn.Name = "includeValueColumn";
+			// 
+			// selectValueColumn
+			// 
+			this.selectValueColumn.HeaderText = "Selected";
+			this.selectValueColumn.Name = "selectValueColumn";
+			// 
+			// disableValueColumn
+			// 
+			this.disableValueColumn.HeaderText = "Disabled";
+			this.disableValueColumn.Name = "disableValueColumn";
+			// 
+			// formatValueColumn
+			// 
+			this.formatValueColumn.HeaderText = "Format";
+			this.formatValueColumn.Name = "formatValueColumn";
+			this.formatValueColumn.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+			// 
+			// isTableSourceColumn
+			// 
+			this.isTableSourceColumn.HeaderText = "IsTableSource";
+			this.isTableSourceColumn.Name = "isTableSourceColumn";
+			this.isTableSourceColumn.ReadOnly = true;
+			this.isTableSourceColumn.ThreeState = true;
+			this.isTableSourceColumn.Visible = false;
+			// 
+			// sourceLabelColumn
+			// 
+			this.sourceLabelColumn.HeaderText = "Source";
+			this.sourceLabelColumn.Name = "sourceLabelColumn";
+			this.sourceLabelColumn.ReadOnly = true;
+			this.sourceLabelColumn.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+			// 
 			// monthLimitNumericUpDown
 			// 
 			this.monthLimitNumericUpDown.Enabled = false;
@@ -2288,56 +2361,12 @@
 			this.valuesTypeErrorProvider.ContainerControl = this;
 			this.valuesTypeErrorProvider.Icon = ((System.Drawing.Icon)(resources.GetObject("valuesTypeErrorProvider.Icon")));
 			// 
-			// valuesValueColumn
+			// aboutToolStripMenuItem
 			// 
-			this.valuesValueColumn.HeaderText = "Value";
-			this.valuesValueColumn.Name = "valuesValueColumn";
-			this.valuesValueColumn.ReadOnly = true;
-			this.valuesValueColumn.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-			// 
-			// valuesNameColumn
-			// 
-			this.valuesNameColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-			this.valuesNameColumn.HeaderText = "Name";
-			this.valuesNameColumn.Name = "valuesNameColumn";
-			this.valuesNameColumn.ReadOnly = true;
-			this.valuesNameColumn.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-			// 
-			// includeValueColumn
-			// 
-			this.includeValueColumn.HeaderText = "Include";
-			this.includeValueColumn.Name = "includeValueColumn";
-			// 
-			// selectValueColumn
-			// 
-			this.selectValueColumn.HeaderText = "Selected";
-			this.selectValueColumn.Name = "selectValueColumn";
-			// 
-			// disableValueColumn
-			// 
-			this.disableValueColumn.HeaderText = "Disabled";
-			this.disableValueColumn.Name = "disableValueColumn";
-			// 
-			// formatValueColumn
-			// 
-			this.formatValueColumn.HeaderText = "Format";
-			this.formatValueColumn.Name = "formatValueColumn";
-			this.formatValueColumn.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-			// 
-			// isTableSourceColumn
-			// 
-			this.isTableSourceColumn.HeaderText = "IsTableSource";
-			this.isTableSourceColumn.Name = "isTableSourceColumn";
-			this.isTableSourceColumn.ReadOnly = true;
-			this.isTableSourceColumn.ThreeState = true;
-			this.isTableSourceColumn.Visible = false;
-			// 
-			// sourceLabelColumn
-			// 
-			this.sourceLabelColumn.HeaderText = "Source";
-			this.sourceLabelColumn.Name = "sourceLabelColumn";
-			this.sourceLabelColumn.ReadOnly = true;
-			this.sourceLabelColumn.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+			this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
+			this.aboutToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+			this.aboutToolStripMenuItem.Text = "About";
+			this.aboutToolStripMenuItem.Click += new System.EventHandler(this.aboutToolStripMenuItem_Click);
 			// 
 			// PortalConfiguratorForm
 			// 
@@ -2593,6 +2622,9 @@
 		private System.Windows.Forms.DataGridViewTextBoxColumn formatValueColumn;
 		private System.Windows.Forms.DataGridViewCheckBoxColumn isTableSourceColumn;
 		private System.Windows.Forms.DataGridViewTextBoxColumn sourceLabelColumn;
+		private System.Windows.Forms.Label subtitleLabel;
+		private System.Windows.Forms.TextBox subtitleTextBox;
+		private System.Windows.Forms.ToolStripMenuItem aboutToolStripMenuItem;
 	}
 }
 

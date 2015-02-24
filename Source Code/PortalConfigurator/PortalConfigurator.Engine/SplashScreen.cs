@@ -1,4 +1,6 @@
-﻿using System.Windows.Forms;
+﻿using System;
+using System.Reflection;
+using System.Windows.Forms;
 
 namespace PortalConfigurator
 {
@@ -7,7 +9,12 @@ namespace PortalConfigurator
 		public SplashScreen()
 		{
 			InitializeComponent();
-			PreInitializeComponent();
+			this.SuspendLayout();
+			nameLabel.Text = Application.ProductName;
+			Version version = Assembly.GetExecutingAssembly().GetName().Version;
+			AssemblyCopyrightAttribute copyright = Assembly.GetExecutingAssembly().GetCustomAttribute(typeof(AssemblyCopyrightAttribute)) as AssemblyCopyrightAttribute;
+			copyrightLabel.Text = String.Format("Version {0}, {1} {2}", version, copyright.Copyright, Application.CompanyName);
+			this.ResumeLayout(false);
 		}
 
 		public new void Show(IWin32Window owner)
@@ -16,14 +23,6 @@ namespace PortalConfigurator
 			base.Show(owner);
 			Application.DoEvents();
 			Opacity = 1;
-		}
-
-		private void PreInitializeComponent()
-		{
-			this.SuspendLayout();
-//			this.ClientSize = new System.Drawing.Size(284, 261);
-//			this.ShowInTaskbar = false;
-			this.ResumeLayout(false);
 		}
 	}
 }

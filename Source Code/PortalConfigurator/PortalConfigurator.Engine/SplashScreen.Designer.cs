@@ -66,15 +66,14 @@
 			// 
 			this.copyrightLabel.AutoSize = true;
 			this.copyrightLabel.BackColor = System.Drawing.SystemColors.Window;
-			this.copyrightLabel.Location = new System.Drawing.Point(86, 56);
+			this.copyrightLabel.Location = new System.Drawing.Point(86, 60);
 			this.copyrightLabel.Name = "copyrightLabel";
-			this.copyrightLabel.Size = new System.Drawing.Size(196, 13);
+			this.copyrightLabel.Size = new System.Drawing.Size(285, 13);
 			this.copyrightLabel.TabIndex = 2;
-			this.copyrightLabel.Text = "Copyright 2014 Partners for Our Children";
+			this.copyrightLabel.Text = "Version 1.0.0.0, Copyright © 2014 Partners for Our Children";
 			// 
 			// SplashScreen
 			// 
-			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SplashScreen));
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.BackgroundImage = global::PortalConfigurator.Properties.Resources.Count_of_Placement_Prevention_Service_Cases;
@@ -88,7 +87,6 @@
 			this.MaximumSize = new System.Drawing.Size(625, 580);
 			this.MinimizeBox = false;
 			this.MinimumSize = new System.Drawing.Size(625, 580);
-			this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
 			this.Name = "SplashScreen";
 			this.ShowInTaskbar = false;
 			this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
