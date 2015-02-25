@@ -21,8 +21,14 @@
         }
         "Entry"
         {
+        "MsmKey" = "8:_108A102B7D6246DE8EE4A2BDCB872B5A"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_5F87FE4463AB8606ECB3E4CC3CEAA377"
-        "OwnerKey" = "8:_B3385F32C5ABE0889ED99CB46B3DC862"
+        "OwnerKey" = "8:_C472B71532A2D82F406F37EEC48E1854"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -33,7 +39,7 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_B3385F32C5ABE0889ED99CB46B3DC862"
+        "MsmKey" = "8:_C472B71532A2D82F406F37EEC48E1854"
         "OwnerKey" = "8:_027A3C6F6548467DA2B673EE58795075"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -46,13 +52,13 @@
         "Entry"
         {
         "MsmKey" = "8:_F70A04F016FEC67212D04D6D89C2127A"
-        "OwnerKey" = "8:_B3385F32C5ABE0889ED99CB46B3DC862"
+        "OwnerKey" = "8:_C472B71532A2D82F406F37EEC48E1854"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
         "MsmKey" = "8:_FDB49E6D291BBBA638B4F74C50ACC111"
-        "OwnerKey" = "8:_B3385F32C5ABE0889ED99CB46B3DC862"
+        "OwnerKey" = "8:_C472B71532A2D82F406F37EEC48E1854"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -70,13 +76,13 @@
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_027A3C6F6548467DA2B673EE58795075"
+        "OwnerKey" = "8:_C472B71532A2D82F406F37EEC48E1854"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_B3385F32C5ABE0889ED99CB46B3DC862"
+        "OwnerKey" = "8:_027A3C6F6548467DA2B673EE58795075"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -186,6 +192,26 @@
         }
         "File"
         {
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_108A102B7D6246DE8EE4A2BDCB872B5A"
+            {
+            "SourcePath" = "8:..\\PortalConfigurator.Engine\\Resources\\Globe.ico"
+            "TargetName" = "8:Globe.ico"
+            "Tag" = "8:"
+            "Folder" = "8:_4A020CA71AEB443BB2CDEA4A0386A702"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
             "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_5F87FE4463AB8606ECB3E4CC3CEAA377"
             {
             "AssemblyRegister" = "3:1"
@@ -217,14 +243,14 @@
             "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
-            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_B3385F32C5ABE0889ED99CB46B3DC862"
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_C472B71532A2D82F406F37EEC48E1854"
             {
             "AssemblyRegister" = "3:1"
             "AssemblyIsInGAC" = "11:FALSE"
             "AssemblyAsmDisplayName" = "8:Framework, Version=1.1.0.0, Culture=neutral, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
-                    "_B3385F32C5ABE0889ED99CB46B3DC862"
+                    "_C472B71532A2D82F406F37EEC48E1854"
                     {
                     "Name" = "8:Framework.dll"
                     "Attributes" = "3:512"
@@ -487,18 +513,18 @@
         }
         "Shortcut"
         {
-            "{970C0BB2-C7D0-45D7-ABFA-7EC378858BC0}:_F70B978EB4AC4C3B87F42ABC95F60064"
+            "{970C0BB2-C7D0-45D7-ABFA-7EC378858BC0}:_BA41503C50AD4A7A9D5E5C1BCD03AAF9"
             {
             "Name" = "8:Portal Configurator"
             "Arguments" = "8:"
             "Description" = "8:"
             "ShowCmd" = "3:1"
-            "IconIndex" = "3:32512"
+            "IconIndex" = "3:0"
             "Transitive" = "11:FALSE"
             "Target" = "8:_027A3C6F6548467DA2B673EE58795075"
             "Folder" = "8:_85684CB7D58F4AB8829FF5598B4BD78D"
             "WorkingFolder" = "8:_4A020CA71AEB443BB2CDEA4A0386A702"
-            "Icon" = "8:_027A3C6F6548467DA2B673EE58795075"
+            "Icon" = "8:_108A102B7D6246DE8EE4A2BDCB872B5A"
             "Feature" = "8:"
             }
         }
