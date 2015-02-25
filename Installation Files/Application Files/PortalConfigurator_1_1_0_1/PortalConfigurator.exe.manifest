@@ -1,12 +1,13 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <asmv1:assembly xsi:schemaLocation="urn:schemas-microsoft-com:asm.v1 assembly.adaptive.xsd" manifestVersion="1.0" xmlns:asmv1="urn:schemas-microsoft-com:asm.v1" xmlns="urn:schemas-microsoft-com:asm.v2" xmlns:asmv2="urn:schemas-microsoft-com:asm.v2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:co.v1="urn:schemas-microsoft-com:clickonce.v1" xmlns:asmv3="urn:schemas-microsoft-com:asm.v3" xmlns:dsig="http://www.w3.org/2000/09/xmldsig#" xmlns:co.v2="urn:schemas-microsoft-com:clickonce.v2">
   <asmv1:assemblyIdentity name="PortalConfigurator.exe" version="1.1.0.1" publicKeyToken="47ac15b02ef5658a" language="neutral" processorArchitecture="msil" type="win32" />
-  <description asmv2:iconFile="Resources\Globe.ico" xmlns="urn:schemas-microsoft-com:asm.v1" />
+  <description asmv2:iconFile="Resources\Globe.ico" asmv2:publisher="PortalConfigurator" asmv2:product="PortalConfigurator" xmlns="urn:schemas-microsoft-com:asm.v1" />
   <application />
   <entryPoint>
     <assemblyIdentity name="PortalConfigurator" version="1.1.0.0" language="neutral" processorArchitecture="msil" />
     <commandLine file="PortalConfigurator.exe" parameters="" />
   </entryPoint>
+  <co.v1:useManifestForTrust xmlns="urn:schemas-microsoft-com:asm.v1" />
   <trustInfo>
     <security>
       <applicationRequestMinimum>
@@ -48,14 +49,14 @@
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="Framework.dll" size="102912">
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="Framework.dll" size="111616">
       <assemblyIdentity name="Framework" version="1.1.0.0" language="neutral" processorArchitecture="msil" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>ZBE/Ie0OHm/F4y+5U6H8LOOPRKuUfoemOGjMV966p44=</dsig:DigestValue>
+        <dsig:DigestValue>VXf/Gn6kG9Udxww+JIpQvqd6O1S7VsnuA+4xzRmKH74=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
@@ -72,14 +73,14 @@
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="PortalConfigurator.exe" size="842688">
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="PortalConfigurator.exe" size="851392">
       <assemblyIdentity name="PortalConfigurator" version="1.1.0.0" language="neutral" processorArchitecture="msil" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>GtfwyZWPk+goHfrw7GLbpPHV6CarFxSpcqZvWGuvBu0=</dsig:DigestValue>
+        <dsig:DigestValue>OS5DN8hOt828AzBlcWEfC4P41c+NfQWH/Kvco50Npuw=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
@@ -131,4 +132,4 @@
       <dsig:DigestValue>BgM9lkxbS8YGqkxEMWGMvVhdkr86mwnXozw2EmdAsQY=</dsig:DigestValue>
     </hash>
   </file>
-<publisherIdentity name="CN=NEBULA2\schmitzr" issuerKeyHash="5404dc054b5558ccc40b3fd605b14e19d10dda72" /><Signature Id="StrongNameSignature" xmlns="http://www.w3.org/2000/09/xmldsig#"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#" /><SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha256" /><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" /><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#" /></Transforms><DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" /><DigestValue>Bwls2O1LbPIH3axeZBWonDtszRcHHllnThVgbaxT4oY=</DigestValue></Reference></SignedInfo><SignatureValue>Q3jz8LMvNgauNXMnofjep5vocj/CwH1qWiWuRTeps+ytCJ+DTAnkt6zdbx6SaW5xCxIDJWRxcBsXxfnlCTfNWeja03df9LXGNdEEDwDBQy+I+ETD9sOs/i4cLx68ifOHT/OFEXvcupLCT77KlFJBnOJpTXdot50fG3z3mT9ptgs=</SignatureValue><KeyInfo Id="StrongNameKeyInfo"><KeyValue><RSAKeyValue><Modulus>phsHRxgjvmAZ8JZDDP8mLmIC9gR1c2Fz0IYwZK7Pb1fwlUgQV8zXUE5IHGOmANA2DF2G0TrfkqL+vJ4TUn6Ai5NOloEAYwqsnDOCDM0R2QebSUfj2/Ky9l7nd/bLyrBG0IL08Zg2z+m6bXxO5h0sVkNyOGAXU2tyuqF8jqIOfJE=</Modulus><Exponent>AQAB</Exponent></RSAKeyValue></KeyValue><msrel:RelData xmlns:msrel="http://schemas.microsoft.com/windows/rel/2005/reldata"><r:license xmlns:r="urn:mpeg:mpeg21:2003:01-REL-R-NS" xmlns:as="http://schemas.microsoft.com/windows/pki/2005/Authenticode"><r:grant><as:ManifestInformation Hash="86e253ac6d60154e67591e0717cd6c3b9ca815645eacdd07f26c4bedd86c0907" Description="" Url=""><as:assemblyIdentity name="PortalConfigurator.exe" version="1.1.0.1" publicKeyToken="47ac15b02ef5658a" language="neutral" processorArchitecture="msil" type="win32" /></as:ManifestInformation><as:SignedBy /><as:AuthenticodePublisher><as:X509SubjectName>CN=NEBULA2\schmitzr</as:X509SubjectName></as:AuthenticodePublisher></r:grant><r:issuer><Signature Id="AuthenticodeSignature" xmlns="http://www.w3.org/2000/09/xmldsig#"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#" /><SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha256" /><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" /><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#" /></Transforms><DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" /><DigestValue>DEDSbRt3OKGwdy6+N5ToT6CTcIyFty0VGwCfImS7+1w=</DigestValue></Reference></SignedInfo><SignatureValue>SYSrumPePVhH/DJdegnOzA83rMLGE25IW+pxSXAeRGEXch2KKeNQ6eipEYn9jPQ2Hex02BmTi58pW8nYtgme6CJsUMVYQuBLgXVxLkAOox0NM331JH7WkZThDwQydUm23EdC0m1nR8AQJazQD8juERQ52yueram3FeQTwn+uPgI=</SignatureValue><KeyInfo><KeyValue><RSAKeyValue><Modulus>phsHRxgjvmAZ8JZDDP8mLmIC9gR1c2Fz0IYwZK7Pb1fwlUgQV8zXUE5IHGOmANA2DF2G0TrfkqL+vJ4TUn6Ai5NOloEAYwqsnDOCDM0R2QebSUfj2/Ky9l7nd/bLyrBG0IL08Zg2z+m6bXxO5h0sVkNyOGAXU2tyuqF8jqIOfJE=</Modulus><Exponent>AQAB</Exponent></RSAKeyValue></KeyValue><X509Data><X509Certificate>MIIB2TCCAUKgAwIBAgIQH+sckyP/jppKhBRyNVvEuDANBgkqhkiG9w0BAQsFADArMSkwJwYDVQQDHiAATgBFAEIAVQBMAEEAMgBcAHMAYwBoAG0AaQB0AHoAcjAeFw0xNTAyMjQyMzQ4MDFaFw0xNjAyMjUwNTQ4MDFaMCsxKTAnBgNVBAMeIABOAEUAQgBVAEwAQQAyAFwAcwBjAGgAbQBpAHQAegByMIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCmGwdHGCO+YBnwlkMM/yYuYgL2BHVzYXPQhjBkrs9vV/CVSBBXzNdQTkgcY6YA0DYMXYbROt+Sov68nhNSfoCLk06WgQBjCqycM4IMzRHZB5tJR+Pb8rL2Xud39svKsEbQgvTxmDbP6bptfE7mHSxWQ3I4YBdTa3K6oXyOog58kQIDAQABMA0GCSqGSIb3DQEBCwUAA4GBAH6n8bykCz2vEIUm9WEQ2Re3QmR2F6IlaASv/k8ZhL6B1aJB5nwey9cipyC6L6h3h48ErlJBc1zouW+zuXoprDs466LyOSGhdv1lREOtZD2DimDQr+pN26SbaHg6YBzQXIjFK+1DR/wEZ2wrNjqeShq9M0xomnJ0smoJjq5gFw9f</X509Certificate></X509Data></KeyInfo></Signature></r:issuer></r:license></msrel:RelData></KeyInfo></Signature></asmv1:assembly>
+<publisherIdentity name="CN=NEBULA2\schmitzr" issuerKeyHash="5404dc054b5558ccc40b3fd605b14e19d10dda72" /><Signature Id="StrongNameSignature" xmlns="http://www.w3.org/2000/09/xmldsig#"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#" /><SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha256" /><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" /><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#" /></Transforms><DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" /><DigestValue>dtbtPlcjraoLzzzHsCeSV1ndZVGGE2gBhbOoj6VFrZE=</DigestValue></Reference></SignedInfo><SignatureValue>WjD4VZM9hzKTkVmcFuJ2yJLU0eJI/JT4xlLHkZ4EDg2/eWRurrjn+YhWXAIVw6K+0ohL32IDFWFCpznTAK4Ol/m3Cr4mTsL60YqFlOFdQ9d7pqdIXfG2qFYY84EYd/AyLUSl9m8d1HRhWYyOkMZb0eqL16q6fiBaIQEU47zpDWo=</SignatureValue><KeyInfo Id="StrongNameKeyInfo"><KeyValue><RSAKeyValue><Modulus>phsHRxgjvmAZ8JZDDP8mLmIC9gR1c2Fz0IYwZK7Pb1fwlUgQV8zXUE5IHGOmANA2DF2G0TrfkqL+vJ4TUn6Ai5NOloEAYwqsnDOCDM0R2QebSUfj2/Ky9l7nd/bLyrBG0IL08Zg2z+m6bXxO5h0sVkNyOGAXU2tyuqF8jqIOfJE=</Modulus><Exponent>AQAB</Exponent></RSAKeyValue></KeyValue><msrel:RelData xmlns:msrel="http://schemas.microsoft.com/windows/rel/2005/reldata"><r:license xmlns:r="urn:mpeg:mpeg21:2003:01-REL-R-NS" xmlns:as="http://schemas.microsoft.com/windows/pki/2005/Authenticode"><r:grant><as:ManifestInformation Hash="91ad45a58fa8b385016813865165dd59579227b0c73ccf0baaad23573eedd676" Description="" Url=""><as:assemblyIdentity name="PortalConfigurator.exe" version="1.1.0.1" publicKeyToken="47ac15b02ef5658a" language="neutral" processorArchitecture="msil" type="win32" /></as:ManifestInformation><as:SignedBy /><as:AuthenticodePublisher><as:X509SubjectName>CN=NEBULA2\schmitzr</as:X509SubjectName></as:AuthenticodePublisher></r:grant><r:issuer><Signature Id="AuthenticodeSignature" xmlns="http://www.w3.org/2000/09/xmldsig#"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#" /><SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha256" /><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" /><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#" /></Transforms><DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" /><DigestValue>iFQwZ11DGj5tdNvKbxFr+if3eoYSRj2zLnc0dyN7HlE=</DigestValue></Reference></SignedInfo><SignatureValue>c6casjO1GAHEUNkTRtrYgOq1XB+MZlt3SgOrrDSVHeIv0BcjUrKTSRPXYfXiuiitjX7PaZebmgaPjXZCYFJYVJIv63Pa3vkPwH0HgvP8Zliky9XNB4/z8WubTZGoY8gDHQFxKwZP5kp4A3O2SRV7FH/+gbBGie92EtAhvVrwrGw=</SignatureValue><KeyInfo><KeyValue><RSAKeyValue><Modulus>phsHRxgjvmAZ8JZDDP8mLmIC9gR1c2Fz0IYwZK7Pb1fwlUgQV8zXUE5IHGOmANA2DF2G0TrfkqL+vJ4TUn6Ai5NOloEAYwqsnDOCDM0R2QebSUfj2/Ky9l7nd/bLyrBG0IL08Zg2z+m6bXxO5h0sVkNyOGAXU2tyuqF8jqIOfJE=</Modulus><Exponent>AQAB</Exponent></RSAKeyValue></KeyValue><X509Data><X509Certificate>MIIB2TCCAUKgAwIBAgIQH+sckyP/jppKhBRyNVvEuDANBgkqhkiG9w0BAQsFADArMSkwJwYDVQQDHiAATgBFAEIAVQBMAEEAMgBcAHMAYwBoAG0AaQB0AHoAcjAeFw0xNTAyMjQyMzQ4MDFaFw0xNjAyMjUwNTQ4MDFaMCsxKTAnBgNVBAMeIABOAEUAQgBVAEwAQQAyAFwAcwBjAGgAbQBpAHQAegByMIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCmGwdHGCO+YBnwlkMM/yYuYgL2BHVzYXPQhjBkrs9vV/CVSBBXzNdQTkgcY6YA0DYMXYbROt+Sov68nhNSfoCLk06WgQBjCqycM4IMzRHZB5tJR+Pb8rL2Xud39svKsEbQgvTxmDbP6bptfE7mHSxWQ3I4YBdTa3K6oXyOog58kQIDAQABMA0GCSqGSIb3DQEBCwUAA4GBAH6n8bykCz2vEIUm9WEQ2Re3QmR2F6IlaASv/k8ZhL6B1aJB5nwey9cipyC6L6h3h48ErlJBc1zouW+zuXoprDs466LyOSGhdv1lREOtZD2DimDQr+pN26SbaHg6YBzQXIjFK+1DR/wEZ2wrNjqeShq9M0xomnJ0smoJjq5gFw9f</X509Certificate></X509Data></KeyInfo></Signature></r:issuer></r:license></msrel:RelData></KeyInfo></Signature></asmv1:assembly>
