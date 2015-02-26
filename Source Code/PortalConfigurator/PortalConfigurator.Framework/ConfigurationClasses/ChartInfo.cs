@@ -58,7 +58,7 @@ namespace Framework
 			if (!BaseOptionSet.IsEmpty)
 				myJson.Add("baseOptions", BaseOptionSet.CompileJson());
 
-			if (ChartType != ChartType.NoChartType)
+			if (!Label.IsEmpty)
 				myJson.Add("labels", Label.CompileJson());
 
 			if (HideColumns.Count != 0)

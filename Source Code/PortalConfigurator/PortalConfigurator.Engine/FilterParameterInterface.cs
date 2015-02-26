@@ -50,8 +50,7 @@ namespace PortalConfigurator
 			sortTypeComboBox.Items.AddRange(Enums.GetFormattedSortTypeEnumNames());
 			resultUnavailableComboBox.Items.AddRange(Enums.GetFormattedResultUnavailableEnumNames());
 			quarterDateComboBox.Items.AddRange(Enums.GetFormattedQuarterDateEnumNames());
-			valuesTypeErrorProvider.SetIconAlignment(valuesTypeLabel, ErrorIconAlignment.MiddleRight);
-			valuesTypeErrorProvider.SetIconPadding(valuesTypeLabel, 2);
+			warningErrorProvider.SetError(valuesTypeLabel, String.Empty);
 			displayGroupBox.Enabled = false;
 		}
 
@@ -81,7 +80,7 @@ namespace PortalConfigurator
 				filterParametersListView.Items.Add(newFilterParameter.FilterParameterName);
 				filterParametersListView.SelectedIndices.Clear();
 				filterParametersListView.SelectedIndices.Add(filterParametersListView.Items.Count - 1);
-				valuesTypeErrorProvider.SetError(valuesTypeLabel, String.Empty);
+				warningErrorProvider.SetError(valuesTypeLabel, String.Empty);
 			}
 		}
 
@@ -219,7 +218,7 @@ namespace PortalConfigurator
 						zeroLastCheckBox.BackColor = default(Color);
 						visibleCheckBox.BackColor = default(Color);
 						valuesTypeButton.BackColor = default(Color);
-						valuesTypeErrorProvider.SetError(valuesTypeLabel, String.Empty);
+						warningErrorProvider.SetError(valuesTypeLabel, String.Empty);
 						SetKeysGridCellsBackgroundColor();
 						SetGridCellsBackgroundColor(StringDictionary.Help);
 						ScreenRefresh = false;
@@ -250,7 +249,7 @@ namespace PortalConfigurator
 				filterParametersListView.Items[SubjectIndex].BackColor = ChangedValueColor;
 				string message = Subject.GetPossibleValuesTypes().Contains(Subject.ValuesType) ? String.Empty :
 					"The current format is invalid.\nPlease select an allowed format.";
-				valuesTypeErrorProvider.SetError(valuesTypeLabel, message);
+				warningErrorProvider.SetError(valuesTypeLabel, message);
 			}
 		}
 
@@ -278,7 +277,7 @@ namespace PortalConfigurator
 			SubjectIndex = filterParametersListView.SelectedIndices[0];
 			filterParametersListView.EnsureVisible(SubjectIndex);
 			filterParametersListView.Items[SubjectIndex].BackColor = ChangedValueColor;
-			valuesTypeErrorProvider.SetError(valuesTypeLabel, String.Empty);
+			warningErrorProvider.SetError(valuesTypeLabel, String.Empty);
 			filterParameterNameTextBox.Focus();
 		}
 
@@ -297,14 +296,14 @@ namespace PortalConfigurator
 					filterParametersListView.SelectedIndices.Add(selectedIndex - 1);
 					SubjectIndex = filterParametersListView.SelectedIndices[0];
 					filterParametersListView.EnsureVisible(SubjectIndex);
-					valuesTypeErrorProvider.SetError(valuesTypeLabel, String.Empty);
+					warningErrorProvider.SetError(valuesTypeLabel, String.Empty);
 				}
 				else if (filterParametersListView.Items.Count - 1 >= selectedIndex)
 				{
 					filterParametersListView.SelectedIndices.Add(selectedIndex);
 					SubjectIndex = filterParametersListView.SelectedIndices[0];
 					filterParametersListView.EnsureVisible(SubjectIndex);
-					valuesTypeErrorProvider.SetError(valuesTypeLabel, String.Empty);
+					warningErrorProvider.SetError(valuesTypeLabel, String.Empty);
 				}
 				else
 					ResetFilterParameterInterface();
@@ -480,7 +479,7 @@ namespace PortalConfigurator
 			visibleCheckBox.BackColor = default(Color);
 			valuesTypeButton.Text = Enums.GetFormattedString(ValuesType.NoValues);
 			valuesTypeButton.BackColor = default(Color);
-			valuesTypeErrorProvider.SetError(valuesTypeLabel, String.Empty);
+			warningErrorProvider.SetError(valuesTypeLabel, String.Empty);
 			valuesDataGridView.Rows.Clear();
 			helpDataGridView.Rows.Clear();
 			displayGroupBox.Enabled = false;
@@ -1368,7 +1367,7 @@ namespace PortalConfigurator
 
 					string message = Subject.GetPossibleValuesTypes().Contains(Subject.ValuesType) ? String.Empty :
 						"The current format is invalid.\nPlease select an allowed format.";
-					valuesTypeErrorProvider.SetError(valuesTypeLabel, message);
+					warningErrorProvider.SetError(valuesTypeLabel, message);
 				}
 			}
 
@@ -1395,7 +1394,7 @@ namespace PortalConfigurator
 				int key = Subject.ValuesGridRows.Count;
 
 				if (Subject.Type == FilterParameterType.Values && key == 0)
-					valuesTypeErrorProvider.SetError(valuesTypeLabel, "Please ensure that the correct format for the JSON output is chosen.");
+					warningErrorProvider.SetError(valuesTypeLabel, "Please ensure that the correct format for the JSON output is chosen.");
 
 				while (Subject.ValuesGridRows.ContainsKey(key.ToString()))
 					key++;
@@ -1654,7 +1653,7 @@ namespace PortalConfigurator
 						string message = Subject.GetPossibleValuesTypes().Contains(Subject.ValuesType) ? String.Empty :
 							String.Format("A change to the values list caused the {0} format to become invalid.\nTo prevent an error, the format was changed to {1}.",
 							Enums.GetFormattedString(Subject.ValuesType), Enums.GetFormattedString(ValuesType.DictionaryStrings));
-						valuesTypeErrorProvider.SetError(valuesTypeLabel, message);
+						warningErrorProvider.SetError(valuesTypeLabel, message);
 						Subject.ValuesType = ValuesType.DictionaryStrings;
 						SetValuesTypeButtonText();
 					}

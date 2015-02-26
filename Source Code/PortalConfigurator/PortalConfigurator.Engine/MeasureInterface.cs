@@ -54,9 +54,14 @@ namespace PortalConfigurator
 			chartTypeComboBox.Items.AddRange(Enums.GetFormattedChartTypeEnumNames());
 			controlTypeColumn.DataSource = Enum.GetNames(typeof(ControlType));
 			functionComboBox.Items.AddRange(Enums.GetFormattedFunctionEnumNames());
-			dateColumnErrorProvider.SetIconAlignment(functionLabel, ErrorIconAlignment.MiddleRight);
-			dateColumnErrorProvider.SetIconPadding(functionLabel, 2);
 			yAxisFormatComboBox.Items.AddRange(Enums.GetFormattedAxisFormatEnumNames());
+			warningErrorProvider.SetError(chartTypeLabel, String.Empty);
+			warningErrorProvider.SetError(xAxisLabelLabel, String.Empty);
+			warningErrorProvider.SetError(yAxisLabelLabel, String.Empty);
+			warningErrorProvider.SetError(yAxisMinErrorLabel, String.Empty);
+			warningErrorProvider.SetError(yAxisMaxErrorLabel, String.Empty);
+			warningErrorProvider.SetError(yAxisFormatErrorLabel, String.Empty);
+			warningErrorProvider.SetError(functionLabel, String.Empty);
 
 			List<string> headerTypes = new List<string>();
 			
@@ -123,19 +128,14 @@ namespace PortalConfigurator
 			summaryTextBox.BackColor = default(Color);
 			xAxisLabelTextBox.Text = MyMeasurementFile.Label.XAxisLabel;
 			xAxisLabelTextBox.BackColor = default(Color);
-			xAxisLabelTextBox.Enabled = MyMeasurementFile.ChartType != ChartType.NoChartType;
 			yAxisLabelTextBox.Text = MyMeasurementFile.Label.YAxisLabel;
 			yAxisLabelTextBox.BackColor = default(Color);
-			yAxisLabelTextBox.Enabled = MyMeasurementFile.ChartType != ChartType.NoChartType;
 			yAxisMinNumericUpDown.Value = (decimal)(MyMeasurementFile.Label.YAxisMin ?? 0.0f);
 			yAxisMinNumericUpDown.BackColor = default(Color);
-			yAxisMinNumericUpDown.Enabled = MyMeasurementFile.ChartType != ChartType.NoChartType;
 			yAxisMaxNumericUpDown.Value = (decimal)(MyMeasurementFile.Label.YAxisMax ?? 0.0f);
 			yAxisMaxNumericUpDown.BackColor = default(Color);
-			yAxisMaxNumericUpDown.Enabled = MyMeasurementFile.ChartType != ChartType.NoChartType;
 			yAxisFormatComboBox.SelectedIndex = (int)MyMeasurementFile.Label.YAxisFormat;
 			yAxisFormatComboBox.BackColor = default(Color);
-			yAxisFormatComboBox.Enabled = MyMeasurementFile.ChartType != ChartType.NoChartType;
 			functionComboBox.SelectedIndex = (int)MyMeasurementFile.Transform.Function;
 			functionComboBox.BackColor = default(Color);
 			parametersCountLabel.Text = "0";
@@ -826,6 +826,20 @@ namespace PortalConfigurator
 			}
 		}
 
+		private void SetChartTypeWarning()
+		{
+			bool differentTypes = MyMeasurementFile.ChartType != ChartType.NoChartType;
+
+			if (differentTypes)
+			{
+				differentTypes = MyMeasurementFile.Charts.Any(p => p.ChartType != ChartType.NoChartType && p.ChartType != MyMeasurementFile.ChartType);
+				differentTypes = differentTypes || MyMeasurementFile.Multicharts.Charts.Any(p => p.Value.Any(ip => ip.ChartType != ChartType.NoChartType && ip.ChartType != MyMeasurementFile.ChartType));
+			}
+
+			string warningMessage = differentTypes ? "A different chart type has been set in one or more of the charts.\nThis setting may supercede the other settings." : String.Empty;
+			warningErrorProvider.SetError(chartTypeLabel, warningMessage);
+		}
+
 		private void chartTypeComboBox_SelectedIndexChanged(object sender, EventArgs e)
 		{
 			if ((int)MyMeasurementFile.ChartType != chartTypeComboBox.SelectedIndex)
@@ -833,6 +847,8 @@ namespace PortalConfigurator
 				MyMeasurementFile.ChartType = (ChartType)chartTypeComboBox.SelectedIndex;
 				chartTypeComboBox.BackColor = MyMeasurementFile.ChartType == OriginalMeasurementFile.ChartType ? default(Color) : ChangedValueColor;
 			}
+
+			SetChartTypeWarning();
 		}
 
 		private void showAllOthersCheckBox_CheckStateChanged(object sender, EventArgs e)
@@ -866,6 +882,20 @@ namespace PortalConfigurator
 			}
 		}
 
+		private void SetXAxisLabelWarning()
+		{
+			bool differentLabels = !String.IsNullOrEmpty(MyMeasurementFile.Label.XAxisLabel);
+
+			if (differentLabels)
+			{
+				differentLabels = MyMeasurementFile.Charts.Any(p => !String.IsNullOrEmpty(p.Label.XAxisLabel) && p.Label.XAxisLabel != MyMeasurementFile.Label.XAxisLabel);
+				differentLabels = differentLabels || MyMeasurementFile.Multicharts.Charts.Any(p => p.Value.Any(ip => !String.IsNullOrEmpty(ip.Label.XAxisLabel) && ip.Label.XAxisLabel != MyMeasurementFile.Label.XAxisLabel));
+			}
+
+			string warningMessage = differentLabels ? "A different X axis label has been set in one or more of the charts.\nThis setting may supercede the other settings." : String.Empty;
+			warningErrorProvider.SetError(xAxisLabelLabel, warningMessage);
+		}
+
 		private void xAxisLabelTextBox_TextChanged(object sender, EventArgs e)
 		{
 			if (MyMeasurementFile.Label.XAxisLabel != xAxisLabelTextBox.Text)
@@ -873,6 +903,22 @@ namespace PortalConfigurator
 				MyMeasurementFile.Label.XAxisLabel = xAxisLabelTextBox.Text;
 				xAxisLabelTextBox.BackColor = MyMeasurementFile.Label.XAxisLabel == OriginalMeasurementFile.Label.XAxisLabel ? default(Color) : ChangedValueColor;
 			}
+
+			SetXAxisLabelWarning();
+		}
+
+		private void SetYAxisLabelWarning()
+		{
+			bool differentLabels = !String.IsNullOrEmpty(MyMeasurementFile.Label.YAxisLabel);
+
+			if (differentLabels)
+			{
+				differentLabels = MyMeasurementFile.Charts.Any(p => !String.IsNullOrEmpty(p.Label.YAxisLabel) && p.Label.YAxisLabel != MyMeasurementFile.Label.YAxisLabel);
+				differentLabels = differentLabels || MyMeasurementFile.Multicharts.Charts.Any(p => p.Value.Any(ip => !String.IsNullOrEmpty(ip.Label.YAxisLabel) &&  ip.Label.YAxisLabel != MyMeasurementFile.Label.YAxisLabel));
+			}
+
+			string warningMessage = differentLabels ? "A different Y axis label has been set in one or more of the charts.\nThis setting may supercede the other settings." : String.Empty;
+			warningErrorProvider.SetError(yAxisLabelLabel, warningMessage);
 		}
 
 		private void yAxisLabelTextBox_TextChanged(object sender, EventArgs e)
@@ -882,6 +928,22 @@ namespace PortalConfigurator
 				MyMeasurementFile.Label.YAxisLabel = yAxisLabelTextBox.Text;
 				yAxisLabelTextBox.BackColor = MyMeasurementFile.Label.YAxisLabel == OriginalMeasurementFile.Label.YAxisLabel ? default(Color) : ChangedValueColor;
 			}
+
+			SetYAxisLabelWarning();
+		}
+
+		private void SetYAxisMinWarning()
+		{
+			bool differentMinimums = MyMeasurementFile.Label.YAxisMin != null;
+
+			if (differentMinimums)
+			{
+				differentMinimums = MyMeasurementFile.Charts.Any(p => p.Label.YAxisMin != null && p.Label.YAxisMin != MyMeasurementFile.Label.YAxisMin);
+				differentMinimums = differentMinimums || MyMeasurementFile.Multicharts.Charts.Any(p => p.Value.Any(ip => ip.Label.YAxisMin != null && ip.Label.YAxisMin != MyMeasurementFile.Label.YAxisMin));
+			}
+
+			string warningMessage = differentMinimums ? "A different Y axis minimum has been set in one or more of the charts.\nThis setting may supercede the other settings." : String.Empty;
+			warningErrorProvider.SetError(yAxisMinErrorLabel, warningMessage);
 		}
 
 		private void yAxisMinNumericUpDown_ValueChanged(object sender, EventArgs e)
@@ -895,6 +957,22 @@ namespace PortalConfigurator
 
 				yAxisMinNumericUpDown.BackColor = MyMeasurementFile.Label.YAxisMin == OriginalMeasurementFile.Label.YAxisMin ? default(Color) : ChangedValueColor;
 			}
+
+			SetYAxisMinWarning();
+		}
+
+		private void SetYAxisMaxWarning()
+		{
+			bool differentMaximums = MyMeasurementFile.Label.YAxisMax != null;
+
+			if (differentMaximums)
+			{
+				differentMaximums = MyMeasurementFile.Charts.Any(p => p.Label.YAxisMax != null && p.Label.YAxisMax != MyMeasurementFile.Label.YAxisMax);
+				differentMaximums = differentMaximums || MyMeasurementFile.Multicharts.Charts.Any(p => p.Value.Any(ip => ip.Label.YAxisMax != null && ip.Label.YAxisMax != MyMeasurementFile.Label.YAxisMax));
+			}
+
+			string warningMessage = differentMaximums ? "A different Y axis maximum has been set in one or more of the charts.\nThis setting may supercede the other settings." : String.Empty;
+			warningErrorProvider.SetError(yAxisMaxErrorLabel, warningMessage);
 		}
 
 		private void yAxisMaxNumericUpDown_ValueChanged(object sender, EventArgs e)
@@ -908,6 +986,22 @@ namespace PortalConfigurator
 
 				yAxisMaxNumericUpDown.BackColor = MyMeasurementFile.Label.YAxisMax == OriginalMeasurementFile.Label.YAxisMax ? default(Color) : ChangedValueColor;
 			}
+
+			SetYAxisMaxWarning();
+		}
+
+		private void SetYAxisFormatWarning()
+		{
+			bool differentFormats = MyMeasurementFile.Label.YAxisFormat != AxisFormat.NoFormat;
+
+			if (differentFormats)
+			{
+				differentFormats = MyMeasurementFile.Charts.Any(p => p.Label.YAxisFormat != MyMeasurementFile.Label.YAxisFormat);
+				differentFormats = differentFormats || MyMeasurementFile.Multicharts.Charts.Any(p => p.Value.Any(ip => ip.Label.YAxisFormat != MyMeasurementFile.Label.YAxisFormat));
+			}
+
+			string warningMessage = differentFormats ? "A different Y axis format has been set in one or more of the charts.\nThis setting may supercede the other settings." : String.Empty;
+			warningErrorProvider.SetError(yAxisFormatErrorLabel, warningMessage);
 		}
 
 		private void yAxisFormatComboBox_SelectedIndexChanged(object sender, EventArgs e)
@@ -964,7 +1058,7 @@ namespace PortalConfigurator
 			bool requiresDateColumn = MyMeasurementFile.Transform.RequiresDateRow;
 			bool isMissingDateColumn = MyMeasurementFile.MeasureGridRows.FindIndex(p => p.HeaderType == HeaderType.DateColumn) == -1;
 			string warningMessage = requiresDateColumn && isMissingDateColumn ? "A column must be supplied as the date header." : String.Empty;
-			dateColumnErrorProvider.SetError(functionLabel, warningMessage);
+			warningErrorProvider.SetError(functionLabel, warningMessage);
 		}
 
 		private void numberFormatsDataGridView_CurrentCellDirtyStateChanged(object sender, EventArgs e)
@@ -1146,6 +1240,16 @@ namespace PortalConfigurator
 			}
 		}
 
+		private void SetChartSettingPropagationWarnings()
+		{
+			SetChartTypeWarning();
+			SetXAxisLabelWarning();
+			SetYAxisLabelWarning();
+			SetYAxisMinWarning();
+			SetYAxisMaxWarning();
+			SetYAxisFormatWarning();
+		}
+
 		private void chartListRadioButton_CheckedChanged(object sender, EventArgs e)
 		{
 			EndGridCellEditMode();
@@ -1165,6 +1269,8 @@ namespace PortalConfigurator
 			}
 			else if (chartListRadioButton.Checked)
 				ChangeChartSetting();
+
+			SetChartSettingPropagationWarnings();
 		}
 
 		private void multichartsRadioButton_CheckedChanged(object sender, EventArgs e)
@@ -1184,6 +1290,8 @@ namespace PortalConfigurator
 			}
 			else if (multichartsRadioButton.Checked)
 				ChangeChartSetting();
+
+			SetChartSettingPropagationWarnings();
 		}
 
 		private bool ConfirmChangeChartSetting()
@@ -1303,6 +1411,8 @@ namespace PortalConfigurator
 					multichartsComboBox.SelectedIndex = selectedIndex == 0 ? selectedIndex : selectedIndex - 1;
 				}
 			}
+
+			SetChartSettingPropagationWarnings();
 		}
 
 		private void moveUpMultichartsButton_Click(object sender, EventArgs e)
@@ -1422,6 +1532,7 @@ namespace PortalConfigurator
 						MyMeasurementFile.Multicharts.Charts[subjectMultichart][e.RowIndex] = subjectChart;
 
 					UpdateChartsGridRow(multichartsIndex, e.RowIndex, subjectChart);
+					SetChartSettingPropagationWarnings();
 				}
 			}
 		}
@@ -1487,6 +1598,7 @@ namespace PortalConfigurator
 
 				chartList.RemoveAt(selectedIndex);
 				chartsDataGridView.Rows.RemoveAt(selectedIndex);
+				SetChartSettingPropagationWarnings();
 			}
 		}
 

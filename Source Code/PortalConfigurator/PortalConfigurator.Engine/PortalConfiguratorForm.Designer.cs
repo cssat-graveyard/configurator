@@ -35,6 +35,7 @@
 			this.reloadFromDatabaseToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.configTabControl = new System.Windows.Forms.TabControl();
 			this.measureTabPage = new System.Windows.Forms.TabPage();
 			this.subtitleLabel = new System.Windows.Forms.Label();
@@ -225,9 +226,10 @@
 			this.openFileDialog = new System.Windows.Forms.OpenFileDialog();
 			this.saveFileDialog = new System.Windows.Forms.SaveFileDialog();
 			this.colorDialog = new System.Windows.Forms.ColorDialog();
-			this.dateColumnErrorProvider = new System.Windows.Forms.ErrorProvider(this.components);
-			this.valuesTypeErrorProvider = new System.Windows.Forms.ErrorProvider(this.components);
-			this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.warningErrorProvider = new System.Windows.Forms.ErrorProvider(this.components);
+			this.yAxisMinErrorLabel = new System.Windows.Forms.Label();
+			this.yAxisMaxErrorLabel = new System.Windows.Forms.Label();
+			this.yAxisFormatErrorLabel = new System.Windows.Forms.Label();
 			this.menuStrip.SuspendLayout();
 			this.configTabControl.SuspendLayout();
 			this.measureTabPage.SuspendLayout();
@@ -255,8 +257,7 @@
 			((System.ComponentModel.ISupportInitialize)(this.commentsDataGridView)).BeginInit();
 			this.tableSettingsGroupBox.SuspendLayout();
 			this.typeGroupBox.SuspendLayout();
-			((System.ComponentModel.ISupportInitialize)(this.dateColumnErrorProvider)).BeginInit();
-			((System.ComponentModel.ISupportInitialize)(this.valuesTypeErrorProvider)).BeginInit();
+			((System.ComponentModel.ISupportInitialize)(this.warningErrorProvider)).BeginInit();
 			this.SuspendLayout();
 			// 
 			// menuStrip
@@ -301,6 +302,13 @@
 			this.helpToolStripMenuItem.Size = new System.Drawing.Size(44, 20);
 			this.helpToolStripMenuItem.Text = "Help";
 			// 
+			// aboutToolStripMenuItem
+			// 
+			this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
+			this.aboutToolStripMenuItem.Size = new System.Drawing.Size(107, 22);
+			this.aboutToolStripMenuItem.Text = "About";
+			this.aboutToolStripMenuItem.Click += new System.EventHandler(this.aboutToolStripMenuItem_Click);
+			// 
 			// configTabControl
 			// 
 			this.configTabControl.Controls.Add(this.measureTabPage);
@@ -315,6 +323,9 @@
 			// 
 			// measureTabPage
 			// 
+			this.measureTabPage.Controls.Add(this.yAxisFormatErrorLabel);
+			this.measureTabPage.Controls.Add(this.yAxisMaxErrorLabel);
+			this.measureTabPage.Controls.Add(this.yAxisMinErrorLabel);
 			this.measureTabPage.Controls.Add(this.subtitleLabel);
 			this.measureTabPage.Controls.Add(this.subtitleTextBox);
 			this.measureTabPage.Controls.Add(this.yAxisFormatLabel);
@@ -395,6 +406,8 @@
 			// functionLabel
 			// 
 			this.functionLabel.AutoSize = true;
+			this.warningErrorProvider.SetError(this.functionLabel, "Test");
+			this.warningErrorProvider.SetIconPadding(this.functionLabel, 2);
 			this.functionLabel.Location = new System.Drawing.Point(243, 304);
 			this.functionLabel.Name = "functionLabel";
 			this.functionLabel.Size = new System.Drawing.Size(98, 13);
@@ -404,6 +417,8 @@
 			// xAxisLabelLabel
 			// 
 			this.xAxisLabelLabel.AutoSize = true;
+			this.warningErrorProvider.SetError(this.xAxisLabelLabel, "Test");
+			this.warningErrorProvider.SetIconPadding(this.xAxisLabelLabel, 2);
 			this.xAxisLabelLabel.Location = new System.Drawing.Point(0, 224);
 			this.xAxisLabelLabel.Name = "xAxisLabelLabel";
 			this.xAxisLabelLabel.Size = new System.Drawing.Size(65, 13);
@@ -412,7 +427,6 @@
 			// 
 			// yAxisFormatComboBox
 			// 
-			this.yAxisFormatComboBox.Enabled = false;
 			this.yAxisFormatComboBox.FormattingEnabled = true;
 			this.yAxisFormatComboBox.Location = new System.Drawing.Point(89, 373);
 			this.yAxisFormatComboBox.Name = "yAxisFormatComboBox";
@@ -422,7 +436,6 @@
 			// 
 			// yAxisLabelTextBox
 			// 
-			this.yAxisLabelTextBox.Enabled = false;
 			this.yAxisLabelTextBox.Location = new System.Drawing.Point(3, 279);
 			this.yAxisLabelTextBox.Name = "yAxisLabelTextBox";
 			this.yAxisLabelTextBox.Size = new System.Drawing.Size(423, 20);
@@ -450,6 +463,8 @@
 			// yAxisLabelLabel
 			// 
 			this.yAxisLabelLabel.AutoSize = true;
+			this.warningErrorProvider.SetError(this.yAxisLabelLabel, "Test");
+			this.warningErrorProvider.SetIconPadding(this.yAxisLabelLabel, 2);
 			this.yAxisLabelLabel.Location = new System.Drawing.Point(0, 263);
 			this.yAxisLabelLabel.Name = "yAxisLabelLabel";
 			this.yAxisLabelLabel.Size = new System.Drawing.Size(65, 13);
@@ -469,7 +484,6 @@
 			// yAxisMaxNumericUpDown
 			// 
 			this.yAxisMaxNumericUpDown.DecimalPlaces = 1;
-			this.yAxisMaxNumericUpDown.Enabled = false;
 			this.yAxisMaxNumericUpDown.Increment = new decimal(new int[] {
             1000,
             0,
@@ -501,7 +515,6 @@
 			// yAxisMinNumericUpDown
 			// 
 			this.yAxisMinNumericUpDown.DecimalPlaces = 1;
-			this.yAxisMinNumericUpDown.Enabled = false;
 			this.yAxisMinNumericUpDown.Increment = new decimal(new int[] {
             1000,
             0,
@@ -776,7 +789,6 @@
 			// 
 			// xAxisLabelTextBox
 			// 
-			this.xAxisLabelTextBox.Enabled = false;
 			this.xAxisLabelTextBox.Location = new System.Drawing.Point(3, 240);
 			this.xAxisLabelTextBox.Name = "xAxisLabelTextBox";
 			this.xAxisLabelTextBox.Size = new System.Drawing.Size(423, 20);
@@ -1099,6 +1111,8 @@
 			// 
 			this.chartTypeLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
 			this.chartTypeLabel.AutoSize = true;
+			this.warningErrorProvider.SetError(this.chartTypeLabel, "Test");
+			this.warningErrorProvider.SetIconPadding(this.chartTypeLabel, 2);
 			this.chartTypeLabel.Location = new System.Drawing.Point(791, 71);
 			this.chartTypeLabel.Name = "chartTypeLabel";
 			this.chartTypeLabel.Size = new System.Drawing.Size(59, 13);
@@ -1630,6 +1644,8 @@
 			// valuesTypeLabel
 			// 
 			this.valuesTypeLabel.AutoSize = true;
+			this.warningErrorProvider.SetError(this.valuesTypeLabel, "Test");
+			this.warningErrorProvider.SetIconPadding(this.valuesTypeLabel, 2);
 			this.valuesTypeLabel.Location = new System.Drawing.Point(779, 57);
 			this.valuesTypeLabel.Name = "valuesTypeLabel";
 			this.valuesTypeLabel.Size = new System.Drawing.Size(66, 13);
@@ -2351,22 +2367,46 @@
 			this.colorDialog.AnyColor = true;
 			this.colorDialog.FullOpen = true;
 			// 
-			// dateColumnErrorProvider
+			// warningErrorProvider
 			// 
-			this.dateColumnErrorProvider.ContainerControl = this;
-			this.dateColumnErrorProvider.Icon = ((System.Drawing.Icon)(resources.GetObject("dateColumnErrorProvider.Icon")));
+			this.warningErrorProvider.ContainerControl = this;
+			this.warningErrorProvider.Icon = ((System.Drawing.Icon)(resources.GetObject("warningErrorProvider.Icon")));
 			// 
-			// valuesTypeErrorProvider
+			// yAxisMinErrorLabel
 			// 
-			this.valuesTypeErrorProvider.ContainerControl = this;
-			this.valuesTypeErrorProvider.Icon = ((System.Drawing.Icon)(resources.GetObject("valuesTypeErrorProvider.Icon")));
+			this.yAxisMinErrorLabel.AutoSize = true;
+			this.yAxisMinErrorLabel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+			this.warningErrorProvider.SetError(this.yAxisMinErrorLabel, "Test");
+			this.warningErrorProvider.SetIconPadding(this.yAxisMinErrorLabel, 2);
+			this.yAxisMinErrorLabel.Location = new System.Drawing.Point(3, 304);
+			this.yAxisMinErrorLabel.Name = "yAxisMinErrorLabel";
+			this.yAxisMinErrorLabel.Size = new System.Drawing.Size(2, 15);
+			this.yAxisMinErrorLabel.TabIndex = 41;
+			this.yAxisMinErrorLabel.Visible = false;
 			// 
-			// aboutToolStripMenuItem
+			// yAxisMaxErrorLabel
 			// 
-			this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
-			this.aboutToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-			this.aboutToolStripMenuItem.Text = "About";
-			this.aboutToolStripMenuItem.Click += new System.EventHandler(this.aboutToolStripMenuItem_Click);
+			this.yAxisMaxErrorLabel.AutoSize = true;
+			this.yAxisMaxErrorLabel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+			this.warningErrorProvider.SetError(this.yAxisMaxErrorLabel, "Test");
+			this.warningErrorProvider.SetIconPadding(this.yAxisMaxErrorLabel, 2);
+			this.yAxisMaxErrorLabel.Location = new System.Drawing.Point(29, 304);
+			this.yAxisMaxErrorLabel.Name = "yAxisMaxErrorLabel";
+			this.yAxisMaxErrorLabel.Size = new System.Drawing.Size(2, 15);
+			this.yAxisMaxErrorLabel.TabIndex = 42;
+			this.yAxisMaxErrorLabel.Visible = false;
+			// 
+			// yAxisFormatErrorLabel
+			// 
+			this.yAxisFormatErrorLabel.AutoSize = true;
+			this.yAxisFormatErrorLabel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+			this.warningErrorProvider.SetError(this.yAxisFormatErrorLabel, "Test");
+			this.warningErrorProvider.SetIconPadding(this.yAxisFormatErrorLabel, 2);
+			this.yAxisFormatErrorLabel.Location = new System.Drawing.Point(56, 304);
+			this.yAxisFormatErrorLabel.Name = "yAxisFormatErrorLabel";
+			this.yAxisFormatErrorLabel.Size = new System.Drawing.Size(2, 15);
+			this.yAxisFormatErrorLabel.TabIndex = 43;
+			this.yAxisFormatErrorLabel.Visible = false;
 			// 
 			// PortalConfiguratorForm
 			// 
@@ -2418,8 +2458,7 @@
 			this.tableSettingsGroupBox.PerformLayout();
 			this.typeGroupBox.ResumeLayout(false);
 			this.typeGroupBox.PerformLayout();
-			((System.ComponentModel.ISupportInitialize)(this.dateColumnErrorProvider)).EndInit();
-			((System.ComponentModel.ISupportInitialize)(this.valuesTypeErrorProvider)).EndInit();
+			((System.ComponentModel.ISupportInitialize)(this.warningErrorProvider)).EndInit();
 			this.ResumeLayout(false);
 			this.PerformLayout();
 
@@ -2594,7 +2633,7 @@
 		private System.Windows.Forms.Label parametersNeededLabel;
 		private System.Windows.Forms.Label parametersCoveredOfLabel;
 		private System.Windows.Forms.Label parametersCountLabel;
-		private System.Windows.Forms.ErrorProvider dateColumnErrorProvider;
+		private System.Windows.Forms.ErrorProvider warningErrorProvider;
 		private System.Windows.Forms.ComboBox filterParameterTableNameComboBox;
 		private System.Windows.Forms.ToolStripMenuItem reloadFromDatabaseToolStripMenuItem;
 		private System.Windows.Forms.DataGridViewComboBoxColumn controlParameterColumn;
@@ -2609,7 +2648,6 @@
 		private System.Windows.Forms.DataGridViewCheckBoxColumn isReturnRowControlColumn;
 		private System.Windows.Forms.DataGridViewCheckBoxColumn isValueFieldColumn;
 		private System.Windows.Forms.DataGridViewCheckBoxColumn isRemoveFieldColumn;
-		private System.Windows.Forms.ErrorProvider valuesTypeErrorProvider;
 		private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
 		private System.Windows.Forms.ToolStripLabel measureBreadcrumbLabel;
 		private System.Windows.Forms.ToolStripSeparator toolStripSeparator3;
@@ -2625,6 +2663,9 @@
 		private System.Windows.Forms.Label subtitleLabel;
 		private System.Windows.Forms.TextBox subtitleTextBox;
 		private System.Windows.Forms.ToolStripMenuItem aboutToolStripMenuItem;
+		private System.Windows.Forms.Label yAxisMinErrorLabel;
+		private System.Windows.Forms.Label yAxisFormatErrorLabel;
+		private System.Windows.Forms.Label yAxisMaxErrorLabel;
 	}
 }
 
