@@ -227,9 +227,6 @@
 			this.saveFileDialog = new System.Windows.Forms.SaveFileDialog();
 			this.colorDialog = new System.Windows.Forms.ColorDialog();
 			this.warningErrorProvider = new System.Windows.Forms.ErrorProvider(this.components);
-			this.yAxisMinErrorLabel = new System.Windows.Forms.Label();
-			this.yAxisMaxErrorLabel = new System.Windows.Forms.Label();
-			this.yAxisFormatErrorLabel = new System.Windows.Forms.Label();
 			this.menuStrip.SuspendLayout();
 			this.configTabControl.SuspendLayout();
 			this.measureTabPage.SuspendLayout();
@@ -323,9 +320,6 @@
 			// 
 			// measureTabPage
 			// 
-			this.measureTabPage.Controls.Add(this.yAxisFormatErrorLabel);
-			this.measureTabPage.Controls.Add(this.yAxisMaxErrorLabel);
-			this.measureTabPage.Controls.Add(this.yAxisMinErrorLabel);
 			this.measureTabPage.Controls.Add(this.subtitleLabel);
 			this.measureTabPage.Controls.Add(this.subtitleTextBox);
 			this.measureTabPage.Controls.Add(this.yAxisFormatLabel);
@@ -397,6 +391,7 @@
 			// yAxisFormatLabel
 			// 
 			this.yAxisFormatLabel.AutoSize = true;
+			this.warningErrorProvider.SetError(this.yAxisFormatLabel, "Test");
 			this.yAxisFormatLabel.Location = new System.Drawing.Point(0, 376);
 			this.yAxisFormatLabel.Name = "yAxisFormatLabel";
 			this.yAxisFormatLabel.Size = new System.Drawing.Size(71, 13);
@@ -407,7 +402,6 @@
 			// 
 			this.functionLabel.AutoSize = true;
 			this.warningErrorProvider.SetError(this.functionLabel, "Test");
-			this.warningErrorProvider.SetIconPadding(this.functionLabel, 2);
 			this.functionLabel.Location = new System.Drawing.Point(243, 304);
 			this.functionLabel.Name = "functionLabel";
 			this.functionLabel.Size = new System.Drawing.Size(98, 13);
@@ -418,7 +412,6 @@
 			// 
 			this.xAxisLabelLabel.AutoSize = true;
 			this.warningErrorProvider.SetError(this.xAxisLabelLabel, "Test");
-			this.warningErrorProvider.SetIconPadding(this.xAxisLabelLabel, 2);
 			this.xAxisLabelLabel.Location = new System.Drawing.Point(0, 224);
 			this.xAxisLabelLabel.Name = "xAxisLabelLabel";
 			this.xAxisLabelLabel.Size = new System.Drawing.Size(65, 13);
@@ -428,9 +421,9 @@
 			// yAxisFormatComboBox
 			// 
 			this.yAxisFormatComboBox.FormattingEnabled = true;
-			this.yAxisFormatComboBox.Location = new System.Drawing.Point(89, 373);
+			this.yAxisFormatComboBox.Location = new System.Drawing.Point(92, 373);
 			this.yAxisFormatComboBox.Name = "yAxisFormatComboBox";
-			this.yAxisFormatComboBox.Size = new System.Drawing.Size(151, 21);
+			this.yAxisFormatComboBox.Size = new System.Drawing.Size(148, 21);
 			this.yAxisFormatComboBox.TabIndex = 18;
 			this.yAxisFormatComboBox.SelectedIndexChanged += new System.EventHandler(this.yAxisFormatComboBox_SelectedIndexChanged);
 			// 
@@ -445,6 +438,7 @@
 			// yAxisMaxLabel
 			// 
 			this.yAxisMaxLabel.AutoSize = true;
+			this.warningErrorProvider.SetError(this.yAxisMaxLabel, "Test");
 			this.yAxisMaxLabel.Location = new System.Drawing.Point(0, 349);
 			this.yAxisMaxLabel.Name = "yAxisMaxLabel";
 			this.yAxisMaxLabel.Size = new System.Drawing.Size(83, 13);
@@ -464,7 +458,6 @@
 			// 
 			this.yAxisLabelLabel.AutoSize = true;
 			this.warningErrorProvider.SetError(this.yAxisLabelLabel, "Test");
-			this.warningErrorProvider.SetIconPadding(this.yAxisLabelLabel, 2);
 			this.yAxisLabelLabel.Location = new System.Drawing.Point(0, 263);
 			this.yAxisLabelLabel.Name = "yAxisLabelLabel";
 			this.yAxisLabelLabel.Size = new System.Drawing.Size(65, 13);
@@ -489,14 +482,14 @@
             0,
             0,
             0});
-			this.yAxisMaxNumericUpDown.Location = new System.Drawing.Point(89, 347);
+			this.yAxisMaxNumericUpDown.Location = new System.Drawing.Point(104, 347);
 			this.yAxisMaxNumericUpDown.Maximum = new decimal(new int[] {
             10000000,
             0,
             0,
             0});
 			this.yAxisMaxNumericUpDown.Name = "yAxisMaxNumericUpDown";
-			this.yAxisMaxNumericUpDown.Size = new System.Drawing.Size(151, 20);
+			this.yAxisMaxNumericUpDown.Size = new System.Drawing.Size(136, 20);
 			this.yAxisMaxNumericUpDown.TabIndex = 17;
 			this.yAxisMaxNumericUpDown.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
 			this.yAxisMaxNumericUpDown.ThousandsSeparator = true;
@@ -520,14 +513,14 @@
             0,
             0,
             0});
-			this.yAxisMinNumericUpDown.Location = new System.Drawing.Point(89, 321);
+			this.yAxisMinNumericUpDown.Location = new System.Drawing.Point(104, 321);
 			this.yAxisMinNumericUpDown.Maximum = new decimal(new int[] {
             10000000,
             0,
             0,
             0});
 			this.yAxisMinNumericUpDown.Name = "yAxisMinNumericUpDown";
-			this.yAxisMinNumericUpDown.Size = new System.Drawing.Size(151, 20);
+			this.yAxisMinNumericUpDown.Size = new System.Drawing.Size(136, 20);
 			this.yAxisMinNumericUpDown.TabIndex = 16;
 			this.yAxisMinNumericUpDown.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
 			this.yAxisMinNumericUpDown.ThousandsSeparator = true;
@@ -549,6 +542,7 @@
 			// yAxisMinLabel
 			// 
 			this.yAxisMinLabel.AutoSize = true;
+			this.warningErrorProvider.SetError(this.yAxisMinLabel, "Test");
 			this.yAxisMinLabel.Location = new System.Drawing.Point(0, 324);
 			this.yAxisMinLabel.Name = "yAxisMinLabel";
 			this.yAxisMinLabel.Size = new System.Drawing.Size(80, 13);
@@ -1112,7 +1106,6 @@
 			this.chartTypeLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
 			this.chartTypeLabel.AutoSize = true;
 			this.warningErrorProvider.SetError(this.chartTypeLabel, "Test");
-			this.warningErrorProvider.SetIconPadding(this.chartTypeLabel, 2);
 			this.chartTypeLabel.Location = new System.Drawing.Point(791, 71);
 			this.chartTypeLabel.Name = "chartTypeLabel";
 			this.chartTypeLabel.Size = new System.Drawing.Size(59, 13);
@@ -1645,7 +1638,6 @@
 			// 
 			this.valuesTypeLabel.AutoSize = true;
 			this.warningErrorProvider.SetError(this.valuesTypeLabel, "Test");
-			this.warningErrorProvider.SetIconPadding(this.valuesTypeLabel, 2);
 			this.valuesTypeLabel.Location = new System.Drawing.Point(779, 57);
 			this.valuesTypeLabel.Name = "valuesTypeLabel";
 			this.valuesTypeLabel.Size = new System.Drawing.Size(66, 13);
@@ -2372,42 +2364,6 @@
 			this.warningErrorProvider.ContainerControl = this;
 			this.warningErrorProvider.Icon = ((System.Drawing.Icon)(resources.GetObject("warningErrorProvider.Icon")));
 			// 
-			// yAxisMinErrorLabel
-			// 
-			this.yAxisMinErrorLabel.AutoSize = true;
-			this.yAxisMinErrorLabel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-			this.warningErrorProvider.SetError(this.yAxisMinErrorLabel, "Test");
-			this.warningErrorProvider.SetIconPadding(this.yAxisMinErrorLabel, 2);
-			this.yAxisMinErrorLabel.Location = new System.Drawing.Point(3, 304);
-			this.yAxisMinErrorLabel.Name = "yAxisMinErrorLabel";
-			this.yAxisMinErrorLabel.Size = new System.Drawing.Size(2, 15);
-			this.yAxisMinErrorLabel.TabIndex = 41;
-			this.yAxisMinErrorLabel.Visible = false;
-			// 
-			// yAxisMaxErrorLabel
-			// 
-			this.yAxisMaxErrorLabel.AutoSize = true;
-			this.yAxisMaxErrorLabel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-			this.warningErrorProvider.SetError(this.yAxisMaxErrorLabel, "Test");
-			this.warningErrorProvider.SetIconPadding(this.yAxisMaxErrorLabel, 2);
-			this.yAxisMaxErrorLabel.Location = new System.Drawing.Point(29, 304);
-			this.yAxisMaxErrorLabel.Name = "yAxisMaxErrorLabel";
-			this.yAxisMaxErrorLabel.Size = new System.Drawing.Size(2, 15);
-			this.yAxisMaxErrorLabel.TabIndex = 42;
-			this.yAxisMaxErrorLabel.Visible = false;
-			// 
-			// yAxisFormatErrorLabel
-			// 
-			this.yAxisFormatErrorLabel.AutoSize = true;
-			this.yAxisFormatErrorLabel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-			this.warningErrorProvider.SetError(this.yAxisFormatErrorLabel, "Test");
-			this.warningErrorProvider.SetIconPadding(this.yAxisFormatErrorLabel, 2);
-			this.yAxisFormatErrorLabel.Location = new System.Drawing.Point(56, 304);
-			this.yAxisFormatErrorLabel.Name = "yAxisFormatErrorLabel";
-			this.yAxisFormatErrorLabel.Size = new System.Drawing.Size(2, 15);
-			this.yAxisFormatErrorLabel.TabIndex = 43;
-			this.yAxisFormatErrorLabel.Visible = false;
-			// 
 			// PortalConfiguratorForm
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -2468,7 +2424,6 @@
 
 		private System.Windows.Forms.MenuStrip menuStrip;
 		private System.Windows.Forms.TabControl configTabControl;
-		private System.Windows.Forms.TabPage measureTabPage;
 		private System.Windows.Forms.TabPage filterParameterTabPage;
 		private System.Windows.Forms.OpenFileDialog openFileDialog;
 		private System.Windows.Forms.SaveFileDialog saveFileDialog;
@@ -2541,56 +2496,54 @@
 		private System.Windows.Forms.ToolStripMenuItem exitToolStripMenuItem;
 		private System.Windows.Forms.ListView filterParametersListView;
 		private System.Windows.Forms.ColumnHeader names;
-		private System.Windows.Forms.ToolStrip measureToolStrip;
-		private System.Windows.Forms.ToolStripButton newMeasureFileToolStripButton;
-		private System.Windows.Forms.ToolStripButton openMeasureFileToolStripButton;
-		private System.Windows.Forms.ToolStripButton saveMeasureFileToolStripButton;
-		private System.Windows.Forms.Label filterParameterFileButtonLabel;
-		private System.Windows.Forms.Button filterParameterFileButton;
-		private System.Windows.Forms.Label measureTableLabel;
-		private System.Windows.Forms.Label titleLabel;
-		private System.Windows.Forms.TextBox titleTextBox;
-		private System.Windows.Forms.Label baseLabel;
-		private System.Windows.Forms.Label summaryLabel;
-		private System.Windows.Forms.TextBox summaryTextBox;
-		private System.Windows.Forms.Label dropdownLabel;
-		private System.Windows.Forms.TextBox dropdownTextBox;
-		private System.Windows.Forms.Label orderLabel;
-		private System.Windows.Forms.NumericUpDown orderNumericUpDown;
-		private System.Windows.Forms.Label filterLabel;
-		private System.Windows.Forms.TextBox filterTextBox;
-		private System.Windows.Forms.CheckBox showAllOthersCheckBox;
-		private System.Windows.Forms.Label maxCheckedLabel;
-		private System.Windows.Forms.NumericUpDown maxCheckedNumericUpDown;
-		private System.Windows.Forms.CheckBox muteAllOthersCheckBox;
-		private System.Windows.Forms.Label chartTypeLabel;
-		private System.Windows.Forms.ComboBox chartTypeComboBox;
-		private System.Windows.Forms.Label functionLabel;
-		private System.Windows.Forms.ComboBox functionComboBox;
-		private System.Windows.Forms.GroupBox measureGroupBox;
-		private System.Windows.Forms.DataGridView measureDataGridView;
-		private System.Windows.Forms.Button deleteMeasureGridRowButton;
-		private System.Windows.Forms.Button moveDownMeasureGridRowButton;
-		private System.Windows.Forms.Button addMeasureGridRowButton;
-		private System.Windows.Forms.Button moveUpMeasureGridRowButton;
-		private System.Windows.Forms.Label xAxisLabelLabel;
-		private System.Windows.Forms.TextBox xAxisLabelTextBox;
-		private System.Windows.Forms.Label yAxisLabelLabel;
-		private System.Windows.Forms.TextBox yAxisLabelTextBox;
-		private System.Windows.Forms.NumericUpDown yAxisMinNumericUpDown;
-		private System.Windows.Forms.ComboBox yAxisFormatComboBox;
-		private System.Windows.Forms.Label yAxisMaxLabel;
-		private System.Windows.Forms.NumericUpDown yAxisMaxNumericUpDown;
-		private System.Windows.Forms.Label yAxisMinLabel;
-		private System.Windows.Forms.Label yAxisFormatLabel;
-		private System.Windows.Forms.GroupBox numberFormatGroupBox;
-		private System.Windows.Forms.DataGridView numberFormatsDataGridView;
-		private System.Windows.Forms.Button deleteNumberFormatButton;
-		private System.Windows.Forms.Button moveDownNumberFormatButton;
-		private System.Windows.Forms.Button addNumberFormatButton;
-		private System.Windows.Forms.Button moveUpNumberFormatButton;
 		private System.Windows.Forms.ColorDialog colorDialog;
+		private System.Windows.Forms.Button valuesTypeButton;
+		private System.Windows.Forms.Label valuesTypeLabel;
+		private System.Windows.Forms.DataGridViewTextBoxColumn helpName;
+		private System.Windows.Forms.DataGridViewTextBoxColumn helpContent;
+		private System.Windows.Forms.DataGridViewTextBoxColumn commentName;
+		private System.Windows.Forms.DataGridViewTextBoxColumn commentContent;
+		private System.Windows.Forms.CheckBox monthLimitCheckBox;
+		private System.Windows.Forms.ErrorProvider warningErrorProvider;
+		private System.Windows.Forms.ComboBox filterParameterTableNameComboBox;
+		private System.Windows.Forms.ToolStripMenuItem reloadFromDatabaseToolStripMenuItem;
+		private System.Windows.Forms.ToolStripSeparator toolStripSeparator3;
+		private System.Windows.Forms.ToolStripLabel filterParameterBreadcrumbLabel;
+		private System.Windows.Forms.DataGridViewTextBoxColumn valuesValueColumn;
+		private System.Windows.Forms.DataGridViewTextBoxColumn valuesNameColumn;
+		private System.Windows.Forms.DataGridViewCheckBoxColumn includeValueColumn;
+		private System.Windows.Forms.DataGridViewCheckBoxColumn selectValueColumn;
+		private System.Windows.Forms.DataGridViewCheckBoxColumn disableValueColumn;
+		private System.Windows.Forms.DataGridViewTextBoxColumn formatValueColumn;
+		private System.Windows.Forms.DataGridViewCheckBoxColumn isTableSourceColumn;
+		private System.Windows.Forms.DataGridViewTextBoxColumn sourceLabelColumn;
+		private System.Windows.Forms.ToolStripMenuItem aboutToolStripMenuItem;
+		private System.Windows.Forms.TabPage measureTabPage;
+		private System.Windows.Forms.Label subtitleLabel;
+		private System.Windows.Forms.TextBox subtitleTextBox;
+		private System.Windows.Forms.Label yAxisFormatLabel;
+		private System.Windows.Forms.Label functionLabel;
+		private System.Windows.Forms.Label xAxisLabelLabel;
+		private System.Windows.Forms.ComboBox yAxisFormatComboBox;
+		private System.Windows.Forms.TextBox yAxisLabelTextBox;
+		private System.Windows.Forms.Label yAxisMaxLabel;
+		private System.Windows.Forms.ComboBox tableComboBox;
+		private System.Windows.Forms.Label yAxisLabelLabel;
+		private System.Windows.Forms.Label hideRowLabel;
+		private System.Windows.Forms.NumericUpDown yAxisMaxNumericUpDown;
+		private System.Windows.Forms.ComboBox hideRowComboBox;
+		private System.Windows.Forms.NumericUpDown yAxisMinNumericUpDown;
+		private System.Windows.Forms.Button baseButton;
+		private System.Windows.Forms.Label yAxisMinLabel;
 		private System.Windows.Forms.GroupBox chartsGroupBox;
+		private System.Windows.Forms.Button changeMultichartNameButton;
+		private System.Windows.Forms.DataGridView chartsDataGridView;
+		private System.Windows.Forms.DataGridViewTextBoxColumn chartIdColumn;
+		private System.Windows.Forms.DataGridViewTextBoxColumn chartTypeColumn;
+		private System.Windows.Forms.DataGridViewTextBoxColumn maxSetsColumn;
+		private System.Windows.Forms.DataGridViewTextBoxColumn widthColumn;
+		private System.Windows.Forms.DataGridViewTextBoxColumn heightColumn;
+		private System.Windows.Forms.DataGridViewButtonColumn additionalOptionsColumn;
 		private System.Windows.Forms.Button deleteMultichartsButton;
 		private System.Windows.Forms.Button moveDownMultichartsButton;
 		private System.Windows.Forms.Button addMultichartsButton;
@@ -2602,24 +2555,11 @@
 		private System.Windows.Forms.ComboBox multichartsComboBox;
 		private System.Windows.Forms.RadioButton multichartsRadioButton;
 		private System.Windows.Forms.RadioButton chartListRadioButton;
-		private System.Windows.Forms.DataGridView chartsDataGridView;
-		private System.Windows.Forms.Button baseButton;
-		private System.Windows.Forms.Button valuesTypeButton;
-		private System.Windows.Forms.Label valuesTypeLabel;
-		private System.Windows.Forms.DataGridViewTextBoxColumn chartIdColumn;
-		private System.Windows.Forms.DataGridViewTextBoxColumn chartTypeColumn;
-		private System.Windows.Forms.DataGridViewTextBoxColumn maxSetsColumn;
-		private System.Windows.Forms.DataGridViewTextBoxColumn widthColumn;
-		private System.Windows.Forms.DataGridViewTextBoxColumn heightColumn;
-		private System.Windows.Forms.DataGridViewButtonColumn additionalOptionsColumn;
-		private System.Windows.Forms.DataGridViewTextBoxColumn helpName;
-		private System.Windows.Forms.DataGridViewTextBoxColumn helpContent;
-		private System.Windows.Forms.DataGridViewTextBoxColumn commentName;
-		private System.Windows.Forms.DataGridViewTextBoxColumn commentContent;
-		private System.Windows.Forms.CheckBox monthLimitCheckBox;
-		private System.Windows.Forms.Button changeMultichartNameButton;
-		private System.Windows.Forms.Label hideRowLabel;
-		private System.Windows.Forms.ComboBox hideRowComboBox;
+		private System.Windows.Forms.TextBox xAxisLabelTextBox;
+		private System.Windows.Forms.GroupBox numberFormatGroupBox;
+		private System.Windows.Forms.Button deleteNumberFormatButton;
+		private System.Windows.Forms.Button moveDownNumberFormatButton;
+		private System.Windows.Forms.DataGridView numberFormatsDataGridView;
 		private System.Windows.Forms.DataGridViewTextBoxColumn prefixColumn;
 		private System.Windows.Forms.DataGridViewTextBoxColumn groupingColumn;
 		private System.Windows.Forms.DataGridViewTextBoxColumn patternColumn;
@@ -2628,14 +2568,14 @@
 		private System.Windows.Forms.DataGridViewTextBoxColumn suffixColumn;
 		private System.Windows.Forms.DataGridViewCheckBoxColumn negativeParensColumn;
 		private System.Windows.Forms.DataGridViewButtonColumn negativeColorButtonColumn;
-		private System.Windows.Forms.ComboBox tableComboBox;
-		private System.Windows.Forms.GroupBox parametersCoveredGroupBox;
-		private System.Windows.Forms.Label parametersNeededLabel;
-		private System.Windows.Forms.Label parametersCoveredOfLabel;
-		private System.Windows.Forms.Label parametersCountLabel;
-		private System.Windows.Forms.ErrorProvider warningErrorProvider;
-		private System.Windows.Forms.ComboBox filterParameterTableNameComboBox;
-		private System.Windows.Forms.ToolStripMenuItem reloadFromDatabaseToolStripMenuItem;
+		private System.Windows.Forms.Button addNumberFormatButton;
+		private System.Windows.Forms.Button moveUpNumberFormatButton;
+		private System.Windows.Forms.GroupBox measureGroupBox;
+		private System.Windows.Forms.Button deleteMeasureGridRowButton;
+		private System.Windows.Forms.Button moveDownMeasureGridRowButton;
+		private System.Windows.Forms.Button addMeasureGridRowButton;
+		private System.Windows.Forms.Button moveUpMeasureGridRowButton;
+		private System.Windows.Forms.DataGridView measureDataGridView;
 		private System.Windows.Forms.DataGridViewComboBoxColumn controlParameterColumn;
 		private System.Windows.Forms.DataGridViewComboBoxColumn controlTypeColumn;
 		private System.Windows.Forms.DataGridViewCheckBoxColumn isDateColumn;
@@ -2648,24 +2588,37 @@
 		private System.Windows.Forms.DataGridViewCheckBoxColumn isReturnRowControlColumn;
 		private System.Windows.Forms.DataGridViewCheckBoxColumn isValueFieldColumn;
 		private System.Windows.Forms.DataGridViewCheckBoxColumn isRemoveFieldColumn;
+		private System.Windows.Forms.Label chartTypeLabel;
+		private System.Windows.Forms.ComboBox chartTypeComboBox;
+		private System.Windows.Forms.CheckBox muteAllOthersCheckBox;
+		private System.Windows.Forms.Label maxCheckedLabel;
+		private System.Windows.Forms.NumericUpDown maxCheckedNumericUpDown;
+		private System.Windows.Forms.CheckBox showAllOthersCheckBox;
+		private System.Windows.Forms.Label filterLabel;
+		private System.Windows.Forms.TextBox filterTextBox;
+		private System.Windows.Forms.Label baseLabel;
+		private System.Windows.Forms.Label summaryLabel;
+		private System.Windows.Forms.TextBox summaryTextBox;
+		private System.Windows.Forms.Label dropdownLabel;
+		private System.Windows.Forms.TextBox dropdownTextBox;
+		private System.Windows.Forms.Label orderLabel;
+		private System.Windows.Forms.NumericUpDown orderNumericUpDown;
+		private System.Windows.Forms.Label measureTableLabel;
+		private System.Windows.Forms.Label titleLabel;
+		private System.Windows.Forms.TextBox titleTextBox;
+		private System.Windows.Forms.Label filterParameterFileButtonLabel;
+		private System.Windows.Forms.Button filterParameterFileButton;
+		private System.Windows.Forms.ToolStrip measureToolStrip;
+		private System.Windows.Forms.ToolStripButton newMeasureFileToolStripButton;
+		private System.Windows.Forms.ToolStripButton openMeasureFileToolStripButton;
+		private System.Windows.Forms.ToolStripButton saveMeasureFileToolStripButton;
 		private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
 		private System.Windows.Forms.ToolStripLabel measureBreadcrumbLabel;
-		private System.Windows.Forms.ToolStripSeparator toolStripSeparator3;
-		private System.Windows.Forms.ToolStripLabel filterParameterBreadcrumbLabel;
-		private System.Windows.Forms.DataGridViewTextBoxColumn valuesValueColumn;
-		private System.Windows.Forms.DataGridViewTextBoxColumn valuesNameColumn;
-		private System.Windows.Forms.DataGridViewCheckBoxColumn includeValueColumn;
-		private System.Windows.Forms.DataGridViewCheckBoxColumn selectValueColumn;
-		private System.Windows.Forms.DataGridViewCheckBoxColumn disableValueColumn;
-		private System.Windows.Forms.DataGridViewTextBoxColumn formatValueColumn;
-		private System.Windows.Forms.DataGridViewCheckBoxColumn isTableSourceColumn;
-		private System.Windows.Forms.DataGridViewTextBoxColumn sourceLabelColumn;
-		private System.Windows.Forms.Label subtitleLabel;
-		private System.Windows.Forms.TextBox subtitleTextBox;
-		private System.Windows.Forms.ToolStripMenuItem aboutToolStripMenuItem;
-		private System.Windows.Forms.Label yAxisMinErrorLabel;
-		private System.Windows.Forms.Label yAxisFormatErrorLabel;
-		private System.Windows.Forms.Label yAxisMaxErrorLabel;
+		private System.Windows.Forms.ComboBox functionComboBox;
+		private System.Windows.Forms.GroupBox parametersCoveredGroupBox;
+		private System.Windows.Forms.Label parametersNeededLabel;
+		private System.Windows.Forms.Label parametersCoveredOfLabel;
+		private System.Windows.Forms.Label parametersCountLabel;
 	}
 }
 

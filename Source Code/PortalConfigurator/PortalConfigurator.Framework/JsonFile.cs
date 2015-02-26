@@ -66,6 +66,8 @@ namespace Framework
 		public virtual void WriteFile()
 		{
 			File.WriteAllText(FilePath, MyJson.ToString());
+			FileInfo file = new FileInfo(FilePath);
+			FileDate = file.LastWriteTime;
 		}
 	}
 }

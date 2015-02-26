@@ -513,10 +513,10 @@ namespace Framework
 				myJson.Add("columnClusterSize", ColumnClusterSize);
 
 			if (ChartType != ChartType.NoChartType)
-			{
 				myJson.Add("chartType", Enums.GetString(ChartType));
+
+			if (!Label.IsEmpty)
 				myJson.Add("labels", Label.CompileJson());
-			}
 
 			if (NumberFormats.Count == 1)
 				myJson.Add("numberFormat", NumberFormats[0].CompileJson());

@@ -11,6 +11,7 @@ namespace PortalConfigurator
 	{
 		public ChartInfo Subject { get; private set; }
 		private ChartInfo Original { get; set; }
+		private MeasurementFile Measure { get; set; }
 		private Color ChangedValueColor { get; set; }
 		private List<string> ValueColumns { get; set; }
 		private List<string> ChartIds { get; set; }
@@ -18,16 +19,17 @@ namespace PortalConfigurator
 		private string InitialChartId { get; set; }
 
 		public ChartDialog()
-			:this(new ChartInfo(), new ChartInfo(), Color.LemonChiffon, new List<string>(), new List<string>())
+			:this(new ChartInfo(), new ChartInfo(), new MeasurementFile(), Color.LemonChiffon, new List<string>())
 		{ }
 
-		public ChartDialog(ChartInfo subject, ChartInfo original, Color changedValueColor, List<string> valueColumns, List<string> chartIds)
+		public ChartDialog(ChartInfo subject, ChartInfo original, MeasurementFile measure, Color changedValueColor, List<string> chartIds)
 		{
 			InitializeComponent();
 			this.Subject = subject;
 			this.Original = original;
+			this.Measure = measure;
 			this.ChangedValueColor = changedValueColor;
-			this.ValueColumns = valueColumns;
+			this.ValueColumns = measure.Transform.ValueFields;
 			this.ChartIds = chartIds;
 			this.Loaded = false;
 			this.InitialChartId = subject.ChartId;
@@ -91,9 +93,13 @@ namespace PortalConfigurator
 			else
 				areaHeightNumericUpDown.Value = 0;
 
-			chartIdErrorProvider.SetIconAlignment(chartIdLabel, ErrorIconAlignment.MiddleRight);
-			chartIdErrorProvider.SetIconPadding(chartIdLabel, 2);
-
+			chartIdErrorProvider.SetError(chartIdLabel, String.Empty);
+			warningProvider.SetError(chartTypeLabel, String.Empty);
+			warningProvider.SetError(xAxisLabelLabel, String.Empty);
+			warningProvider.SetError(yAxisLabelLabel, String.Empty);
+			warningProvider.SetError(yAxisMinLabel, String.Empty);
+			warningProvider.SetError(yAxisMaxLabel, String.Empty);
+			warningProvider.SetError(yAxisFormatLabel, String.Empty);
 			Loaded = true;
 		}
 
@@ -117,6 +123,8 @@ namespace PortalConfigurator
 				Subject.ChartType = (ChartType)chartTypeComboBox.SelectedIndex;
 
 			chartTypeComboBox.BackColor = Subject.ChartType == Original.ChartType ? default(Color) : ChangedValueColor;
+			bool differentTypes = ChartWarning.IsDifferent(Subject.ChartType, Measure.ChartType);
+			warningProvider.SetError(chartTypeLabel, ChartWarning.GetWarning(ChartLocation.Local, "chart type", Subject.ChartType, true, differentTypes));
 		}
 
 		private void maxSetsNumericUpDown_ValueChanged(object sender, EventArgs e)
@@ -193,6 +201,8 @@ namespace PortalConfigurator
 				Subject.Label.XAxisLabel = xAxisLabelTextBox.Text;
 
 			xAxisLabelTextBox.BackColor = Subject.Label.XAxisLabel == Original.Label.XAxisLabel ? default(Color) : ChangedValueColor;
+			bool differentLabel = ChartWarning.IsDifferent(Subject.Label.XAxisLabel, Measure.Label.XAxisLabel);
+			warningProvider.SetError(xAxisLabelLabel, ChartWarning.GetWarning(ChartLocation.Local, "X axis label", Subject.ChartType, true, differentLabel));
 		}
 
 		private void yAxisLabelTextBox_TextChanged(object sender, EventArgs e)
@@ -201,6 +211,8 @@ namespace PortalConfigurator
 				Subject.Label.YAxisLabel = yAxisLabelTextBox.Text;
 	
 			yAxisLabelTextBox.BackColor = Subject.Label.YAxisLabel == Original.Label.YAxisLabel ? default(Color) : ChangedValueColor;
+			bool differentLabel = ChartWarning.IsDifferent(Subject.Label.YAxisLabel, Measure.Label.YAxisLabel);
+			warningProvider.SetError(yAxisLabelLabel, ChartWarning.GetWarning(ChartLocation.Local, "Y axis label", Subject.ChartType, true, differentLabel));
 		}
 
 		private void yAxisMinNumericUpDown_ValueChanged(object sender, EventArgs e)
@@ -211,6 +223,8 @@ namespace PortalConfigurator
 				Subject.Label.YAxisMin = value;
 
 			yAxisMinNumericUpDown.BackColor = Subject.Label.YAxisMin == Original.Label.YAxisMin ? default(Color) : ChangedValueColor;
+			bool differentMinimum = ChartWarning.IsDifferent(Subject.Label.YAxisMin, Measure.Label.YAxisMin);
+			warningProvider.SetError(yAxisMinLabel, ChartWarning.GetWarning(ChartLocation.Local, "Y axis minimum", Subject.ChartType, true, differentMinimum));
 		}
 
 		private void yAxisMaxNumericUpDown_ValueChanged(object sender, EventArgs e)
@@ -221,6 +235,8 @@ namespace PortalConfigurator
 				Subject.Label.YAxisMax = value;
 
 			yAxisMaxNumericUpDown.BackColor = Subject.Label.YAxisMax == Original.Label.YAxisMax ? default(Color) : ChangedValueColor;
+			bool differentMaximum = ChartWarning.IsDifferent(Subject.Label.YAxisMax, Measure.Label.YAxisMax);
+			warningProvider.SetError(yAxisMaxLabel, ChartWarning.GetWarning(ChartLocation.Local, "Y axis maximum", Subject.ChartType, true, differentMaximum));
 		}
 
 		private void yAxisFormatComboBox_SelectedIndexChanged(object sender, EventArgs e)
@@ -229,6 +245,8 @@ namespace PortalConfigurator
 				Subject.Label.YAxisFormat = (AxisFormat)yAxisFormatComboBox.SelectedIndex;
 
 			yAxisFormatComboBox.BackColor = Subject.Label.YAxisFormat == Original.Label.YAxisFormat ? default(Color) : ChangedValueColor;
+			bool differentFormat = ChartWarning.IsDifferent(Subject.Label.YAxisFormat, Measure.Label.YAxisFormat);
+			warningProvider.SetError(yAxisFormatLabel, ChartWarning.GetWarning(ChartLocation.Local, "Y axis format", Subject.ChartType, true, differentFormat));
 		}
 
 		private void leftNumericUpDown_ValueChanged(object sender, EventArgs e)

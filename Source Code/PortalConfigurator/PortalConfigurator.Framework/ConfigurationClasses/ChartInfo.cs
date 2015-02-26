@@ -58,8 +58,7 @@ namespace Framework
 			if (!BaseOptionSet.IsEmpty)
 				myJson.Add("baseOptions", BaseOptionSet.CompileJson());
 
-			if (!Label.IsEmpty)
-				myJson.Add("labels", Label.CompileJson());
+			myJson.Add("labels", Label.CompileJson());
 
 			if (HideColumns.Count != 0)
 				myJson.Add("hideColumns", new JArray(HideColumns));

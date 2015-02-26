@@ -29,6 +29,7 @@
 		private void InitializeComponent()
 		{
 			this.components = new System.ComponentModel.Container();
+			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ChartDialog));
 			this.labelGroupBox = new System.Windows.Forms.GroupBox();
 			this.yAxisFormatLabel = new System.Windows.Forms.Label();
 			this.yAxisFormatComboBox = new System.Windows.Forms.ComboBox();
@@ -67,6 +68,7 @@
 			this.doneButton = new System.Windows.Forms.Button();
 			this.cancelButton = new System.Windows.Forms.Button();
 			this.chartIdErrorProvider = new System.Windows.Forms.ErrorProvider(this.components);
+			this.warningProvider = new System.Windows.Forms.ErrorProvider(this.components);
 			this.labelGroupBox.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.yAxisMaxNumericUpDown)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.yAxisMinNumericUpDown)).BeginInit();
@@ -81,6 +83,7 @@
 			((System.ComponentModel.ISupportInitialize)(this.leftNumericUpDown)).BeginInit();
 			this.valueColumnsGroupBox.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.chartIdErrorProvider)).BeginInit();
+			((System.ComponentModel.ISupportInitialize)(this.warningProvider)).BeginInit();
 			this.SuspendLayout();
 			// 
 			// labelGroupBox
@@ -107,6 +110,7 @@
 			// yAxisFormatLabel
 			// 
 			this.yAxisFormatLabel.AutoSize = true;
+			this.warningProvider.SetError(this.yAxisFormatLabel, "Test");
 			this.yAxisFormatLabel.Location = new System.Drawing.Point(3, 152);
 			this.yAxisFormatLabel.Name = "yAxisFormatLabel";
 			this.yAxisFormatLabel.Size = new System.Drawing.Size(71, 13);
@@ -118,15 +122,16 @@
 			this.yAxisFormatComboBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
 			this.yAxisFormatComboBox.FormattingEnabled = true;
-			this.yAxisFormatComboBox.Location = new System.Drawing.Point(92, 149);
+			this.yAxisFormatComboBox.Location = new System.Drawing.Point(95, 149);
 			this.yAxisFormatComboBox.Name = "yAxisFormatComboBox";
-			this.yAxisFormatComboBox.Size = new System.Drawing.Size(121, 21);
+			this.yAxisFormatComboBox.Size = new System.Drawing.Size(118, 21);
 			this.yAxisFormatComboBox.TabIndex = 8;
 			this.yAxisFormatComboBox.SelectedIndexChanged += new System.EventHandler(this.yAxisFormatComboBox_SelectedIndexChanged);
 			// 
 			// yAxisMaxLabel
 			// 
 			this.yAxisMaxLabel.AutoSize = true;
+			this.warningProvider.SetError(this.yAxisMaxLabel, "Test");
 			this.yAxisMaxLabel.Location = new System.Drawing.Point(3, 125);
 			this.yAxisMaxLabel.Name = "yAxisMaxLabel";
 			this.yAxisMaxLabel.Size = new System.Drawing.Size(83, 13);
@@ -143,14 +148,14 @@
             0,
             0,
             0});
-			this.yAxisMaxNumericUpDown.Location = new System.Drawing.Point(92, 123);
+			this.yAxisMaxNumericUpDown.Location = new System.Drawing.Point(107, 123);
 			this.yAxisMaxNumericUpDown.Maximum = new decimal(new int[] {
             10000000,
             0,
             0,
             0});
 			this.yAxisMaxNumericUpDown.Name = "yAxisMaxNumericUpDown";
-			this.yAxisMaxNumericUpDown.Size = new System.Drawing.Size(121, 20);
+			this.yAxisMaxNumericUpDown.Size = new System.Drawing.Size(106, 20);
 			this.yAxisMaxNumericUpDown.TabIndex = 6;
 			this.yAxisMaxNumericUpDown.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
 			this.yAxisMaxNumericUpDown.ThousandsSeparator = true;
@@ -159,6 +164,7 @@
 			// yAxisMinLabel
 			// 
 			this.yAxisMinLabel.AutoSize = true;
+			this.warningProvider.SetError(this.yAxisMinLabel, "Test");
 			this.yAxisMinLabel.Location = new System.Drawing.Point(3, 100);
 			this.yAxisMinLabel.Name = "yAxisMinLabel";
 			this.yAxisMinLabel.Size = new System.Drawing.Size(80, 13);
@@ -175,14 +181,14 @@
             0,
             0,
             0});
-			this.yAxisMinNumericUpDown.Location = new System.Drawing.Point(93, 97);
+			this.yAxisMinNumericUpDown.Location = new System.Drawing.Point(107, 97);
 			this.yAxisMinNumericUpDown.Maximum = new decimal(new int[] {
             10000000,
             0,
             0,
             0});
 			this.yAxisMinNumericUpDown.Name = "yAxisMinNumericUpDown";
-			this.yAxisMinNumericUpDown.Size = new System.Drawing.Size(120, 20);
+			this.yAxisMinNumericUpDown.Size = new System.Drawing.Size(106, 20);
 			this.yAxisMinNumericUpDown.TabIndex = 4;
 			this.yAxisMinNumericUpDown.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
 			this.yAxisMinNumericUpDown.ThousandsSeparator = true;
@@ -191,6 +197,7 @@
 			// yAxisLabelLabel
 			// 
 			this.yAxisLabelLabel.AutoSize = true;
+			this.warningProvider.SetError(this.yAxisLabelLabel, "Test");
 			this.yAxisLabelLabel.Location = new System.Drawing.Point(3, 55);
 			this.yAxisLabelLabel.Name = "yAxisLabelLabel";
 			this.yAxisLabelLabel.Size = new System.Drawing.Size(65, 13);
@@ -210,6 +217,7 @@
 			// xAxisLabelLabel
 			// 
 			this.xAxisLabelLabel.AutoSize = true;
+			this.warningProvider.SetError(this.xAxisLabelLabel, "Test");
 			this.xAxisLabelLabel.Location = new System.Drawing.Point(3, 16);
 			this.xAxisLabelLabel.Name = "xAxisLabelLabel";
 			this.xAxisLabelLabel.Size = new System.Drawing.Size(65, 13);
@@ -237,6 +245,7 @@
 			// chartIdLabel
 			// 
 			this.chartIdLabel.AutoSize = true;
+			this.chartIdErrorProvider.SetError(this.chartIdLabel, "Test");
 			this.chartIdLabel.Location = new System.Drawing.Point(9, 9);
 			this.chartIdLabel.Name = "chartIdLabel";
 			this.chartIdLabel.Size = new System.Drawing.Size(46, 13);
@@ -255,6 +264,7 @@
 			// chartTypeLabel
 			// 
 			this.chartTypeLabel.AutoSize = true;
+			this.warningProvider.SetError(this.chartTypeLabel, "Test");
 			this.chartTypeLabel.Location = new System.Drawing.Point(136, 9);
 			this.chartTypeLabel.Name = "chartTypeLabel";
 			this.chartTypeLabel.Size = new System.Drawing.Size(31, 13);
@@ -505,6 +515,11 @@
 			// 
 			this.chartIdErrorProvider.ContainerControl = this;
 			// 
+			// warningProvider
+			// 
+			this.warningProvider.ContainerControl = this;
+			this.warningProvider.Icon = ((System.Drawing.Icon)(resources.GetObject("warningProvider.Icon")));
+			// 
 			// ChartDialog
 			// 
 			this.AcceptButton = this.doneButton;
@@ -552,6 +567,7 @@
 			((System.ComponentModel.ISupportInitialize)(this.leftNumericUpDown)).EndInit();
 			this.valueColumnsGroupBox.ResumeLayout(false);
 			((System.ComponentModel.ISupportInitialize)(this.chartIdErrorProvider)).EndInit();
+			((System.ComponentModel.ISupportInitialize)(this.warningProvider)).EndInit();
 			this.ResumeLayout(false);
 			this.PerformLayout();
 
@@ -597,5 +613,6 @@
 		private System.Windows.Forms.DataGridViewTextBoxColumn showColumnNameColumn;
 		private System.Windows.Forms.DataGridViewCheckBoxColumn showColumnColumn;
 		private System.Windows.Forms.ErrorProvider chartIdErrorProvider;
+		private System.Windows.Forms.ErrorProvider warningProvider;
 	}
 }
