@@ -124,7 +124,8 @@ namespace PortalConfigurator
 
 			chartTypeComboBox.BackColor = Subject.ChartType == Original.ChartType ? default(Color) : ChangedValueColor;
 			bool differentTypes = ChartWarning.IsDifferent(Subject.ChartType, Measure.ChartType);
-			warningProvider.SetError(chartTypeLabel, ChartWarning.GetWarning(ChartLocation.Local, "chart type", Subject.ChartType, true, differentTypes));
+			warningProvider.SetError(chartTypeLabel,
+				ChartWarning.GetWarning(ChartLocation.Local, "chart type", Subject.ChartType, true, differentTypes, Subject.ChartType == ChartType.NoChartType));
 		}
 
 		private void maxSetsNumericUpDown_ValueChanged(object sender, EventArgs e)
@@ -202,7 +203,8 @@ namespace PortalConfigurator
 
 			xAxisLabelTextBox.BackColor = Subject.Label.XAxisLabel == Original.Label.XAxisLabel ? default(Color) : ChangedValueColor;
 			bool differentLabel = ChartWarning.IsDifferent(Subject.Label.XAxisLabel, Measure.Label.XAxisLabel);
-			warningProvider.SetError(xAxisLabelLabel, ChartWarning.GetWarning(ChartLocation.Local, "X axis label", Subject.ChartType, true, differentLabel));
+			warningProvider.SetError(xAxisLabelLabel,
+				ChartWarning.GetWarning(ChartLocation.Local, "X axis label", Subject.ChartType, true, differentLabel, String.IsNullOrEmpty(Subject.Label.XAxisLabel)));
 		}
 
 		private void yAxisLabelTextBox_TextChanged(object sender, EventArgs e)
@@ -212,7 +214,8 @@ namespace PortalConfigurator
 	
 			yAxisLabelTextBox.BackColor = Subject.Label.YAxisLabel == Original.Label.YAxisLabel ? default(Color) : ChangedValueColor;
 			bool differentLabel = ChartWarning.IsDifferent(Subject.Label.YAxisLabel, Measure.Label.YAxisLabel);
-			warningProvider.SetError(yAxisLabelLabel, ChartWarning.GetWarning(ChartLocation.Local, "Y axis label", Subject.ChartType, true, differentLabel));
+			warningProvider.SetError(yAxisLabelLabel,
+				ChartWarning.GetWarning(ChartLocation.Local, "Y axis label", Subject.ChartType, true, differentLabel, String.IsNullOrEmpty(Subject.Label.YAxisLabel)));
 		}
 
 		private void yAxisMinNumericUpDown_ValueChanged(object sender, EventArgs e)
@@ -224,7 +227,8 @@ namespace PortalConfigurator
 
 			yAxisMinNumericUpDown.BackColor = Subject.Label.YAxisMin == Original.Label.YAxisMin ? default(Color) : ChangedValueColor;
 			bool differentMinimum = ChartWarning.IsDifferent(Subject.Label.YAxisMin, Measure.Label.YAxisMin);
-			warningProvider.SetError(yAxisMinLabel, ChartWarning.GetWarning(ChartLocation.Local, "Y axis minimum", Subject.ChartType, true, differentMinimum));
+			warningProvider.SetError(yAxisMinLabel,
+				ChartWarning.GetWarning(ChartLocation.Local, "Y axis minimum", Subject.ChartType, true, differentMinimum, Subject.Label.YAxisMin == null));
 		}
 
 		private void yAxisMaxNumericUpDown_ValueChanged(object sender, EventArgs e)
@@ -236,7 +240,8 @@ namespace PortalConfigurator
 
 			yAxisMaxNumericUpDown.BackColor = Subject.Label.YAxisMax == Original.Label.YAxisMax ? default(Color) : ChangedValueColor;
 			bool differentMaximum = ChartWarning.IsDifferent(Subject.Label.YAxisMax, Measure.Label.YAxisMax);
-			warningProvider.SetError(yAxisMaxLabel, ChartWarning.GetWarning(ChartLocation.Local, "Y axis maximum", Subject.ChartType, true, differentMaximum));
+			warningProvider.SetError(yAxisMaxLabel,
+				ChartWarning.GetWarning(ChartLocation.Local, "Y axis maximum", Subject.ChartType, true, differentMaximum, Subject.Label.YAxisMax == null));
 		}
 
 		private void yAxisFormatComboBox_SelectedIndexChanged(object sender, EventArgs e)
@@ -246,7 +251,8 @@ namespace PortalConfigurator
 
 			yAxisFormatComboBox.BackColor = Subject.Label.YAxisFormat == Original.Label.YAxisFormat ? default(Color) : ChangedValueColor;
 			bool differentFormat = ChartWarning.IsDifferent(Subject.Label.YAxisFormat, Measure.Label.YAxisFormat);
-			warningProvider.SetError(yAxisFormatLabel, ChartWarning.GetWarning(ChartLocation.Local, "Y axis format", Subject.ChartType, true, differentFormat));
+			warningProvider.SetError(yAxisFormatLabel,
+				ChartWarning.GetWarning(ChartLocation.Local, "Y axis format", Subject.ChartType, true, differentFormat, Subject.Label.YAxisFormat == AxisFormat.NoFormat));
 		}
 
 		private void leftNumericUpDown_ValueChanged(object sender, EventArgs e)

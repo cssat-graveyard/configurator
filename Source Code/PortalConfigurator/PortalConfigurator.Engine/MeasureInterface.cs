@@ -633,8 +633,10 @@ namespace PortalConfigurator
 			if (String.IsNullOrEmpty(multichartName) && OriginalMeasurementFile.Charts.FindIndex(p => p.ChartId == subject.ChartId) != -1)
 				original = OriginalMeasurementFile.Charts.Find(p => p.ChartId == subject.ChartId);
 			else if (OriginalMeasurementFile.Multicharts.Charts.ContainsKey(multichartName))
+			{
 				if (OriginalMeasurementFile.Multicharts.Charts[multichartName].FindIndex(p => p.ChartId == subject.ChartId) != -1)
-					original = MyMeasurementFile.Multicharts.Charts[multichartName].Find(p => p.ChartId == subject.ChartId);
+					original = OriginalMeasurementFile.Multicharts.Charts[multichartName].Find(p => p.ChartId == subject.ChartId);
+			}
 
 			return original;
 		}
@@ -830,7 +832,8 @@ namespace PortalConfigurator
 		{
 			bool differentTypes = MyMeasurementFile.Charts.Any(p => ChartWarning.IsDifferent(p.ChartType, MyMeasurementFile.ChartType));
 			differentTypes = differentTypes || MyMeasurementFile.Multicharts.Charts.Any(p => p.Value.Any(ip => ChartWarning.IsDifferent(ip.ChartType, MyMeasurementFile.ChartType)));
-			warningErrorProvider.SetError(chartTypeLabel, ChartWarning.GetWarning(ChartLocation.Global, "chart type", MyMeasurementFile.ChartType, true, differentTypes));
+			warningErrorProvider.SetError(chartTypeLabel,
+				ChartWarning.GetWarning(ChartLocation.Global, "chart type", MyMeasurementFile.ChartType, true, differentTypes, MyMeasurementFile.ChartType == ChartType.NoChartType));
 		}
 
 		private void chartTypeComboBox_SelectedIndexChanged(object sender, EventArgs e)
@@ -841,7 +844,7 @@ namespace PortalConfigurator
 				chartTypeComboBox.BackColor = MyMeasurementFile.ChartType == OriginalMeasurementFile.ChartType ? default(Color) : ChangedValueColor;
 			}
 
-			SetChartTypeWarning();
+			SetChartSettingPropagationWarnings();
 		}
 
 		private void showAllOthersCheckBox_CheckStateChanged(object sender, EventArgs e)
@@ -879,7 +882,8 @@ namespace PortalConfigurator
 		{
 			bool differentLabels = MyMeasurementFile.Charts.Any(p => ChartWarning.IsDifferent(p.Label.XAxisLabel, MyMeasurementFile.Label.XAxisLabel));
 			differentLabels = differentLabels || MyMeasurementFile.Multicharts.Charts.Any(p => p.Value.Any(ip => ChartWarning.IsDifferent(ip.Label.XAxisLabel, MyMeasurementFile.Label.XAxisLabel)));
-			warningErrorProvider.SetError(xAxisLabelLabel, ChartWarning.GetWarning(ChartLocation.Global, "X axis label", MyMeasurementFile.ChartType, false, differentLabels));
+			warningErrorProvider.SetError(xAxisLabelLabel,
+				ChartWarning.GetWarning(ChartLocation.Global, "X axis label", MyMeasurementFile.ChartType, false, differentLabels, String.IsNullOrEmpty(MyMeasurementFile.Label.XAxisLabel)));
 		}
 
 		private void xAxisLabelTextBox_TextChanged(object sender, EventArgs e)
@@ -897,7 +901,8 @@ namespace PortalConfigurator
 		{
 			bool differentLabels = MyMeasurementFile.Charts.Any(p => ChartWarning.IsDifferent(p.Label.YAxisLabel, MyMeasurementFile.Label.YAxisLabel));
 			differentLabels = differentLabels || MyMeasurementFile.Multicharts.Charts.Any(p => p.Value.Any(ip => ChartWarning.IsDifferent(ip.Label.YAxisLabel, MyMeasurementFile.Label.YAxisLabel)));
-			warningErrorProvider.SetError(yAxisLabelLabel, ChartWarning.GetWarning(ChartLocation.Global, "Y axis label", MyMeasurementFile.ChartType, false, differentLabels));
+			warningErrorProvider.SetError(yAxisLabelLabel,
+				ChartWarning.GetWarning(ChartLocation.Global, "Y axis label", MyMeasurementFile.ChartType, false, differentLabels, String.IsNullOrEmpty(MyMeasurementFile.Label.YAxisLabel)));
 		}
 
 		private void yAxisLabelTextBox_TextChanged(object sender, EventArgs e)
@@ -915,7 +920,8 @@ namespace PortalConfigurator
 		{
 			bool differentMinimums = MyMeasurementFile.Charts.Any(p => ChartWarning.IsDifferent(p.Label.YAxisMin, MyMeasurementFile.Label.YAxisMin));
 			differentMinimums = differentMinimums || MyMeasurementFile.Multicharts.Charts.Any(p => p.Value.Any(ip => ChartWarning.IsDifferent(ip.Label.YAxisMin, MyMeasurementFile.Label.YAxisMin)));
-			warningErrorProvider.SetError(yAxisMinLabel, ChartWarning.GetWarning(ChartLocation.Global, "Y axis minimum", MyMeasurementFile.ChartType, false, differentMinimums));
+			warningErrorProvider.SetError(yAxisMinLabel,
+				ChartWarning.GetWarning(ChartLocation.Global, "Y axis minimum", MyMeasurementFile.ChartType, false, differentMinimums, MyMeasurementFile.Label.YAxisMin == null));
 		}
 
 		private void yAxisMinNumericUpDown_ValueChanged(object sender, EventArgs e)
@@ -937,7 +943,8 @@ namespace PortalConfigurator
 		{
 			bool differentMaximums = MyMeasurementFile.Charts.Any(p => ChartWarning.IsDifferent(p.Label.YAxisMax, MyMeasurementFile.Label.YAxisMax));
 			differentMaximums = differentMaximums || MyMeasurementFile.Multicharts.Charts.Any(p => p.Value.Any(ip => ChartWarning.IsDifferent(ip.Label.YAxisMax, MyMeasurementFile.Label.YAxisMax)));
-			warningErrorProvider.SetError(yAxisMinLabel, ChartWarning.GetWarning(ChartLocation.Global, "Y axis maximum", MyMeasurementFile.ChartType, false, differentMaximums));
+			warningErrorProvider.SetError(yAxisMinLabel,
+				ChartWarning.GetWarning(ChartLocation.Global, "Y axis maximum", MyMeasurementFile.ChartType, false, differentMaximums, MyMeasurementFile.Label.YAxisMax == null));
 		}
 
 		private void yAxisMaxNumericUpDown_ValueChanged(object sender, EventArgs e)
@@ -959,7 +966,8 @@ namespace PortalConfigurator
 		{
 			bool differentFormats = MyMeasurementFile.Charts.Any(p => ChartWarning.IsDifferent(p.Label.YAxisFormat, MyMeasurementFile.Label.YAxisFormat));
 			differentFormats = differentFormats || MyMeasurementFile.Multicharts.Charts.Any(p => p.Value.Any(ip => ChartWarning.IsDifferent(ip.Label.YAxisFormat, MyMeasurementFile.Label.YAxisFormat)));
-			warningErrorProvider.SetError(yAxisFormatLabel, ChartWarning.GetWarning(ChartLocation.Global, "Y axis format", MyMeasurementFile.ChartType, false, differentFormats));
+			warningErrorProvider.SetError(yAxisFormatLabel,
+				ChartWarning.GetWarning(ChartLocation.Global, "Y axis format", MyMeasurementFile.ChartType, false, differentFormats, MyMeasurementFile.Label.YAxisFormat == AxisFormat.NoFormat));
 		}
 
 		private void yAxisFormatComboBox_SelectedIndexChanged(object sender, EventArgs e)

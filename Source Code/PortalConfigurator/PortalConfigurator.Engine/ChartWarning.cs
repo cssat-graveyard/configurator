@@ -38,28 +38,34 @@ namespace PortalConfigurator
 			return difference;
 		}
 
-		public static string GetWarning(ChartLocation location, String propertyName, ChartType chartType, bool isChartType, bool isDifferent)
+		public static string GetWarning(ChartLocation location, String propertyName, ChartType chartType, bool isChartType, bool isDifferent, bool isEmpty)
 		{
 			string warningMessage = String.Empty;
 			string localization = String.Empty;
 
-			switch (location)
+			if (!isEmpty)
 			{
-				case ChartLocation.Global:
-					localization = "in one or more of the charts";
-					break;
-				case ChartLocation.Local:
-					localization = "globally in the measure";
-					break;
-				default:
-					break;
+				switch (location)
+				{
+					case ChartLocation.Global:
+						localization = "in one or more of the charts";
+						break;
+					case ChartLocation.Local:
+						localization = "globally in the measure";
+						break;
+					default:
+						break;
+				}
+
+				if (!isChartType && chartType == ChartType.NoChartType)
+					warningMessage = "No chart type is selected. Graph rendering errors may occur.";
+
+				if (isDifferent)
+				{
+					warningMessage = String.Concat(warningMessage, !String.IsNullOrEmpty(warningMessage) ? "\n\n" : String.Empty,
+						String.Format("A different {0} has been set {1}.\nThis setting may supercede the local chart setting.", propertyName, localization));
+				}
 			}
-
-			if (!isChartType && chartType == ChartType.NoChartType)
-				warningMessage = "No chart type is selected. Graph rendering errors may occur.";
-
-			if (isDifferent)
-				warningMessage = String.Format("A different {0} has been set {1}.\nThis setting may supercede the local chart setting.", propertyName, localization);
 
 			return warningMessage;
 		}
