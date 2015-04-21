@@ -1,6 +1,4 @@
 ﻿using MySql.Data.MySqlClient;
-using Renci.SshNet;
-using Renci.SshNet.Common;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -11,68 +9,10 @@ namespace Framework
 	public static class Database
 	{
 		private static string hostName = "pocweb.cac.washington.edu";
-		private static int sshPort = 22;
-		private static string dbHost = "localhost";
 		private static int dbPort = 3306;
 		private static string dbUid = "test_annie";
 		private static string dbPassword = "b4Rxx:pW";
-		private static string connectionString = String.Format("HOST={0};PORT={1};UID={2};PASSWORD={3}", dbHost, dbPort, dbUid, dbPassword);
-
-		private static string _userName = String.Empty;
-		private static string UserName
-		{
-			get
-			{
-				if (String.IsNullOrEmpty(_userName))
-				{
-#if DEBUG
-					_userName = "schmitzr";
-					_password = "sara.leia.schmitz";
-#else
-					CredentialsPrompt prompt = new CredentialsPrompt();
-					
-					if (prompt.ShowDialog() == DialogResult.OK)
-					{
-						_userName = prompt.UserName;
-						_password = prompt.Password;
-					}
-					else
-					{
-						throw new CancelException("Required credentials not provided.");
-					}
-#endif
-				}
-
-				return _userName;
-			}
-		}
-
-		private static string _password = String.Empty;
-		private static string Password
-		{
-			get
-			{
-				if (String.IsNullOrEmpty(_password))
-				{
-					CredentialsPrompt prompt = new CredentialsPrompt();
-
-					if (!String.IsNullOrEmpty(_userName))
-						prompt.UserName = _userName;
-
-					if (prompt.ShowDialog() == DialogResult.OK)
-					{
-						_userName = prompt.UserName;
-						_password = prompt.Password;
-					}
-					else
-					{
-						throw new CancelException("Required credentials not provided.");
-					}
-				}
-
-				return _password;
-			}
-		}
+		private static string connectionString = String.Format("HOST={0};PORT={1};UID={2};PASSWORD={3}", hostName, dbPort, dbUid, dbPassword);
 
 		private static Dictionary<string, Table> _tables;
 		public static Dictionary<string, Table> Tables
@@ -106,41 +46,23 @@ namespace Framework
 			Tables.Clear();
 			StoredProcedures.Clear();
 
-			using (SshClient client = new SshClient(hostName, sshPort, UserName, Password))
+			try
 			{
-				try
-				{
-					client.Connect();
-
-					ForwardedPort forwardedPort = new ForwardedPortLocal(dbHost, (uint)dbPort, hostName, (uint)dbPort);
-					client.AddForwardedPort(forwardedPort);
-					forwardedPort.Start();
-
-					MySqlConnection db = new MySqlConnection(connectionString);
-					db.Open();
-					RetrieveTables(ref db);
-					RetrieveStoredProcedures(ref db);
-					db.Close();
-				}
-				catch (DatabaseException)
-				{
-					throw;
-				}
-				catch (SshAuthenticationException e)
-				{
-					string message = String.Format("A problem occurred while connecting to the database:\n{0}", e.Message);
-					_password = String.Empty;
-					throw new DatabaseException(message, e);
-				}
-				catch (Exception e)
-				{
-					string message = String.Format("A problem occured while connecting to the database:\n{0}", e.Message);
-					throw new DatabaseException(message, e);
-				}
-				finally
-				{
-					client.Disconnect();
-				}
+				MySqlConnection connection = new MySqlConnection(connectionString);
+				connection.Open();
+				RetrieveTables(ref connection);
+				RetrieveStoredProcedures(ref connection);
+				connection.Close();
+				connection.Dispose();
+			}
+			catch (DatabaseException)
+			{
+				throw;
+			}
+			catch (Exception e)
+			{
+				string message = String.Format("A problem occured while connecting to the database:\n{0}", e.Message);
+				throw new DatabaseException(message, e);
 			}
 		}
 
@@ -336,22 +258,6 @@ namespace Framework
 		{ }
 
 		public DatabaseException(string message, Exception inner)
-			: base(message, inner)
-		{ }
-	}
-
-	[Serializable]
-	public class CancelException : Exception
-	{
-		public CancelException()
-			: base()
-		{ }
-
-		public CancelException(string message)
-			: base(message)
-		{ }
-
-		public CancelException(string message, Exception inner)
 			: base(message, inner)
 		{ }
 	}
