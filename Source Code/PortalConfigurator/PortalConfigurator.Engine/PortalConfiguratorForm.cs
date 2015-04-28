@@ -47,10 +47,6 @@ namespace PortalConfigurator
 					LoadFilterParameterInterface(sender, e);
 					break;
 				}
-				catch (CancelException)
-				{
-					abort = true;
-				}
 				catch (Exception exception)
 				{
 					string message = String.Format("{0}\n\nYou may retry or click Cancel to close the application.", exception.Message);
@@ -263,5 +259,11 @@ namespace PortalConfigurator
 			string message = String.Format("{0}\n\n{1} version {2}", Application.CompanyName, Application.ProductName, version);
 			MessageBox.Show(message, "About", MessageBoxButtons.OK, MessageBoxIcon.None);
 		}
+
+		private void helpDataGridView_CellValueChanged(object sender, DataGridViewCellEventArgs e)
+		{
+
+		}
+
 	}
 }

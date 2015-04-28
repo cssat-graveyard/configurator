@@ -161,8 +161,9 @@
 			this.helpGroupBox = new System.Windows.Forms.GroupBox();
 			this.deleteHelpButton = new System.Windows.Forms.Button();
 			this.helpDataGridView = new System.Windows.Forms.DataGridView();
-			this.helpName = new System.Windows.Forms.DataGridViewTextBoxColumn();
-			this.helpContent = new System.Windows.Forms.DataGridViewTextBoxColumn();
+			this.helpNameColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+			this.helpContentColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+			this.helpEditHelpColumn = new System.Windows.Forms.DataGridViewButtonColumn();
 			this.addHelpButton = new System.Windows.Forms.Button();
 			this.moveDownHelpButton = new System.Windows.Forms.Button();
 			this.moveUpHelpButton = new System.Windows.Forms.Button();
@@ -203,8 +204,8 @@
 			this.deleteCommentButton = new System.Windows.Forms.Button();
 			this.addCommentButton = new System.Windows.Forms.Button();
 			this.commentsDataGridView = new System.Windows.Forms.DataGridView();
-			this.commentName = new System.Windows.Forms.DataGridViewTextBoxColumn();
-			this.commentContent = new System.Windows.Forms.DataGridViewTextBoxColumn();
+			this.commentNameColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+			this.commentContentColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.moveDownCommentButton = new System.Windows.Forms.Button();
 			this.moveUpCommentButton = new System.Windows.Forms.Button();
 			this.tableSettingsGroupBox = new System.Windows.Forms.GroupBox();
@@ -1691,8 +1692,9 @@
             | System.Windows.Forms.AnchorStyles.Right)));
 			this.helpDataGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
 			this.helpDataGridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.helpName,
-            this.helpContent});
+            this.helpNameColumn,
+            this.helpContentColumn,
+            this.helpEditHelpColumn});
 			this.helpDataGridView.EditMode = System.Windows.Forms.DataGridViewEditMode.EditOnEnter;
 			this.helpDataGridView.Location = new System.Drawing.Point(6, 19);
 			this.helpDataGridView.MultiSelect = false;
@@ -1700,21 +1702,29 @@
 			this.helpDataGridView.RowHeadersVisible = false;
 			this.helpDataGridView.Size = new System.Drawing.Size(933, 132);
 			this.helpDataGridView.TabIndex = 25;
-			this.helpDataGridView.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.helpDataGridView_CellValueChanged);
+			this.helpDataGridView.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.helpDataGridView_CellContentClick);
 			// 
-			// helpName
+			// helpNameColumn
 			// 
-			this.helpName.HeaderText = "Name";
-			this.helpName.Name = "helpName";
-			this.helpName.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-			this.helpName.Width = 150;
+			this.helpNameColumn.HeaderText = "Name";
+			this.helpNameColumn.Name = "helpNameColumn";
+			this.helpNameColumn.ReadOnly = true;
+			this.helpNameColumn.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+			this.helpNameColumn.Width = 150;
 			// 
-			// helpContent
+			// helpContentColumn
 			// 
-			this.helpContent.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-			this.helpContent.HeaderText = "Content";
-			this.helpContent.Name = "helpContent";
-			this.helpContent.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+			this.helpContentColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+			this.helpContentColumn.HeaderText = "Content";
+			this.helpContentColumn.Name = "helpContentColumn";
+			this.helpContentColumn.ReadOnly = true;
+			this.helpContentColumn.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+			// 
+			// helpEditHelpColumn
+			// 
+			this.helpEditHelpColumn.HeaderText = "Edit";
+			this.helpEditHelpColumn.Name = "helpEditHelpColumn";
+			this.helpEditHelpColumn.Text = "Edit Help";
 			// 
 			// addHelpButton
 			// 
@@ -2128,8 +2138,8 @@
             | System.Windows.Forms.AnchorStyles.Right)));
 			this.commentsDataGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
 			this.commentsDataGridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.commentName,
-            this.commentContent});
+            this.commentNameColumn,
+            this.commentContentColumn});
 			this.commentsDataGridView.EditMode = System.Windows.Forms.DataGridViewEditMode.EditOnEnter;
 			this.commentsDataGridView.Location = new System.Drawing.Point(6, 19);
 			this.commentsDataGridView.MultiSelect = false;
@@ -2139,19 +2149,19 @@
 			this.commentsDataGridView.TabIndex = 25;
 			this.commentsDataGridView.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.commentsDataGridView_CellValueChanged);
 			// 
-			// commentName
+			// commentNameColumn
 			// 
-			this.commentName.HeaderText = "Name";
-			this.commentName.Name = "commentName";
-			this.commentName.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-			this.commentName.Width = 125;
+			this.commentNameColumn.HeaderText = "Name";
+			this.commentNameColumn.Name = "commentNameColumn";
+			this.commentNameColumn.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+			this.commentNameColumn.Width = 125;
 			// 
-			// commentContent
+			// commentContentColumn
 			// 
-			this.commentContent.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-			this.commentContent.HeaderText = "Comment";
-			this.commentContent.Name = "commentContent";
-			this.commentContent.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+			this.commentContentColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+			this.commentContentColumn.HeaderText = "Comment";
+			this.commentContentColumn.Name = "commentContentColumn";
+			this.commentContentColumn.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
 			// 
 			// moveDownCommentButton
 			// 
@@ -2499,10 +2509,6 @@
 		private System.Windows.Forms.ColorDialog colorDialog;
 		private System.Windows.Forms.Button valuesTypeButton;
 		private System.Windows.Forms.Label valuesTypeLabel;
-		private System.Windows.Forms.DataGridViewTextBoxColumn helpName;
-		private System.Windows.Forms.DataGridViewTextBoxColumn helpContent;
-		private System.Windows.Forms.DataGridViewTextBoxColumn commentName;
-		private System.Windows.Forms.DataGridViewTextBoxColumn commentContent;
 		private System.Windows.Forms.CheckBox monthLimitCheckBox;
 		private System.Windows.Forms.ErrorProvider warningErrorProvider;
 		private System.Windows.Forms.ComboBox filterParameterTableNameComboBox;
@@ -2619,6 +2625,11 @@
 		private System.Windows.Forms.Label parametersNeededLabel;
 		private System.Windows.Forms.Label parametersCoveredOfLabel;
 		private System.Windows.Forms.Label parametersCountLabel;
+		private System.Windows.Forms.DataGridViewTextBoxColumn helpNameColumn;
+		private System.Windows.Forms.DataGridViewTextBoxColumn helpContentColumn;
+		private System.Windows.Forms.DataGridViewButtonColumn helpEditHelpColumn;
+		private System.Windows.Forms.DataGridViewTextBoxColumn commentNameColumn;
+		private System.Windows.Forms.DataGridViewTextBoxColumn commentContentColumn;
 	}
 }
 

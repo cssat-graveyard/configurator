@@ -298,17 +298,5 @@ namespace PortalConfigurator
 
 			areaHeightNumericUpDown.BackColor = Subject.BaseOptionSet.ChartArea.Height == original ? default(Color) : ChangedValueColor;
 		}
-
-		private void closeButton_Click(object sender, EventArgs e)
-		{
-			this.DialogResult = DialogResult.OK;
-			this.Close();
-		}
-
-		private void cancelButton_Click(object sender, EventArgs e)
-		{
-			this.DialogResult = DialogResult.Cancel;
-			this.Close();
-		}
 	}
 }

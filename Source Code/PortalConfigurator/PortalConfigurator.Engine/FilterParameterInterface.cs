@@ -409,8 +409,9 @@ namespace PortalConfigurator
 
 					for (int i = 0; i < Subject.Display.Help.Count; i++)
 					{
-						helpDataGridView[0, i].Value = Subject.Display.Help.ElementAt(i).Key;
-						helpDataGridView[1, i].Value = Subject.Display.Help.ElementAt(i).Value;
+						helpDataGridView[helpNameColumn.Index, i].Value = Subject.Display.Help.ElementAt(i).Key;
+						helpDataGridView[helpContentColumn.Index, i].Value = Subject.Display.Help.ElementAt(i).Value;
+						helpDataGridView[helpEditHelpColumn.Index, i].Value = "Edit Help";
 					}
 
 					SetGridCellsBackgroundColor(StringDictionary.Help);
@@ -547,15 +548,15 @@ namespace PortalConfigurator
 			{
 				subjectGrid = commentsDataGridView;
 				subjectDictionary = Subject.Comments;
-				keyColumnIndex = commentName.Index;
-				valueColumnIndex = commentContent.Index;
+				keyColumnIndex = commentNameColumn.Index;
+				valueColumnIndex = commentContentColumn.Index;
 			}
 			else if (source == StringDictionary.Help)
 			{
 				subjectGrid = helpDataGridView;
 				subjectDictionary = Subject.Display.Help;
-				keyColumnIndex = helpName.Index;
-				valueColumnIndex = helpContent.Index;
+				keyColumnIndex = helpNameColumn.Index;
+				valueColumnIndex = helpContentColumn.Index;
 			}
 
 			int newItemNumber = subjectDictionary.Count;
@@ -577,6 +578,9 @@ namespace PortalConfigurator
 			subjectGrid.Rows.Add();
 			subjectGrid[keyColumnIndex, newRowIndex].Value = newKey;
 			subjectGrid[valueColumnIndex, newRowIndex].Value = String.Empty;
+
+			if (source == StringDictionary.Help)
+				subjectGrid[helpEditHelpColumn.Index, newRowIndex].Value = "Edit Help";
 
 			subjectDictionary.Add(newKey, String.Empty);
 
@@ -639,14 +643,14 @@ namespace PortalConfigurator
 			if (source == StringDictionary.Comments)
 			{
 				subjectGrid = commentsDataGridView;
-				keyColumnIndex = commentName.Index;
-				valueColumnIndex = commentContent.Index;
+				keyColumnIndex = commentNameColumn.Index;
+				valueColumnIndex = commentContentColumn.Index;
 			}
 			else if (source == StringDictionary.Help)
 			{
 				subjectGrid = helpDataGridView;
-				keyColumnIndex = helpName.Index;
-				valueColumnIndex = helpContent.Index;
+				keyColumnIndex = helpNameColumn.Index;
+				valueColumnIndex = helpContentColumn.Index;
 			}
 
 			string key = subjectGrid[keyColumnIndex, startingRowIndex].Value.ToString();
@@ -657,6 +661,9 @@ namespace PortalConfigurator
 			subjectGrid[keyColumnIndex, destinationRowIndex].Value = key;
 			subjectGrid[valueColumnIndex, destinationRowIndex].Value = value;
 			subjectGrid.CurrentCell = subjectGrid[subjectGrid.CurrentCell.ColumnIndex, destinationRowIndex];
+
+			if (source == StringDictionary.Help)
+				subjectGrid[helpEditHelpColumn.Index, destinationRowIndex].Value = "Edit Help";
 
 			do
 			{
@@ -713,8 +720,8 @@ namespace PortalConfigurator
 			if (source == StringDictionary.Comments)
 			{
 				subjectGrid = commentsDataGridView;
-				keyColumnIndex = commentName.Index;
-				valueColumnIndex = commentContent.Index;
+				keyColumnIndex = commentNameColumn.Index;
+				valueColumnIndex = commentContentColumn.Index;
 				key = Subject.Comments.ElementAt(row).Key;
 				value = Subject.Comments.ElementAt(row).Value;
 				originalExists = Original.Comments.ContainsKey(key);
@@ -723,16 +730,17 @@ namespace PortalConfigurator
 			else if (source == StringDictionary.Help)
 			{
 				subjectGrid = helpDataGridView;
-				keyColumnIndex = helpName.Index;
-				valueColumnIndex = helpContent.Index;
+				keyColumnIndex = helpNameColumn.Index;
+				valueColumnIndex = helpContentColumn.Index;
 				key = Subject.Display.Help.ElementAt(row).Key;
 				value = Subject.Display.Help.ElementAt(row).Value;
 				originalExists = Original.Display.Help.ContainsKey(key);
-				original = originalExists ? Original.Display.Help[key] : string.Empty;
+				original = originalExists ? Original.Display.Help[key] : String.Empty;
 			}
 
+			changeDetected = !originalExists || value != original;
 			subjectGrid[keyColumnIndex, row].Style.BackColor = !originalExists ? ChangedValueColor : default(Color);
-			subjectGrid[valueColumnIndex, row].Style.BackColor = !originalExists || value != original ? ChangedValueColor : default(Color);
+			subjectGrid[valueColumnIndex, row].Style.BackColor = changeDetected ? ChangedValueColor : default(Color);
 
 			SetListViewItemBackgroundColor(changeDetected, SubjectIndex);
 			return changeDetected;
@@ -1088,66 +1096,42 @@ namespace PortalConfigurator
 		private void commentsDataGridView_CellValueChanged(object sender, DataGridViewCellEventArgs e)
 		{
 			if (e.RowIndex != -1 ? commentsDataGridView.CurrentCell.IsInEditMode && commentsDataGridView.CurrentCell.ColumnIndex == e.ColumnIndex : false)
-				UpdateDictionaryItemInGrid(StringDictionary.Comments);
-		}
-
-		private void UpdateDictionaryItemInGrid(StringDictionary source)
-		{
-			DataGridView subjectGrid = new DataGridView();
-			Dictionary<string, string> subjectDictionary = new Dictionary<string, string>();
-			int keyColumn = 0;
-			int valueColumn = 1;
-
-			if (source == StringDictionary.Comments)
 			{
-				subjectGrid = commentsDataGridView;
-				subjectDictionary = Subject.Comments;
-				keyColumn = commentName.Index;
-				valueColumn = commentContent.Index;
-			}
-			else if (source == StringDictionary.Help)
-			{
-				subjectGrid = helpDataGridView;
-				subjectDictionary = Subject.Display.Help;
-				keyColumn = helpName.Index;
-				valueColumn = helpContent.Index;
-			}
-
-			int row = subjectGrid.CurrentCell.RowIndex;
-			string cellValue = (subjectGrid.CurrentCell.Value ?? (object)String.Empty).ToString();
-			string key = subjectDictionary.ElementAt(row).Key;
-
-			if (subjectGrid.CurrentCell.ColumnIndex == keyColumn)
-			{
-				if (source == StringDictionary.Comments)
-					if (!cellValue.StartsWith("_comment"))
-							cellValue = String.Concat("_comment", cellValue);
-
-				if (cellValue != key && !subjectDictionary.ContainsKey(cellValue))
+				if (e.ColumnIndex == commentNameColumn.Index)
 				{
-					Dictionary<string, string> newDictionary = new Dictionary<string, string>();
+					string cellValue = commentsDataGridView.CurrentCell.Value.ToString();
 
-					for (int i = 0; i < subjectDictionary.Count; i++)
-						newDictionary.Add(i == row ? cellValue : subjectDictionary.ElementAt(i).Key, subjectDictionary.ElementAt(i).Value);
+					if (!cellValue.StartsWith("_comment"))
+						cellValue = String.Concat("_comment", cellValue);
 
-					subjectDictionary.Clear();
+					if (cellValue != Subject.Comments.ElementAt(e.RowIndex).Key && !Subject.Comments.ContainsKey(cellValue))
+					{
+						Dictionary<string, string> newDictionary = new Dictionary<string, string>();
 
-					foreach (var item in newDictionary)
-						subjectDictionary.Add(item.Key, item.Value);
+						for (int i = 0; i < Subject.Comments.Count; i++)
+							newDictionary.Add(i == e.RowIndex ? cellValue : Subject.Comments.ElementAt(i).Key, Subject.Comments.ElementAt(i).Value);
+
+						Subject.Comments.Clear();
+
+						foreach (var item in newDictionary)
+							Subject.Comments.Add(item.Key, item.Value);
+					}
+					else
+						commentsDataGridView.CurrentCell.Value = Subject.Comments.ElementAt(e.RowIndex).Key;
 				}
-				else
-					subjectGrid.CurrentCell.Value = subjectDictionary.ElementAt(row).Key;
-			}
-			else if (subjectGrid.CurrentCell.ColumnIndex == valueColumn)
-			{
-				if (cellValue != subjectDictionary[key])
-					subjectDictionary[key] = cellValue;
-			}
+				else if (e.ColumnIndex == commentContentColumn.Index)
+				{
+					string key = Subject.Comments.ElementAt(e.RowIndex).Key;
 
-			if (subjectGrid.CurrentCell.IsInEditMode)
-				subjectGrid.EndEdit(DataGridViewDataErrorContexts.Commit);
+					if (commentsDataGridView.CurrentCell.Value.ToString() != Subject.Comments[key])
+						Subject.Comments[key] = commentsDataGridView.CurrentCell.Value.ToString();
+				}
 
-			SetGridCellsBackgroundColor(source, row);
+				if (commentsDataGridView.CurrentCell.IsInEditMode)
+					commentsDataGridView.EndEdit(DataGridViewDataErrorContexts.Commit);
+
+				SetGridCellsBackgroundColor(StringDictionary.Comments, e.RowIndex);
+			}
 		}
 
 		private void legendTextBox_TextChanged(object sender, EventArgs e)
@@ -1827,10 +1811,55 @@ namespace PortalConfigurator
 			}
 		}
 
-		private void helpDataGridView_CellValueChanged(object sender, DataGridViewCellEventArgs e)
+		private void helpDataGridView_CellContentClick(object sender, DataGridViewCellEventArgs e)
 		{
-			if (e.RowIndex != -1 ? helpDataGridView.CurrentCell.IsInEditMode && helpDataGridView.CurrentCell.ColumnIndex == e.ColumnIndex : false)
-				UpdateDictionaryItemInGrid(StringDictionary.Help);
+			EndGridCellEditMode();
+
+			if (e.ColumnIndex == helpEditHelpColumn.Index)
+			{
+				string itemName = Subject.Display.Help.ElementAt(e.RowIndex).Key;
+				string itemContent = Subject.Display.Help.ElementAt(e.RowIndex).Value;
+				List<string> itemNames = Subject.Display.Help.Keys.ToList();
+				string originalName = String.Empty;
+				string originalContent = String.Empty;
+
+				if (Original.Display.Help.ContainsKey(itemName))
+				{
+					originalName = Original.Display.Help.ElementAt(e.RowIndex).Key;
+					originalContent = Original.Display.Help.ElementAt(e.RowIndex).Value;
+				}
+
+				HelpItemDialog helpDialog = new HelpItemDialog(itemName, itemContent, originalName, originalContent, ChangedValueColor, itemNames);
+
+				if (helpDialog.ShowDialog() == DialogResult.OK)
+				{
+					if (helpDialog.ItemName != Subject.Display.Help.ElementAt(e.RowIndex).Key)
+					{
+						Dictionary<string, string> newDictionary = new Dictionary<string, string>();
+
+						for (int i = 0; i < Subject.Display.Help.Count; i++)
+							newDictionary.Add(i == e.RowIndex ? helpDialog.ItemName : Subject.Display.Help.ElementAt(i).Key, Subject.Display.Help.ElementAt(i).Value);
+
+						Subject.Display.Help.Clear();
+
+						foreach (var item in newDictionary)
+							Subject.Display.Help.Add(item.Key, item.Value);
+
+						helpDataGridView[helpNameColumn.Index, e.RowIndex].Value = helpDialog.ItemName;
+					}
+
+					if (helpDialog.ItemContent != Subject.Display.Help[helpDialog.ItemName])
+					{
+						Subject.Display.Help[helpDialog.ItemName] = helpDialog.ItemContent;
+						helpDataGridView[helpContentColumn.Index, e.RowIndex].Value = helpDialog.ItemContent;
+					}
+
+					if (helpDataGridView.CurrentCell.IsInEditMode)
+						helpDataGridView.EndEdit(DataGridViewDataErrorContexts.Commit);
+
+					SetGridCellsBackgroundColor(StringDictionary.Help, e.RowIndex);
+				}
+			}
 		}
 
 		private void GetOriginalFilterParameter()

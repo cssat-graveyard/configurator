@@ -491,14 +491,13 @@
 			// 
 			// doneButton
 			// 
-			this.doneButton.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+			this.doneButton.DialogResult = System.Windows.Forms.DialogResult.OK;
 			this.doneButton.Location = new System.Drawing.Point(362, 288);
 			this.doneButton.Name = "doneButton";
 			this.doneButton.Size = new System.Drawing.Size(75, 23);
 			this.doneButton.TabIndex = 14;
 			this.doneButton.Text = "Done";
 			this.doneButton.UseVisualStyleBackColor = true;
-			this.doneButton.Click += new System.EventHandler(this.closeButton_Click);
 			// 
 			// cancelButton
 			// 
@@ -509,7 +508,6 @@
 			this.cancelButton.TabIndex = 15;
 			this.cancelButton.Text = "Cancel";
 			this.cancelButton.UseVisualStyleBackColor = true;
-			this.cancelButton.Click += new System.EventHandler(this.cancelButton_Click);
 			// 
 			// chartIdErrorProvider
 			// 
