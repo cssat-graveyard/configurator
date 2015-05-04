@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Framework", "PortalConfigur
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tests", "PortalConfigurator.Tests\Tests.csproj", "{3E13FAC3-2B67-4564-8614-9FEFDFB1ECBE}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CustomControls", "PortalConfigurator.Controls\CustomControls.csproj", "{94891A12-6B65-4D66-9719-DAAD8645FC97}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{3E13FAC3-2B67-4564-8614-9FEFDFB1ECBE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3E13FAC3-2B67-4564-8614-9FEFDFB1ECBE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3E13FAC3-2B67-4564-8614-9FEFDFB1ECBE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{94891A12-6B65-4D66-9719-DAAD8645FC97}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{94891A12-6B65-4D66-9719-DAAD8645FC97}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{94891A12-6B65-4D66-9719-DAAD8645FC97}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{94891A12-6B65-4D66-9719-DAAD8645FC97}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

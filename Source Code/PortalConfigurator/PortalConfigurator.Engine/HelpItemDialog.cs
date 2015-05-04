@@ -1,4 +1,5 @@
-﻿using System;
+﻿using mshtml;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
@@ -31,6 +32,7 @@ namespace PortalConfigurator
 			this.OriginalContent = originalContent;
 			this.ItemNames = itemNames;
 			this.OriginalName = itemName;
+			this.InitialName = itemName.ToString();
 		}
 
 		private void DictionaryItemDialog_Load(object sender, EventArgs e)
@@ -38,9 +40,6 @@ namespace PortalConfigurator
 			nameTextBox.Text = ItemName;
 			errorProvider.SetError(nameLabel, String.Empty);
 			contentWebBrowser.DocumentText = String.Format("<html><body>{0}</body></html>", ItemContent);
-			Application.DoEvents();
-			contentWebBrowser.Document.Body.Style = "font-family:Arial;font-size:10pt";
-			contentWebBrowser.Document.Body.SetAttribute("contentEditable", "true");
 			Loaded = true;
 		}
 
@@ -51,7 +50,7 @@ namespace PortalConfigurator
 				bool invalidName = ItemNames.Contains(nameTextBox.Text) && nameTextBox.Text != InitialName;
 				string errorMessage = invalidName ? "This help name is already used." : String.Empty;
 				ItemName = nameTextBox.Text;
-				errorProvider.SetError(nameTextBox, errorMessage);
+				errorProvider.SetError(nameLabel, errorMessage);
 				doneButton.Enabled = !invalidName;
 			}
 
@@ -61,7 +60,7 @@ namespace PortalConfigurator
 		private void cutToolStripButton_Click(object sender, EventArgs e)
 		{
 			contentWebBrowser.Document.ExecCommand("Cut", false, null);
-			contentWebBrowser_DocumentCompleted(null, null);
+			UpdateHelpContent();
 		}
 
 		private void copyToolStripButton_Click(object sender, EventArgs e)
@@ -72,34 +71,39 @@ namespace PortalConfigurator
 		private void pasteToolStripButton_Click(object sender, EventArgs e)
 		{
 			contentWebBrowser.Document.ExecCommand("Paste", false, null);
-			contentWebBrowser_DocumentCompleted(null, null);
+			UpdateHelpContent();
 		}
 
 		private void boldToolStripButton_Click(object sender, EventArgs e)
 		{
 			contentWebBrowser.Document.ExecCommand("Bold", false, null);
-			contentWebBrowser_DocumentCompleted(null, null);
+			UpdateHelpContent();
 		}
 
 		private void underlineToolStripButton_Click(object sender, EventArgs e)
 		{
 			contentWebBrowser.Document.ExecCommand("Underline", false, null);
-			contentWebBrowser_DocumentCompleted(null, null);
+			UpdateHelpContent();
 		}
 
 		private void italicsToolStripButton_Click(object sender, EventArgs e)
 		{
 			contentWebBrowser.Document.ExecCommand("Italic", false, null);
-			contentWebBrowser_DocumentCompleted(null, null);
+			UpdateHelpContent();
 		}
 
 		private void createLinkToolStripButton_Click(object sender, EventArgs e)
 		{
 			contentWebBrowser.Document.ExecCommand("CreateLink", true, null);
-			contentWebBrowser_DocumentCompleted(null, null);
+			UpdateHelpContent();
 		}
 
-		private void contentWebBrowser_DocumentCompleted(object sender, WebBrowserDocumentCompletedEventArgs e)
+		private void contentWebBrowser_OnHtmlChanged(object source, EventArgs e)
+		{
+			UpdateHelpContent();
+		}
+
+		private void UpdateHelpContent()
 		{
 			if (Loaded)
 			{
@@ -110,7 +114,21 @@ namespace PortalConfigurator
 					ItemContent = html;
 			}
 
-			contentWebBrowser.Document.BackColor = ItemContent == OriginalContent ? Color.White : ChangedValueColor;
+			//contentWebBrowser.Document.BackColor = ItemContent == OriginalContent ? Color.White : ChangedValueColor;
+		}
+
+		private void doneButton_Click(object sender, EventArgs e)
+		{
+			this.DialogResult = doneButton.DialogResult;
+			string html = contentWebBrowser.Document.Body.InnerHtml.ToString();
+			ItemContent = html.Replace('"', '\''); ;
+			this.Close();
+		}
+
+		private void cancelButton_Click(object sender, EventArgs e)
+		{
+			this.DialogResult = cancelButton.DialogResult;
+			this.Close();
 		}
 	}
 }

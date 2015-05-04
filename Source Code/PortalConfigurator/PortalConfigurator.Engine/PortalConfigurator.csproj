@@ -143,6 +143,9 @@
     <Compile Include="ValuesTypeDialog.Designer.cs">
       <DependentUpon>ValuesTypeDialog.cs</DependentUpon>
     </Compile>
+    <Compile Include="WebEditor.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <EmbeddedResource Include="ChartDialog.resx">
       <DependentUpon>ChartDialog.cs</DependentUpon>
       <SubType>Designer</SubType>
@@ -187,6 +190,10 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\PortalConfigurator.Controls\CustomControls.csproj">
+      <Project>{94891a12-6b65-4d66-9719-daad8645fc97}</Project>
+      <Name>CustomControls</Name>
+    </ProjectReference>
     <ProjectReference Include="..\PortalConfigurator.Framework\Framework.csproj">
       <Project>{1debaee2-b1ad-4128-a572-d2e3f2950a99}</Project>
       <Name>Framework</Name>
@@ -249,6 +256,17 @@
       <IncludeHash>True</IncludeHash>
       <FileType>Assembly</FileType>
     </PublishFile>
+  </ItemGroup>
+  <ItemGroup>
+    <COMReference Include="MSHTML">
+      <Guid>{3050F1C5-98B5-11CF-BB82-00AA00BDCE0B}</Guid>
+      <VersionMajor>4</VersionMajor>
+      <VersionMinor>0</VersionMinor>
+      <Lcid>0</Lcid>
+      <WrapperTool>primary</WrapperTool>
+      <Isolated>False</Isolated>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </COMReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
