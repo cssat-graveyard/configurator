@@ -515,7 +515,7 @@ namespace Framework
 			if (ChartType != ChartType.NoChartType)
 				myJson.Add("chartType", Enums.GetString(ChartType));
 
-			if (!Label.IsEmpty)
+			if (!Label.IsEmpty || ChartType != ChartType.NoChartType)
 				myJson.Add("labels", Label.CompileJson());
 
 			if (NumberFormats.Count == 1)
